@@ -1,0 +1,105 @@
+{
+  "project_info": {
+    "project_number": "815352262580",
+    "project_id": "cherished-connections",
+    "storage_bucket": "cherished-connections.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815352262580:android:504dbd5569b570ca0ecce1",
+        "android_client_info": {
+          "package_name": "com.cch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815352262580:android:8fd2f68b71e669850ecce1",
+        "android_client_info": {
+          "package_name": "com.ccherished.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815352262580:android:c5dd96f70102889b0ecce1",
+        "android_client_info": {
+          "package_name": "com.cherishedc.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815352262580:android:d5d460ba8e9c255b0ecce1",
+        "android_client_info": {
+          "package_name": "com.connectionscherished"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815352262580:android:2ec8a0ebaaff70980ecce1",
+        "android_client_info": {
+          "package_name": "com.connectionscherished.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

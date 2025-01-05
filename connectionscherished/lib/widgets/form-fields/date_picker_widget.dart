@@ -3,6 +3,7 @@ import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/util/date_format_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 // ignore: must_be_immutable
 class DatePickerWidget extends StatefulWidget {
@@ -130,16 +131,13 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           width: size.width,
           child: Material(
             color: Colors.transparent,
-            child: Container(
+            child: SmoothContainer(
               height: 213,
               color: const Color(0xffF3F4F5),
-              decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: GlobalStyles.cardBorderDefault,
-                width: 1.0,
-              ),
-              // smoothness: 0.6,
+              smoothness: 0.6,
+              side: BorderSide(
+                color: GlobalStyles.cardBorderDefault
               ),
               child: CupertinoDatePicker(
                 backgroundColor: const Color(0xffF3F4F5),

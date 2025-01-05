@@ -1,6 +1,7 @@
 import 'package:connectionscherished/styles/button_styles.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 // ignore: must_be_immutable
 class ElevatedBorderWidget extends StatelessWidget {
@@ -34,9 +35,9 @@ class ElevatedBorderWidget extends StatelessWidget {
       height: height,
       decoration: ShapeDecoration(
         color: backgroundColor ?? GlobalStyles.cardBgDefault,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius ?? 20),
+        shape: SmoothRectangleBorder(borderRadius: BorderRadius.circular(radius ?? 20),
         side: borderColor != null ? BorderSide(width: 1, color: borderColor!): BorderSide.none,
-        // smoothness: smoothness ?? 0.6
+        smoothness: smoothness ?? 0.6
         ),
         // side: (elevation == 0 ) ? BorderSide(width: 1, color: (state == null) ? GlobalStyles.globalBorderDisabled : borderColor ?? ButtonStyles.btnColors.buttonBorder,): BorderSide.none,
         // color: borderColor ?? ButtonStyles.btnColors.buttonBorder,

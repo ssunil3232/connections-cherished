@@ -1,6 +1,7 @@
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 // ignore: must_be_immutable
 class DialogWidget extends StatelessWidget {
@@ -21,8 +22,8 @@ class DialogWidget extends StatelessWidget {
     return Dialog(
       insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.spacing16),
       backgroundColor: GlobalStyles.globalBgDefault,
-      shape: RoundedRectangleBorder(
-          // smoothness: 0.6,
+      shape: SmoothRectangleBorder(
+          smoothness: 0.6,
           borderRadius: BorderRadius.circular(20.0),
         ),
       child: Container(

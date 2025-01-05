@@ -1,5 +1,6 @@
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 class ButtonStyles {
   // Colors
@@ -21,8 +22,8 @@ class ButtonStyles {
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: primaryBtnStyle.bgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
-    shape: RoundedRectangleBorder(
-        // smoothness: 1, 
+    shape: SmoothRectangleBorder(
+        smoothness: 1, 
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         side: BorderSide(color: primaryBtnStyle.border)
       ),
@@ -88,8 +89,8 @@ class ButtonStyles {
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.globalBgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
-    shape: RoundedRectangleBorder(
-        // smoothness: 1,
+    shape: SmoothRectangleBorder(
+        smoothness: 1,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         side: BorderSide(color: GlobalStyles.globalTextSubtle)
       ),
@@ -103,8 +104,8 @@ class ButtonStyles {
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.globalBgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
-    shape: RoundedRectangleBorder(
-        // smoothness: 1,
+    shape: SmoothRectangleBorder(
+        smoothness: 1,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         side: BorderSide(color: GlobalStyles.globalTextSubtle)
       ),

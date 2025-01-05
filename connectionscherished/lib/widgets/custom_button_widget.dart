@@ -3,6 +3,7 @@ import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/elevated_border_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 enum ButtonType {primary, secondary, teritary, tertiaryAlert, primaryAlert}
 // ignore: must_be_immutable
@@ -166,7 +167,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                 return widget.textDefault;
               },
             ),
-            shape: WidgetStateProperty.resolveWith<RoundedRectangleBorder>(
+            shape: WidgetStateProperty.resolveWith<SmoothRectangleBorder>(
               (Set<WidgetState> states) {
                 Color border = widget.border;
                 if (states.contains(WidgetState.disabled)) {
@@ -175,9 +176,9 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                 else {
                   border = widget.border;
                 }
-                return RoundedRectangleBorder(
+                return SmoothRectangleBorder(
                   side: BorderSide( color: border),
-                  // smoothness: 1,
+                  smoothness: 1,
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                 );
               },

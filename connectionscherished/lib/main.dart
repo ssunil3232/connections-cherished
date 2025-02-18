@@ -12,8 +12,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
 
-
-//For Navigation without context;
+// For Navigation without context:
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
@@ -25,12 +24,19 @@ void setupLocator(FirebaseApp firebaseApp) {
   GetIt.I.registerLazySingleton(() => FriendService());
 }
 
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final firebaseApp = await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  // Prevent duplicate Firebase initialization (e.g., during hot reload)
+  FirebaseApp firebaseApp;
+  if (Firebase.apps.isEmpty) {
+    firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } else {
+    firebaseApp = Firebase.app();
+  }
+
   setupLocator(firebaseApp);
   runApp(const MyApp());
 }
@@ -46,22 +52,19 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // connectionsFuture = MongoDB.getDocuments();
-    // _getConnections();
   }
 
   @override
   void dispose() {
-    super.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      // Screen is resumed - refresh connections data
-      // _getConnections();
+      // Screen is resumed - refresh connections data if needed.
     }
   }
 
@@ -74,15 +77,17 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        iconTheme: const IconThemeData(color: Color(0xFF64748b),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF64748b),
           weight: 400,
-          opticalSize: 24),
+          opticalSize: 24,
+        ),
         scaffoldBackgroundColor: Colors.white,
       ),
       initialRoute: Routes.splash,
       routes: {
         Routes.splash: (context) => const SplashScreen(),
-        Routes.authOptions: (context) => const AuthOptionsScreen(), 
+        Routes.authOptions: (context) => const AuthOptionsScreen(),
         Routes.home: (context) => const HomePage(),
         Routes.emailOption: (context) => const EmailLoginScreen(),
         Routes.phoneOption: (context) => const PhoneLoginScreen(),

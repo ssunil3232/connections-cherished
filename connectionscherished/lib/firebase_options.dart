@@ -51,11 +51,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg',
-    appId: '1:815352262580:android:c5dd96f70102889b0ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    storageBucket: 'cherished-connections.firebasestorage.app',
+    apiKey: 'AIzaSyC8Fmkw9IWLe2PcPc_cxZUR7JD59VuV9d0',
+    appId: '1:937642223539:android:3aadeff2b2242bb3118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    storageBucket: 'connections-cherished.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -85,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'cherished-connections.firebasestorage.app',
     measurementId: 'G-49JH9DQDQR',
   );
-
 }

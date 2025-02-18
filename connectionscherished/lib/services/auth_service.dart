@@ -102,6 +102,7 @@ class AuthService {
       final docSnapshot = await userDoc.get();
       // If the user document does not exist, create it
       if (!docSnapshot.exists && userCred !=null) {
+        debugPrint("User Doc does not exist");
         await userDoc.set({
           'userId': userCred.user!.uid,
           'userName': '',

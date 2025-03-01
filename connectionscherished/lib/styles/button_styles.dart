@@ -16,9 +16,9 @@ class ButtonStyles {
 
   static ButtonStyle primaryButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.body2,
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    disabledBackgroundColor: GlobalStyles.globalBgDisabled,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: primaryBtnStyle.bgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
@@ -31,9 +31,9 @@ class ButtonStyles {
 
   static ButtonStyle secondaryButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.body2,
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    disabledBackgroundColor: GlobalStyles.globalBgDisabled,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: secondaryBtnStyle.text,
     backgroundColor: secondaryBtnStyle.bgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
@@ -119,19 +119,26 @@ class ButtonColors {
   static const NeutralColors neutral = NeutralColors();
   static const ErrorColors error = ErrorColors();
   static const PrimaryColorPalette pastel = PrimaryColorPalette();
-  final Color buttonPrimaryBgDefault = pastel.primaryBg;
-  final Color buttonPrimaryBgActive = pastel.primaryBgActive;
-  final Color buttonPrimaryText = neutral.neutral950;
-  final Color buttonSecondaryBgDefault = pastel.secondaryBg;
-  final Color buttonSecondaryBgActive = const Color.fromARGB(255, 209, 171, 233);
-  final Color buttonSecondaryText = neutral.neutral950;
-  final Color buttonTertiaryTextDefault = const Color.fromARGB(255, 163, 24, 233);
-  final Color buttonTertiaryTextActive = const Color.fromARGB(255, 107, 9, 156);
-  final Color buttonBorder = pastel.primaryBorder;
-  final Color buttonErrorText = neutral.neutral0;
-  final Color buttonErrorBgDefault = const Color.fromARGB(255, 233, 112, 112);
-  final Color buttonErrorBgActive = const Color.fromARGB(255, 226, 63, 63);
-  final Color buttonErrorBorder = error.error800;
+  //Primary
+  final Color buttonPrimaryBgDefault = GlobalStyles.btnBgPrimary;
+  final Color buttonPrimaryBgActive = const Color.fromARGB(255, 249, 214, 110);
+  final Color buttonPrimaryText = GlobalStyles.primaryText;
+  final Color buttonPrimaryBorder = GlobalStyles.btnBorderPrimary;
+
+  //Secondary
+  final Color buttonSecondaryBgDefault = GlobalStyles.btnBgSecondary;
+  final Color buttonSecondaryBgActive = const Color.fromARGB(255, 245, 228, 168);
+  final Color buttonSecondaryText = GlobalStyles.primaryText;
+  final Color buttonSecondaryBorder = GlobalStyles.btnBorderSecondary;
+
+  //Tertiary ====> need to create new component
+  final Color buttonTertiaryTextDefault = GlobalStyles.primaryText;
+  final Color buttonTertiaryTextActive = const Color.fromARGB(255, 107, 9, 156);//
+
+  final Color buttonErrorText = GlobalStyles.defaultBg;
+  final Color buttonErrorBgDefault = GlobalStyles.btnBgError;
+  final Color buttonErrorBgActive = const Color.fromARGB(255, 226, 63, 63);//
+  final Color buttonErrorBorder = GlobalStyles.btnBorderError;
 }
 
 class PrimaryButtonStyle {
@@ -141,7 +148,7 @@ class PrimaryButtonStyle {
   final Color bgDefault = colors.buttonPrimaryBgDefault;
   final Color bgActive = colors.buttonPrimaryBgActive;
   final Color text = colors.buttonPrimaryText;
-  final Color border = colors.buttonBorder;
+  final Color border = colors.buttonPrimaryBorder;
 
 }
 
@@ -152,7 +159,7 @@ class SecondaryButtonStyle {
   final Color bgDefault = colors.buttonSecondaryBgDefault;
   final Color bgActive = colors.buttonSecondaryBgActive;
   final Color text = colors.buttonSecondaryText;
-  final Color border = colors.buttonBorder;
+  final Color border = colors.buttonSecondaryBorder;
 }
 
 class TertiaryButtonStyle {

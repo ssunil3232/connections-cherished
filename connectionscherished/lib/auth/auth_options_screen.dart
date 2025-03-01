@@ -22,88 +22,73 @@ class AuthOptionsScreenState extends State<AuthOptionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: TopNavBarWidget(header: const Text(''), showBackButton: false, showBorder: false,),
-      backgroundColor: GlobalStyles.globalBgDefault,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFB5A2EC),
-              Colors.white,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: PagePadding(
+      backgroundColor: GlobalStyles.defaultBg,
+      body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
-        child: Center( // Wrap with Center widget
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: _buildLogoAndText(),
               ),
-              Column(children: [
-              // Continue with phone
-              // CustomButtonWidget.secondary(
-              //   text: 'Continue with Phone',
-              //   onPressed: (){
-              //     Navigator.pushNamed(context, Routes.phoneOption);
-              //   },
-              //   // height: 56,
-              //   icon: Symbols.ad_units_rounded,
-              // ),
-              // SizedBox(
-              //   height: GlobalStyles.spacingStates.spacing24,
-              // ),
-              // Continue with email
-              CustomButtonWidget.secondary(
-                text: 'Continue with Email',
-                onPressed: (){
-                  Navigator.pushNamed(context, Routes.emailOption);
-                },
-                // height: 52,
-                icon: Symbols.email_rounded,
-              ),
-              SizedBox(
-                height: GlobalStyles.spacingStates.spacing24,
+              Column(
+                children: [
+                  // Continue with email
+                  CustomButtonWidget.primary(
+                    text: 'Continue with email',
+                    onPressed: (){
+                      Navigator.pushNamed(context, Routes.emailOption);
+                    },
+                    icon: Symbols.email_rounded,
+                  ),
+                  // SizedBox(
+                  //   height: GlobalStyles.spacingStates.spacing24,
+                  // ),
+                  // Continue with phone
+                  // CustomButtonWidget.secondary(
+                  //   text: 'Continue with Phone',
+                  //   onPressed: (){
+                  //     Navigator.pushNamed(context, Routes.phoneOption);
+                  //   },
+                  //   // height: 56,
+                  //   icon: Symbols.ad_units_rounded,
+                  // ),
+                  // SizedBox(
+                  //   height: GlobalStyles.spacingStates.spacing24,
+                  // ),
+                ],
               )
-               ],)
             ]
           )
         )
-      ),
       )
     );
   }
 
   Widget _buildLogoAndText() {
     return Center(
-      heightFactor: 0.5,
+      heightFactor: 0.8,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          'assets/images/logo_clear.png',
-          width: 95,
-        ),
-        SizedBox(height: GlobalStyles.spacingStates.spacing8,),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            text: 'Connections ',
-            style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.brandColor1),
-            children: [
-              TextSpan(
-                text: 'Cherished',
-                style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.brandColor2)
-              ),
-            ]
-          )
-        ),
-        SizedBox(height: GlobalStyles.spacingStates.spacing24,),
-      ]
-    ));
+        children: [
+          Text(
+            'Connections Cherished',
+            style: GlobalStyles.textStyles.titleHeader,
+          ),
+          Image.asset(
+            'assets/images/logo.png',
+            width: 205,
+            height: 194,
+          ),
+          SizedBox(height: GlobalStyles.spacingStates.spacing8),
+          Text(
+            'Building relationships a \nconnection at a time',
+            textAlign: TextAlign.center,
+            style: GlobalStyles.textStyles.textBody
+          ),
+        ]
+      )
+    );
   }
 }

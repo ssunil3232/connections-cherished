@@ -17,6 +17,7 @@ class Routes {
   static const String authOptions = '/auth_options';
   static const String emailOption = '/email_option';
   static const String phoneOption = '/phone_option';
+  static const String createAccount = '/create_account';
   static const String userSettings = '/userSettings';
   static const String userProfile = '/userProfile';
 }

@@ -3,10 +3,8 @@ import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/routing_service.dart';
-import 'package:connectionscherished/user/user_settings.dart';
 import 'package:connectionscherished/util/callback.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'dart:developer' as developer;
 
@@ -112,18 +110,21 @@ class AuthService {
           'isDeleted': false,
           'enableNotifications': true,
         });
-        // _navService.navigateTo(Routes.userSettings);
-        showDialog(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const UserSettingsScreen();
-          },
-        );
+        _navService.navigateTo(Routes.createAccount);
       }
       else{
-        //Then navigate to Home screen directly
-      _navService.navigateTo(Routes.home);
+        if(docSnapshot.exists){
+          Map<String, dynamic>? data = docSnapshot.data();
+          if(data!=null){
+            UserModel user = UserModel.fromMap(data);
+            if(user.userName.isNotEmpty){
+              _navService.navigateTo(Routes.home);
+            }
+            else{
+              _navService.navigateTo(Routes.createAccount);
+            }
+          }
+        }
       }
   }
 

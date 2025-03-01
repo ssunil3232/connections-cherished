@@ -92,7 +92,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -103,8 +103,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text('Continue with email', style: GlobalStyles.textStyles.heading2,),
+                    Text('Continue with email', style: GlobalStyles.textStyles.textH1),
                     // Email
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
@@ -121,7 +120,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   ]
                 )
               ),
-              CustomButtonWidget.primary(
+              CustomButtonWidget.secondary(
                 text: 'Continue',
                 onPressed: !_allValid || _isSaving ? null : _checkAccountStatus,
                 showIsSaving: _isSaving,

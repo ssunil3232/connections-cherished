@@ -252,8 +252,8 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   overlayColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
                 ),
                 iconStyleData: IconStyleData(
-                  openMenuIcon: VariedIcon.varied(Symbols.keyboard_arrow_up_rounded, color: widget.errorState ? GlobalStyles.globalIconError : widget.dropdownColor ?? GlobalStyles.globalIconDefault),
-                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.errorState ? GlobalStyles.globalIconError : widget.dropdownColor ?? GlobalStyles.globalIconDefault)
+                  openMenuIcon: VariedIcon.varied(Symbols.keyboard_arrow_up_rounded, color: widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText),
+                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText)
                 ),
               ),
             ),

@@ -56,16 +56,15 @@ class InputFieldWidget extends StatelessWidget {
       children: [
         if(labelText!= null)
           Row(children: [
-            // Text(labelText!, style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
             RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(text: labelText!, style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
+                  TextSpan(text: labelText!, style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
                   if(isMandatory==true) WidgetSpan(
                     child: Baseline(
                       baseline: 14,
                       baselineType: TextBaseline.alphabetic,
-                      child: Text('*', style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
+                      child: Text('*', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
                     ),
                   ),
                 ],
@@ -74,7 +73,7 @@ class InputFieldWidget extends StatelessWidget {
             if(isOptional==true) 
               Padding(
                 padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing4),
-                child: Text("(optional)", style: GlobalStyles.textStyles.caption2.copyWith(color: GlobalStyles.globalTextSubtle)),
+                child: Text("(optional)", style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle)),
               )
           ],),
         if(labelText!= null)
@@ -101,7 +100,7 @@ class InputFieldWidget extends StatelessWidget {
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 filled: errorState && controller.text.isNotEmpty,
                 fillColor: errorState ? GlobalStyles.globalErrorBg : null,
-                hintStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
+                hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
                 labelText: (keyboardType != TextInputType.phone) ? placeholderText : null,
                 hintText: (keyboardType == TextInputType.phone && countryCode!=null)
                           ? PhoneCodes.getPhoneCountryDataByCountryCode(countryCodeMapping[countryCode]!)?.phoneMaskWithoutCountryCode
@@ -118,7 +117,7 @@ class InputFieldWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                   ) :
                   OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0, color: GlobalStyles.cardBorderDefault),
+                    borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 focusedBorder: errorState ?
@@ -127,7 +126,7 @@ class InputFieldWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                   ) :
                   OutlineInputBorder(
-                    borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
+                    borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   suffixIcon: suffixIcon

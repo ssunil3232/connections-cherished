@@ -43,7 +43,7 @@ class ElevatedBorderWidget extends StatelessWidget {
         // color: borderColor ?? ButtonStyles.btnColors.buttonBorder,
         shadows: [
           if(elevation !=0 ) BoxShadow(
-            color: (state == null) ? GlobalStyles.globalBorderDisabled : borderColor ?? ButtonStyles.btnColors.buttonBorder,
+            color: (state == null) ? GlobalStyles.globalBorderDisabled : borderColor ?? ButtonStyles.btnColors.buttonPrimaryBorder,
             offset: Offset(0, elevation ?? GlobalStyles.spacingStates.spacing4),
             blurRadius: 0,
           ),

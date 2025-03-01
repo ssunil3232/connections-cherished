@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/friends_model.dart';
+import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class UserService {
@@ -86,5 +88,26 @@ class UserService {
           color: getSnackbarColor(SnackbarType.error));
       throw Exception("Failed to add connection.");
     }
+  }
+
+  Future<List<TimezoneModel>> getTimezones(){
+    final timezoneCollection = _firestore.collection('timezones');
+    return timezoneCollection.get().then((querySnapshot) {
+      return querySnapshot.docs.map((doc) => TimezoneModel.fromMap(doc.data())).toList();
+    });
+  }
+
+  Future<List<TimezoneModel>> fetchTimezones() async {
+    List<TimezoneModel> timezones = [];
+    try {
+      QuerySnapshot snapshot = await _firestore.collection("timezones").get();
+      for (var doc in snapshot.docs) {
+        debugPrint('Timezone: ${doc.data()}');
+        timezones.add(TimezoneModel.fromMap(doc.data() as Map<String, dynamic>));
+      }
+    } catch (e) {
+      print("Error fetching timezones: $e");
+    }
+    return timezones;
   }
 }

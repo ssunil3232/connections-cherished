@@ -122,7 +122,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
           padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4, bottom: 0), 
           child: VariedIcon.varied(icon, 
             fill: isSelected ? 1: 0,
-            color: isSelected ? GlobalStyles.menuActive : GlobalStyles.globalIconDefault
+            color: isSelected ? GlobalStyles.menuActive : GlobalStyles.primaryText
           ),
         ),
       ],

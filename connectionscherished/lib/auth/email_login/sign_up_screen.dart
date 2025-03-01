@@ -25,14 +25,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _confirmPasswordController = TextEditingController();
   final correctIcon = VariedIcon.varied(Symbols.close_small_rounded, color: GlobalStyles.globalErrorText);
   final incorrectIcon = VariedIcon.varied(Symbols.check_small_rounded, color: GlobalStyles.globalSuccessText);
-  final errorTextStyle = GlobalStyles.textStyles.caption1.copyWith(color: GlobalStyles.globalTextSubtle);
+  final errorTextStyle = GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle);
   final errorIconSpacing = SizedBox(width: GlobalStyles.spacingStates.spacing8,);
   final passwordWeakIcon = VariedIcon.varied(Symbols.error_rounded, color: GlobalStyles.globalErrorText);
   final passwordSuccessIcon = VariedIcon.varied(Symbols.check_circle_rounded, color: GlobalStyles.globalSuccessText);
-  final passwordWeakText = Text('Password strength: weak', style: GlobalStyles.textStyles.body2.copyWith(color: GlobalStyles.globalErrorText));
-  final passwordSuccessText = Text('Password strength: excellent', style: GlobalStyles.textStyles.body1);
-  final passwordMatchText = Text('Passwords match', style: GlobalStyles.textStyles.body1);
-  final passwordDoNotMatchText = Text('Passwords do not match', style: GlobalStyles.textStyles.body2.copyWith(color: GlobalStyles.globalErrorText));
+  final passwordWeakText = Text('Password strength: weak', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.globalErrorText));
+  final passwordSuccessText = Text('Password strength: excellent', style: GlobalStyles.textStyles.textBody);
+  final passwordMatchText = Text('Passwords match', style: GlobalStyles.textStyles.textBody);
+  final passwordDoNotMatchText = Text('Passwords do not match', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.globalErrorText));
 
   var errors = <Widget>[];
   bool _isObscure = true;
@@ -142,7 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -153,11 +153,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text('Create an account', style: GlobalStyles.textStyles.heading2,),
+                    Text('Create an account', style: GlobalStyles.textStyles.textH1),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
-                      child: Text("It seems that you don't have an account yet with us. Please create a password.", style: GlobalStyles.textStyles.body1,)
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing12),
+                      child: Text("It seems that you don't have an account yet with us. Please create a password.", style: GlobalStyles.textStyles.textBody)
                     ),
                     // Password
                     Padding(
@@ -209,7 +208,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ]
                 )
               ),
-              CustomButtonWidget.primary(
+              CustomButtonWidget.secondary(
                 text: 'Continue',
                 onPressed: !_allValid || _isSaving ? null : _signUp,
                 showIsSaving: _isSaving,

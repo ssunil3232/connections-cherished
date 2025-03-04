@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectionscherished/auth/email_login/create_account_screen.dart';
+import 'package:connectionscherished/auth/create_account_screen.dart';
+import 'package:connectionscherished/dashboard.dart';
 import 'package:connectionscherished/home.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/auth_service.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
+import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/user_profile.dart';
 import 'package:connectionscherished/user/user_settings.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'firebase_options.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 //For Navigation without context;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -23,6 +26,7 @@ void setupLocator(FirebaseApp firebaseApp) {
   GetIt.I.registerLazySingleton(() => AuthService());
   GetIt.I.registerLazySingleton(() => NavigationService());
   GetIt.I.registerLazySingleton(() => UserService());
+  GetIt.I.registerLazySingleton(() => UtilService());
   GetIt.I.registerLazySingleton(() => FriendService());
 }
 
@@ -33,6 +37,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   setupLocator(firebaseApp);
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
@@ -85,6 +90,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Routes.splash: (context) => const SplashScreen(),
         Routes.authOptions: (context) => const AuthOptionsScreen(), 
         Routes.home: (context) => const HomePage(),
+        Routes.dashboard: (context) => const DashboardScreen(),
         Routes.emailOption: (context) => const EmailLoginScreen(),
         Routes.phoneOption: (context) => const PhoneLoginScreen(),
         Routes.createAccount: (context) => const CreateAccountScreen(),

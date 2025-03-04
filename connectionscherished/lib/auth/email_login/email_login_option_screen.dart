@@ -74,7 +74,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error checking email: $e');
+      Exception('Error checking email: $e');
     }
     setState(() {
       _isSaving = false;

@@ -3,25 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/styles/styles.dart';
 
 class PeriodicAlert {
-  int years = 0;
   int months = 0;
-  int days = 1;
+  int weeks = 1;
+  int days = 0;
 
   PeriodicAlert({
-    required this.years, required this.months, required this.days
+    required this.weeks, required this.months, required this.days
   });
 
   PeriodicAlert.empty();
 
   PeriodicAlert.fromJson(Map<String, dynamic> json) {
-    years = json['years'] ?? 0;
+    weeks = json['weeks'] ?? 1;
     months = json['months'] ?? 0;
-    days = json['days'] ?? 1;
+    days = json['days'] ?? 0;
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'years': years,
+      'weeks': weeks,
       'months': months,
       'days': days,
     };
@@ -31,9 +31,9 @@ class PeriodicAlert {
     return jsonEncode(toMap());
   }
 
-  PeriodicAlert copyWith({int? years, int? months, int? days}) {
+  PeriodicAlert copyWith({int? weeks, int? months, int? days}) {
     return PeriodicAlert(
-      years: years ?? this.years,
+      weeks: weeks ?? this.weeks,
       months: months ?? this.months,
       days: days ?? this.days,
     );
@@ -50,6 +50,7 @@ class FriendModel {
   bool alertOnBirthday = true;
   String profileImage = "";
   PeriodicAlert alert = PeriodicAlert.empty();
+  String timezone = '';
   
 
   FriendModel({
@@ -61,7 +62,8 @@ class FriendModel {
     this.lastContactedDays = 0,
     this.alertOnBirthday = true,
     this.profileImage = '',
-    required this.alert
+    required this.alert,
+    this.timezone = ''
   });
 
   factory FriendModel.fromMap(Map<String, dynamic> data) {
@@ -75,6 +77,7 @@ class FriendModel {
       alertOnBirthday: data['alertOnBirthday'] ?? true,
       profileImage: data['profileImage'] ?? '',
       alert: data['alert'] != null ? PeriodicAlert.fromJson(data['alert']) : PeriodicAlert.empty(),
+      timezone: data['timezone'] ?? ''
     );
   }
 
@@ -88,6 +91,7 @@ class FriendModel {
     alertOnBirthday = json['alertOnBirthday'] ?? true;
     profileImage = json['profileImage'] ?? '';
     alert = json['alert'] ?? PeriodicAlert.empty();
+    timezone = json['timezone'] ?? '';
   }
 
   Map<String, dynamic> toMap() {
@@ -100,7 +104,8 @@ class FriendModel {
       'lastContactedDays': lastContactedDays,
       'alertOnBirthday': alertOnBirthday,
       'profileImage': profileImage,
-      'alert': alert.toMap()
+      'alert': alert.toMap(),
+      'timezone': timezone
     };
   }
 
@@ -116,7 +121,7 @@ class FriendModel {
   }
 
   int calculatePriorityScore() {
-    int alertFrequencyInDays = alert.years * 365 + alert.months * 30 + alert.days;
+    int alertFrequencyInDays = alert.weeks * 7 + alert.months * 30 + alert.days;
     return lastContactedDays - alertFrequencyInDays;
   }
 
@@ -134,9 +139,9 @@ class FriendModel {
   getSeverityColor(){
     int severityScore = calculateSeverity();
     return severityScore == 1
-      ? GlobalStyles.severeColor
+      ? GlobalStyles.criticalColor
       : severityScore == 2
         ? GlobalStyles.warningColor
-        : GlobalStyles.normalColor;
+        : GlobalStyles.neutralColor;
   }
 }

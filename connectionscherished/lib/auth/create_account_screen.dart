@@ -134,6 +134,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                             child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: 24, height: 24),
                           ),
                           Text('Timezone', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
+                          SizedBox(width: GlobalStyles.spacingStates.spacing20),
                           Expanded(
                             child: TimezonePickerWidget(
                               onChanged: (value) {
@@ -147,54 +148,55 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         ],
                       )
                     ),
-                    Center(
-                      child: Column(
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children:[
-                                TextSpan(
-                                  text: 'Connections Cherished was founded on the innate need for keeping up with social connections with loved ones!',
-                                  style: GlobalStyles.textStyles.textBody
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: GlobalStyles.spacingStates.spacing64 + GlobalStyles.spacingStates.spacing16),
+                        RichText(
+                          text: TextSpan(
+                            children:[
+                              TextSpan(
+                                text: 'Connections Cherished was founded on the innate need for keeping up with social connections with loved ones!',
+                                style: GlobalStyles.textStyles.textBody
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
+                                  child: SvgPicture.asset('assets/icons/heart_icon.svg', width: 24, height: 24),
                                 ),
-                                WidgetSpan(
-                                  alignment: PlaceholderAlignment.middle,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                                    child: SvgPicture.asset('assets/icons/heart_icon.svg', width: 24, height: 24),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                          SizedBox(height: GlobalStyles.spacingStates.spacing16),
-                          RichText(
-                            text: TextSpan(
-                              children:[
-                                TextSpan(
-                                  text: 'Here’s to making it happen—one\n',
-                                  style: GlobalStyles.textStyles.textBody
+                        ),
+                        SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                        RichText(
+                          text: TextSpan(
+                            children:[
+                              TextSpan(
+                                text: 'Here’s to making it happen—one\n',
+                                style: GlobalStyles.textStyles.textBody
+                              ),
+                              TextSpan(
+                                text: 'cherished connection ',
+                                style: GlobalStyles.textStyles.textH3Varaint
+                              ),
+                              TextSpan(
+                                text: 'at a time!',
+                                style: GlobalStyles.textStyles.textBody
+                              ),
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
+                                  child: SvgPicture.asset('assets/icons/star_icon.svg', width: 24, height: 24),
                                 ),
-                                TextSpan(
-                                  text: 'cherished connection ',
-                                  style: GlobalStyles.textStyles.textH3Varaint
-                                ),
-                                TextSpan(
-                                  text: 'at a time!',
-                                  style: GlobalStyles.textStyles.textBody
-                                ),
-                                WidgetSpan(
-                                  alignment: PlaceholderAlignment.middle,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                                    child: SvgPicture.asset('assets/icons/star_icon.svg', width: 24, height: 24),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                        ],
-                      )
+                        ),
+                      ],
                     )
                   ]
                 )

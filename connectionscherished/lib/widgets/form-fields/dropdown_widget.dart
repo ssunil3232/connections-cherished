@@ -227,7 +227,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   padding: const EdgeInsets.all(0),
                   elevation: 0,
                   offset: widget.offset ?? Offset(0, -GlobalStyles.spacingStates.spacing8),
-                  width: widget.menuWidth,
+                  width: widget.menuWidth! < 1 ?  MediaQuery.of(context).size.width * widget.menuWidth! : widget.menuWidth,
                   maxHeight: widget.menuHeight,
                   decoration: BoxDecoration(
                     border: Border.all(

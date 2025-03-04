@@ -70,7 +70,7 @@ class GlobalStyles {
   static const Color defaultBg = Color(0xFFFFFFFF); // default-bg
   static const Color defaultTextBg = Color(0xFFF6F7F9); // default-text-bg
   static const Color defaultBorder = Color(0xFFB1BBC8); // default-border
-  static const Color defaultBorderEnabled = Color(0xFFB1BBC8); // default-border-enabled
+  static const Color defaultBorderEnabled = Color.fromARGB(255, 122, 127, 132); // default-border-enabled
   static const Color primaryText = Color(0xFF343A46); // primary-text
   static const Color textSubtle = Color(0xFF64748B); // text-subtle
   static const Color textDisabled = Color(0xFF64748B); // text-disabled
@@ -410,7 +410,7 @@ class TextStyles {
     color: GlobalStyles.primaryText,
   );
 
-  TextStyle get textH3Varaint => GoogleFonts.nunito(
+  TextStyle get textH3Varaint => GoogleFonts.mynerve(
     fontSize: isSmallScreen ? 22 : 24,
     fontWeight: FontWeight.w400,
     height: isSmallScreen ? (24 / 22) : (26 / 24),
@@ -474,8 +474,13 @@ class SpacingStates {
   final double spacing24 = 24;
   final double spacing28 = 28;
   final double spacing32 = 32;
+  final double spacing36 = 36;
+  final double spacing40 = 40;
+  final double spacing44 = 44;
   final double spacing48 = 48;
+  final double spacing52 = 52;
   final double spacing56 = 56;
+  final double spacing60 = 60;
   final double spacing64 = 64;
 
 }

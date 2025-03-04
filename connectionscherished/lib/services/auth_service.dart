@@ -118,7 +118,7 @@ class AuthService {
           if(data!=null){
             UserModel user = UserModel.fromMap(data);
             if(user.userName.isNotEmpty){
-              _navService.navigateTo(Routes.home);
+              _navService.navigateTo(Routes.dashboard);
             }
             else{
               _navService.navigateTo(Routes.createAccount);

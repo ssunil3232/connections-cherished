@@ -20,4 +20,5 @@ class Routes {
   static const String createAccount = '/create_account';
   static const String userSettings = '/userSettings';
   static const String userProfile = '/userProfile';
+  static const String dashboard = '/dashboard';
 }

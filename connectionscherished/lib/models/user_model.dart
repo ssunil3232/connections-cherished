@@ -9,6 +9,7 @@ class UserModel {
   Timestamp? updatedAt;
   bool isDeleted = false;
   bool enableNotifications = true;
+  String timezone;
 
   UserModel({
       this.userId,
@@ -18,7 +19,8 @@ class UserModel {
       this.createdAt,
       this.updatedAt,
       this.isDeleted = false,
-      this.enableNotifications = true
+      this.enableNotifications = true,
+      this.timezone = ""
   });
 
   Map<String, dynamic> toMap() {
@@ -30,7 +32,8 @@ class UserModel {
       'updatedAt': FieldValue.serverTimestamp(),
       'profileImage': profileImage,
       'isDeleted': isDeleted,
-      'enableNotifications': enableNotifications
+      'enableNotifications': enableNotifications,
+      'timezone': timezone
     };
   }
 
@@ -43,7 +46,8 @@ class UserModel {
       updatedAt : map['updatedAt'],
       isDeleted: map['isDeleted'] ?? false,
       profileImage: map['profileImage']?? '',
-      enableNotifications: map['enableNotifications'] ?? true
+      enableNotifications: map['enableNotifications'] ?? true,
+      timezone: map['timezone'] ?? ''
       );
   }
 
@@ -56,6 +60,7 @@ class UserModel {
       '   profileImage: $profileImage,\n'
       '   isDeleted: $isDeleted,\n'
       '   enableNotifications: $enableNotifications\n'
+      '   timezone: $timezone\n'
       ')';
   }
 }

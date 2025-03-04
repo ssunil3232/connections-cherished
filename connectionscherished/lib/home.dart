@@ -1,19 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/friends_model.dart';
-import 'package:connectionscherished/routes.dart';
+import 'package:connectionscherished/models/user_model.dart';
+import 'package:connectionscherished/services/auth_service.dart';
+import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/styles/button_styles.dart';
 import 'package:connectionscherished/styles/styles.dart';
-import 'package:connectionscherished/user/add_connection.dart';
+import 'package:connectionscherished/user/connection_detail.dart';
+import 'package:connectionscherished/widgets/cached_image_widget.dart';
 import 'package:connectionscherished/widgets/classification.dart';
-import 'package:connectionscherished/widgets/grid.dart';
+import 'package:connectionscherished/widgets/connections_grid.dart';
 import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart';
 import 'package:connectionscherished/widgets/page_padding.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,8 +28,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   List<FriendModel> connections = [];
   Future<List<FriendModel>>? connectionsFuture;
   final _userService = GetIt.I.get<UserService>();
-  final _authService = FirebaseAuth.instance;
+  final _accountService = GetIt.I.get<AuthService>();
+  final _friendService = GetIt.I.get<FriendService>();
   UniqueKey futureBuilderKey = UniqueKey();
+  UserModel ? user;
 
   void loadData() {
     getConnections();
@@ -40,6 +44,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    loadUser();
     loadData();
   }
 
@@ -70,6 +75,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
     }
   }
 
+  loadUser() async {
+    user = await _accountService.getLoggedInUser();
+  }
+
   Future<void> getConnections() async {
     try {
       connections = await _userService.getFriends();
@@ -78,27 +87,42 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
       }
       setState(() {}); // Ensure the UI is updated
     } catch (e) {
-      debugPrint('Error fetching connections: $e');
+      Exception('Error fetching connections: $e');
     }
   }
 
+  Future<void> deleteConnection (FriendModel item) async {
+    // setState(() {
+    //   saving = true;
+    // });
+    try {
+      await _friendService.deleteFriend(item.friendId!);
+      await getConnections();
+    } catch(error){
+      Exception("Failed to delete connection");
+    }
+    // setState(() {
+    //   saving = false;
+    // });
+  }
+
   addConnection() {
-      FriendModel friend = FriendModel(
-        name: 'John Doe',
-        lastContacted: Timestamp.now(),
-        dob: Timestamp.now(),
-        alertOnBirthday: true,
-        alert: PeriodicAlert(days: 1, months: 0, years: 0),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AddConnectionView(
-            friend: friend,
-            type: ConnectionType.add
-          )
-        ),
-      );
+    FriendModel newFriend = FriendModel(
+      name: 'John Doe',
+      lastContacted: Timestamp.now(),
+      dob: null,
+      alertOnBirthday: true,
+      alert: PeriodicAlert(days: 0, months: 0, weeks: 1),
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConnectionView(
+          friend: newFriend,
+          type: ConnectionType.add
+        )
+      ),
+    );
   }
 
   @override
@@ -109,208 +133,126 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              color: Colors.white,
-              child: const LinearProgressIndicator(
-                backgroundColor: Colors.black,
-              ),
+              color: GlobalStyles.defaultBg,
+              child: LinearProgressIndicator()
             );
           } else {
             if (snapshot.hasError) {
               return Container(
-                color: Colors.white,
-                child: const Center(
-                  child: Text('Something went wrong, try again.'),
+                color: GlobalStyles.defaultBg,
+                child: Center(
+                  child: Text(
+                    'Something went wrong, try again.',
+                    style: GlobalStyles.textStyles.textH3.copyWith(color: GlobalStyles.btnBorderError),
+                  ),
                 ),
               );
             } else {
               return Scaffold(
                 appBar: TopNavBarWidget(
-                  bgColor: Theme.of(context).colorScheme.inversePrimary,
                   showBorder: false,
-                  header: RichText(
-                    text: TextSpan(
-                      style: GoogleFonts.juliusSansOne(),
-                      children: const [
-                        TextSpan(
-                          text: 'Connections ',
-                          style: TextStyle(fontSize: 20, color: Color(0xff8719BB)),
-                        ),
-                        TextSpan(
-                            text: 'Cherished',
-                            style: TextStyle(fontSize: 20, color: Colors.black87)),
-                      ],
-                    ),
-                  ),
+                  height: 100.0,
+                  header: Text("Connections Cherished", style: GlobalStyles.textStyles.titleHeader),
                   showBackButton: false,
-                  actions: [
-                    PopupMenuButton<String>(
-                      icon: VariedIcon.varied(
-                        Symbols.user_attributes_rounded,
-                        size: 40,
-                        weight: 300
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16.0),
-                        side: BorderSide(
-                          color: GlobalStyles.globalTextSubtle,
-                        ),
-                      ),
-                      elevation: 0,
-                      padding: const EdgeInsets.all(0),
-                      offset: const Offset(50, 50),
-                      color: GlobalStyles.globalBgDefault,
-                      style: const ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
-                        splashFactory: NoSplash.splashFactory,
-                        overlayColor: WidgetStatePropertyAll(Colors.transparent),
-                      ),
-                      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                        PopupMenuItem<String>(
-                          value: 'settings',
-                          padding: const EdgeInsets.all(0),
-                          height: 32.0,
-                          child:Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(0),
-                            constraints: const BoxConstraints(
-                              minWidth: 0,
-                              maxWidth: double.infinity,
-                            ),
-                            child: Text(
-                              'Settings',
-                              style: GlobalStyles.textStyles.body1,
-                            ),
-                          ),
-                          onTap: (){
-                            Navigator.pushNamed(context, Routes.userProfile);
-                          },
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'logout',
-                          padding: const EdgeInsets.all(0),
-                          height: 32.0,
-                          child:Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(0),
-                            constraints: const BoxConstraints(
-                              minWidth: 0,
-                              maxWidth: double.infinity,
-                            ),
-                            child: Text(
-                              'Logout',
-                              style: GlobalStyles.textStyles.body1,
-                            ),
-                          ),
-                          onTap: () async {
-                            await _authService.signOut();
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              Routes.authOptions,
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  ],
                 ),
                 body: PagePadding(
-                  bottomPadding: 20.0,
+                  bottomPadding: GlobalStyles.spacingStates.spacing20,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(height: GlobalStyles.spacingStates.spacing24,),
-                        Image.asset(
-                          'assets/images/logo.png',
-                          width: 95,
-                        ),
-                        Container(
-                          // margin: const EdgeInsets.all(20),
-                          alignment: Alignment.center,
-                          child: RichText(
-                            textAlign:TextAlign.center,
-                            text: TextSpan(
-                              style: const TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: 'Where you can ',
-                                    style: TextStyle(
-                                      fontFamily:
-                                          GoogleFonts.juliusSansOne().fontFamily,
-                                    )),
-                                TextSpan(
-                                    text: 'cherish', // The word you want to color
-                                    style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        fontFamily: GoogleFonts.juliusSansOne()
-                                            .fontFamily,
-                                        color: Colors
-                                            .deepPurple) // Change the color as needed
-                                    ),
-                                TextSpan(
-                                    text: ' your connections better...',
-                                    style: TextStyle(
-                                      fontFamily:
-                                          GoogleFonts.juliusSansOne().fontFamily,
-                                    )), // Text after the colored word
-                              ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CachedImageWidget(
+                              height: 90,
+                              width: 90,
+                              imageUrlProvided: 'assets/images/avatar1.png',
                             ),
-                          ),
+                            SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                            SvgPicture.asset('assets/icons/wave_icon.svg', width: 36, height: 36),
+                            SizedBox(width: GlobalStyles.spacingStates.spacing8),
+                            Text(
+                              'Hello ${user?.userName ?? ''}!',
+                              style: GlobalStyles.textStyles.textH2Bold
+                            ),
+                          ],
                         ),
+                        Padding(padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8)),
                         (connections.isEmpty)?
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: 146,
+                                height: 140,
+                              ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                alignment: Alignment.center,
+                                child: RichText(
+                                  textAlign:TextAlign.center,
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Where you can ',
+                                        style: GlobalStyles.textStyles.textH3
+                                      ),
+                                      TextSpan(
+                                        text: 'cherish\n',
+                                        style: GlobalStyles.textStyles.textH3Varaint
+                                      ),
+                                      TextSpan(
+                                        text: 'your ',
+                                        style: GlobalStyles.textStyles.textH3
+                                      ),
+                                      TextSpan(
+                                        text: 'connections',
+                                        style: GlobalStyles.textStyles.textH3Varaint
+                                      ),
+                                      TextSpan(
+                                        text: ' better',
+                                        style: GlobalStyles.textStyles.textH3
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32, bottom: GlobalStyles.spacingStates.spacing8),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Starting adding connections to cherish!',
-                                  style: GlobalStyles.textStyles.body2.copyWith(
-                                    // fontSize: 15,
-                                    color: GlobalStyles.globalTextSubtle,
+                                  'Start by adding a connection',
+                                  style: GlobalStyles.textStyles.textCaption1.copyWith(
+                                    color: GlobalStyles.textSubtle,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 50,
                               ),
                               FilledButton(
-                                style: ButtonStyle(
-                                  padding: WidgetStateProperty.all(
-                                    const EdgeInsets.symmetric(horizontal: 10)
-                                  ),
-                                  textStyle: WidgetStateProperty.all(
-                                    GlobalStyles.textStyles.body2
-                                  ),
-                                  backgroundColor: WidgetStateProperty.all(
-                                    ButtonStyles.secondaryBtnStyle.bgDefault
-                                  ),
-                                  foregroundColor: WidgetStateProperty.all(
-                                    GlobalStyles.brandColor2
-                                  )
-                                ),
+                                style: ButtonStyles.tertiaryButton,
                                 onPressed: addConnection, 
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('Add Connection', style: GlobalStyles.textStyles.body2,), 
-                                    const SizedBox(width: 4),
-                                    VariedIcon.varied(Symbols.add_rounded, size: 20, weight: 300),
+                                    Text('Add Connection', style: GlobalStyles.textStyles.textButtonSecondary), 
+                                    SizedBox(width: 4),
+                                    VariedIcon.varied(Symbols.add_rounded, size: 24, weight: 300, color: GlobalStyles.primaryText),
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 50,
+                              SizedBox(
+                                height: GlobalStyles.spacingStates.spacing24,
                               ),
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Image.asset(
-                                    'assets/images/splash1.png',
+                                    'assets/images/quote-bg-image.png',
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(20),
@@ -319,21 +261,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                                         Text(
                                           textAlign: TextAlign.center,
                                           '"The connections we share are the footprints we leave behind in the hearts of others."',
-                                          style:GlobalStyles.textStyles.body2.copyWith(
-                                            fontSize: 20,
-                                            color: const Color.fromARGB(255, 33, 8, 45),
-                                          ),
+                                          style:GlobalStyles.textStyles.textCaption1
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 20),
+                                          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8),
                                           child: Text(
-                                            textAlign: TextAlign.end,
+                                            textAlign: TextAlign.center,
                                             '- Tim Fargo',
-                                            style:GlobalStyles.textStyles.body2.copyWith(
-                                              fontStyle: FontStyle.italic,
-                                              fontSize: 15,
-                                              color: const Color.fromARGB(255, 88, 56, 103),
-                                            ),
+                                            style: GlobalStyles.textStyles.textCaption1
                                           )
                                         )
                                       ]
@@ -347,14 +282,29 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                           Column(
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(top: 20),
+                                padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing24),
                                 alignment: Alignment.center,
-                                child: Text(
-                                  textAlign: TextAlign.center,
-                                  'You need to cherish your connection with',
-                                  style: GlobalStyles.textStyles.body2.copyWith(
-                                    // fontSize: 15,
-                                    color: GlobalStyles.globalTextSubtle,
+                                child: RichText(
+                                  textAlign:TextAlign.center,
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: 'Cherish',
+                                        style: GlobalStyles.textStyles.textH3Varaint
+                                      ),
+                                      TextSpan(
+                                        text: ' your ',
+                                        style: GlobalStyles.textStyles.textH3
+                                      ),
+                                      TextSpan(
+                                        text: 'connection',
+                                        style: GlobalStyles.textStyles.textH3Varaint
+                                      ),
+                                      TextSpan(
+                                        text: ' with',
+                                        style: GlobalStyles.textStyles.textH3
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -363,28 +313,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                           ),
                         if(connections.isNotEmpty)
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing24),
                           child: Row(
                             children: [
                               const Expanded(
                                 child: Classification(),
-                                
                               ),
                               FilledButton(
-                                style: ButtonStyle(
-                                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 10)),
-                                  textStyle: WidgetStateProperty.all(GlobalStyles.textStyles.body2),
-                                  backgroundColor: WidgetStateProperty.all(ButtonStyles.secondaryBtnStyle.bgDefault),
-                                  foregroundColor: WidgetStateProperty.all(GlobalStyles.brandColor2)
+                                style: ButtonStyles.tertiaryButton.copyWith(
+                                  padding: WidgetStatePropertyAll(
+                                    EdgeInsets.symmetric(
+                                      vertical: GlobalStyles.spacingStates.spacing8, 
+                                      horizontal: GlobalStyles.spacingStates.spacing8
+                                    )
+                                  ),
                                 ),
                                 onPressed: addConnection, 
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  spacing: 4,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text('Add Connection', style: GlobalStyles.textStyles.body2, textAlign: TextAlign.center,), 
-                                    const SizedBox(width: 4),
-                                    VariedIcon.varied(Symbols.add_rounded, size: 20, weight: 300),
+                                    VariedIcon.varied(Symbols.add_rounded, size: 24, weight: 500, color: GlobalStyles.primaryText),
+                                    Text('Add\nconnection', style: GlobalStyles.textStyles.textButtonTertiary, textAlign: TextAlign.center), 
                                   ],
                                 ),
                               )
@@ -392,23 +344,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                           )
                         ),
                         if(connections.isNotEmpty)
-                        SizedBox(
-                          height: 30,
-                          child: Row(children: [
-                            const SizedBox(
-                              width: 100,
-                              child: Text('Name'),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(left: 80),
-                              child: const SizedBox(
-                                child: Text('Last Contacted'),
-                              ),
-                            ),
-                          ]),
+                        Container(
+                          padding: EdgeInsets.only(
+                            bottom: GlobalStyles.spacingStates.spacing4, 
+                            right: GlobalStyles.spacingStates.spacing16,
+                            left: GlobalStyles.spacingStates.spacing8
+                          ),
+                          child: Row(
+                            children: [
+                              Text('Connection', style: GlobalStyles.textStyles.textCaption1,),
+                              Spacer(),
+                              Text('Last contacted', style: GlobalStyles.textStyles.textCaption1,),
+                            ]
+                          ),
                         ),
                         Expanded(
-                          child: DetailsGrid(data: connections)
+                          child: ConnectionsGrid(
+                            data: connections,
+                            onDelete: (item) => deleteConnection(item),
+                          )
                         ),
                       ],
                     ),
@@ -421,19 +375,33 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   }
 
   Widget getTopConnection(){
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-      Image.asset(
-        'assets/images/splash8.png',
-      ),
-      Text(
-        connections.first.name?? '',
-        style: const TextStyle(
-          fontSize: 30,
-          color: Color(0xffB350E1),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
+      child: FilledButton(
+        style: ButtonStyles.tertiaryButton.copyWith(
+          backgroundColor: WidgetStateProperty.all(GlobalStyles.defaultTextBg),
+          foregroundColor: WidgetStateProperty.all(GlobalStyles.primaryText),
         ),
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConnectionView(
+                friend: connections.first,
+                type: ConnectionType.edit
+              )
+            )
+          );
+        },
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 200),
+          child: Text(
+            connections.first.name?? '',
+            style: GlobalStyles.textStyles.textH1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        )
       )
-    ],);
+    );
   }
 }

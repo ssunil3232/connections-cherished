@@ -8,16 +8,17 @@ import 'package:flutter/material.dart';
 class CachedImageWidget extends StatelessWidget {
   final double height;
   final double width;
+  ShapeBorder ? shape;
   String imageUrlProvided;
 
-  CachedImageWidget({super.key, required this.height, required this.width, required this.imageUrlProvided});
+  CachedImageWidget({super.key, required this.height, required this.width, required this.imageUrlProvided, this.shape});
 
 
   @override
   Widget build(BuildContext context) {
     return Material(
             clipBehavior: Clip.hardEdge,
-            shape: CircleBorder(side: BorderSide(color: GlobalStyles.cardBorderDefault, width: 0.5)),
+            shape: shape ?? CircleBorder(side: BorderSide(color: GlobalStyles.defaultBorder, width: 0.5)),
             child: ClipOval(
               child: SizedBox(
                 width: width,
@@ -25,7 +26,7 @@ class CachedImageWidget extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: imageUrlProvided,
                   placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/profile.png'),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/avatar1.png'),
                 ),
               )
             )

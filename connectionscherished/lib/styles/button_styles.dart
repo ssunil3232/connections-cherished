@@ -43,17 +43,19 @@ class ButtonStyles {
       ),
     );
   
-  static ButtonStyle tertiaryButton = TextButton.styleFrom(
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    foregroundColor: tertiaryBtnStyle.textDefault,
-    textStyle: GlobalStyles.textStyles.boldBody1.copyWith(
-       color: tertiaryBtnStyle.textDefault,
-       decoration: TextDecoration.underline,
-       decorationColor: tertiaryBtnStyle.textDefault
-      ),
+  static ButtonStyle tertiaryButton = FilledButton.styleFrom(
     overlayColor: Colors.transparent,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing8),
-    );
+    textStyle: GlobalStyles.textStyles.textButtonSecondary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
+    foregroundColor: tertiaryBtnStyle.textDefault,
+    backgroundColor: tertiaryBtnStyle.bgDefault,
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing24),
+    shape: RoundedRectangleBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      // side: BorderSide(color: secondaryBtnStyle.border)
+    ),
+  );
 
   static ButtonStyle tertiaryAlertButton = TextButton.styleFrom(
     disabledForegroundColor: GlobalStyles.globalTextDisabled,
@@ -133,7 +135,8 @@ class ButtonColors {
 
   //Tertiary ====> need to create new component
   final Color buttonTertiaryTextDefault = GlobalStyles.primaryText;
-  final Color buttonTertiaryTextActive = const Color.fromARGB(255, 107, 9, 156);//
+  final Color buttonTertiaryTextActive = GlobalStyles.primaryText;//
+  final Color buttonTertiaryBgDefault = GlobalStyles.btnBgTertiary;
 
   final Color buttonErrorText = GlobalStyles.defaultBg;
   final Color buttonErrorBgDefault = GlobalStyles.btnBgError;
@@ -167,6 +170,7 @@ class TertiaryButtonStyle {
   static ButtonColors colors = ButtonColors();
   final Color textDefault = colors.buttonTertiaryTextDefault;
   final Color textActive = colors.buttonTertiaryTextActive;
+  final Color bgDefault = colors.buttonTertiaryBgDefault;
 }
 
 class TertiaryAlertButtonStyle {

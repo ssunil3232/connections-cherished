@@ -91,7 +91,12 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false),
+      appBar: TopNavBarWidget(
+        header: const Text(''), 
+        showBackButton: true, 
+        showBorder: false,
+        bgColor: GlobalStyles.defaultBg,
+      ),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,

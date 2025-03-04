@@ -7,11 +7,13 @@ import 'package:get_it/get_it.dart';
 // ignore: must_be_immutable
 class TimezonePickerWidget extends StatefulWidget {
   String ? initialTimezone;
+  bool isDisabled;
   Function (TimezoneModel) onChanged;
   TimezonePickerWidget({
     super.key,
     required this.onChanged,
-    this.initialTimezone
+    this.initialTimezone,
+    this.isDisabled = false
   });
   @override
   _TimezonePickerWidgetState createState() => _TimezonePickerWidgetState();
@@ -31,15 +33,18 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
   void initState() {
     super.initState();
     getFormattedTimezones();
+    initializeTimezone();
+  }
+
+  initializeTimezone() async {
     if(widget.initialTimezone != null && widget.initialTimezone != "") {
-      debugPrint('Initial timezone: ${widget.initialTimezone}');
-      setState(() {
-        selectedTimezone = widget.initialTimezone;
-      });
-      setSelectedTimezone(selectedTimezone!);
+      // setState(() {
+      //   selectedTimezone = widget.initialTimezone;
+      // });
+      await setSelectedTimezone(widget.initialTimezone!);
     }
     else{
-      setLocalTimezone();
+      await setLocalTimezone();
     }
   }
 
@@ -70,6 +75,7 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
     // List<TimezoneModel> formattedTimezones = getFormattedTimezones();
     return CustomDropdownWidget(
       buttonHeight: 55,
+      disabled: widget.isDisabled,
       onChanged:(value) {
         setSelectedTimezone(value);
       }, 

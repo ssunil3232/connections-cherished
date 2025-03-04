@@ -117,7 +117,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false,),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -129,10 +129,10 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text('Verify your phone', style: GlobalStyles.textStyles.heading2,),
+                    Text('Verify your phone', style: GlobalStyles.textStyles.textH1,),
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
-                      child: Text("We just sent you an SMS. Enter the \nverification code sent to ${phoneNumberMask(widget.phoneNumber)}", style: GlobalStyles.textStyles.body1,)
+                      child: Text("We just sent you an SMS. Enter the \nverification code sent to ${phoneNumberMask(widget.phoneNumber)}", style: GlobalStyles.textStyles.textBody,)
                     ),
                     // OTP Field
                     Padding(
@@ -164,7 +164,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                             }, 
                             text: 'Resend code'
                           )
-                          : Text(_timerText, style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),)
+                          : Text(_timerText, style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),)
                       )
                   ]
                 )

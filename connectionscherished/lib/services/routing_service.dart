@@ -17,7 +17,7 @@ class NavigationService {
         SnackBar(
           content: Text(
             message,
-            style: GlobalStyles.textStyles.caption2.copyWith(color: GlobalStyles.globalBgDefault),
+            style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.defaultBg),
           ),
           backgroundColor: color,
           behavior: SnackBarBehavior.floating,

@@ -71,7 +71,7 @@ class _OTPInputFieldState extends State<OtpFieldWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Enter verification code', style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
+        Text('Enter verification code', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
         SizedBox(height: GlobalStyles.spacingStates.spacing4,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,13 +85,13 @@ class _OTPInputFieldState extends State<OtpFieldWidget> {
                 controller: _controllers[index],
                 focusNode: _focusNodes[index],
                 keyboardType: TextInputType.number,
-                cursorColor: GlobalStyles.globalTextSubtle,
+                cursorColor: GlobalStyles.textSubtle,
                 textAlign: TextAlign.center,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp("[0-9$separator]")),
                 ],
                 maxLength: 1,
-                style: GlobalStyles.textStyles.body1,
+                style: GlobalStyles.textStyles.textBody,
                 decoration: GlobalStyles.inputFieldDecoration.copyWith(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   counterText: "",

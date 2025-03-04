@@ -10,7 +10,7 @@ import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/connection_detail.dart';
 import 'package:connectionscherished/widgets/cached_image_widget.dart';
 import 'package:connectionscherished/widgets/classification.dart';
-import 'package:connectionscherished/widgets/connections_grid.dart';
+import 'package:connectionscherished/widgets/buttons/connection/connections_grid.dart';
 import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart';
 import 'package:connectionscherished/widgets/page_padding.dart';
 import 'package:flutter/material.dart';

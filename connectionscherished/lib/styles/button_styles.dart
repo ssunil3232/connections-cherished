@@ -58,9 +58,9 @@ class ButtonStyles {
   );
 
   static ButtonStyle tertiaryAlertButton = TextButton.styleFrom(
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
+    disabledForegroundColor: GlobalStyles.textDisabled,
     foregroundColor: tertiaryAlertBtnStyle.textDefault,
-    textStyle: GlobalStyles.textStyles.boldBody1.copyWith(
+    textStyle: GlobalStyles.textStyles.textButtonPrimary.copyWith(
        color: tertiaryAlertBtnStyle.textDefault,
        decoration: TextDecoration.underline,
        decorationColor: tertiaryAlertBtnStyle.textDefault
@@ -71,9 +71,9 @@ class ButtonStyles {
 
   static ButtonStyle primaryAlertButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.body2,
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    disabledBackgroundColor: GlobalStyles.globalBgDisabled,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryAlertButtonStyle.text,
     backgroundColor: primaryAlertButtonStyle.bgDefault,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
@@ -85,31 +85,31 @@ class ButtonStyles {
 
   static ButtonStyle googleButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.boldBody1,
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    disabledBackgroundColor: GlobalStyles.globalBgDisabled,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
-    backgroundColor: GlobalStyles.globalBgDefault,
+    backgroundColor: GlobalStyles.defaultBg,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
     shape: SmoothRectangleBorder(
         smoothness: 1,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        side: BorderSide(color: GlobalStyles.globalTextSubtle)
+        side: BorderSide(color: GlobalStyles.textSubtle)
       ),
     );
 
     static ButtonStyle appleButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.boldBody1,
-    disabledForegroundColor: GlobalStyles.globalTextDisabled,
-    disabledBackgroundColor: GlobalStyles.globalBgDisabled,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
-    backgroundColor: GlobalStyles.globalBgDefault,
+    backgroundColor: GlobalStyles.defaultBg,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
     shape: SmoothRectangleBorder(
         smoothness: 1,
         borderRadius: const BorderRadius.all(Radius.circular(20)),
-        side: BorderSide(color: GlobalStyles.globalTextSubtle)
+        side: BorderSide(color: GlobalStyles.textSubtle)
       ),
     );
 

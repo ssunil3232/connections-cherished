@@ -86,7 +86,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        title: Text('Let’s set up your profile ☺️', style: GlobalStyles.textStyles.heading2,),
+        title: Text('Let’s set up your profile ☺️', style: GlobalStyles.textStyles.textH1,),
         content: Form(
           key: _formKey,
           child: GestureDetector(

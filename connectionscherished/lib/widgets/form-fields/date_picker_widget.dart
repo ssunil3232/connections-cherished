@@ -61,7 +61,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if(widget.labelText!= null)
-          Text(widget.labelText!, style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
+          Text(widget.labelText!, style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
         if(widget.labelText!= null)
           SizedBox(height: GlobalStyles.spacingStates.spacing4,),
         GestureDetector(
@@ -72,18 +72,18 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           child: AbsorbPointer(
             child: TextField(
               controller: _dateController,
-              style: GlobalStyles.textStyles.body1,
+              style: GlobalStyles.textStyles.textBody,
               keyboardType: TextInputType.datetime,
               decoration: GlobalStyles.inputFieldDecoration.copyWith(
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 labelText: widget.placeholderText,
                 enabledBorder: _isDatePickerVisible ?
                   OutlineInputBorder(
-                    borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
+                    borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
                     borderRadius: BorderRadius.circular(20.0),
                   ) :
                   OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0, color: GlobalStyles.cardBorderDefault),
+                    borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
               ),
@@ -137,7 +137,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
               borderRadius: BorderRadius.circular(20),
               smoothness: 0.6,
               side: BorderSide(
-                color: GlobalStyles.cardBorderDefault
+                color: GlobalStyles.defaultBorder
               ),
               child: CupertinoDatePicker(
                 backgroundColor: const Color(0xffF3F4F5),

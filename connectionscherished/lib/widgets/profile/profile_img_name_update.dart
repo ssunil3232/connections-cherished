@@ -1,7 +1,7 @@
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/connection_detail.dart';
 import 'package:connectionscherished/widgets/cached_image_widget.dart';
-import 'package:connectionscherished/widgets/profile_img_name_dialog.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

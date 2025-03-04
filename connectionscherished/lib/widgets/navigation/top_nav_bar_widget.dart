@@ -10,12 +10,12 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final Color? bgColor;
   final List<Widget>? actions;
   final Widget? leading;
-  double height = 56.0;
+  double ? height;
   final bool showBackButton;
   final Future<void> Function()? backAction;
   bool showBorder;
   TopNavBarWidget(
-      {super.key, required this.header, this.actions, this.leading, required this.showBackButton, this.showBorder = true, this.backAction, this.bgColor, this.height = 56.0});
+      {super.key, required this.header, this.actions, this.leading, required this.showBackButton, this.showBorder = true, this.backAction, this.bgColor, this.height});
 
   final _authService = FirebaseAuth.instance;
 
@@ -29,7 +29,7 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
         title: header,
         centerTitle: true,
         scrolledUnderElevation: 0,
-        toolbarHeight: height,
+        toolbarHeight: 100.0,
         leading: showBackButton ? Padding(
           padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing16),
           child: leading ?? IconButton(
@@ -53,7 +53,7 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Container(
-            color: showBorder ? GlobalStyles.cardBorderDefault: Colors.transparent,
+            color: showBorder ? GlobalStyles.defaultTextBg: Colors.transparent,
             height: 1,
           ),
         ),
@@ -69,5 +69,5 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
     
   }
   @override
-  Size get preferredSize => Size.fromHeight(height-40);
+  Size get preferredSize => Size.fromHeight(height != null ? (height!-40) : 100.0);
 }

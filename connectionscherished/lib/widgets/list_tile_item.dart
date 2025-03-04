@@ -23,7 +23,7 @@ class _ListTileItemState extends State<ListTileItem> {
       decoration: BoxDecoration(
         border: (widget.lastItem == true) ? null : Border(
           bottom: BorderSide(
-            color: GlobalStyles.cardBorderDefault,
+            color: GlobalStyles.defaultBorder,
             width: 1.0,
           ),
         ),
@@ -38,19 +38,19 @@ class _ListTileItemState extends State<ListTileItem> {
           subtitle: (widget.subtitle != null)
           ? Text(
               widget.subtitle!,
-              style: GlobalStyles.textStyles.body1
+              style: GlobalStyles.textStyles.textBody
             )
           : null,
           title: (widget.subtitle != null) 
           ? Text(
               widget.text,
-              style: GlobalStyles.textStyles.body2.copyWith(
-                color: GlobalStyles.globalTextSubtle
+              style: GlobalStyles.textStyles.textCaption2.copyWith(
+                color: GlobalStyles.textSubtle
               ),
             ) 
           : Text(
             widget.text,
-            style: GlobalStyles.textStyles.body1,
+            style: GlobalStyles.textStyles.textBody,
           ),
           trailing: widget.showTrailingIcon == false ? null : widget.trailingIcon ?? VariedIcon.varied(Symbols.arrow_forward_ios_rounded),
           splashColor: Colors.transparent,

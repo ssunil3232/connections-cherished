@@ -113,7 +113,7 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
           ),
         ),
       showBackButton: true, showBorder: true, bgColor: Theme.of(context).colorScheme.inversePrimary,),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -125,7 +125,7 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text(widget.message, style: GlobalStyles.textStyles.body1,),
+                    Text(widget.message, style: GlobalStyles.textStyles.textBody,),
                     // Password
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),

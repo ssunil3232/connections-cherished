@@ -89,7 +89,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: TopNavBarWidget(header: const Text(''), showBackButton: false, showBorder: false),
+      appBar: TopNavBarWidget(header: const Text(''), showBackButton: false, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,

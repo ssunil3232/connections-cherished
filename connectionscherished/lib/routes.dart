@@ -21,4 +21,7 @@ class Routes {
   static const String userSettings = '/userSettings';
   static const String userProfile = '/userProfile';
   static const String dashboard = '/dashboard';
+  static const String journalLanding = '/journalLanding';
+  static const String journalEntry = '/journalEntry';
+  static const String journalEntryDetails = '/journalEntryDetails';
 }

@@ -1,17 +1,20 @@
-import 'package:connectionscherished/models/friends_model.dart';
-import 'package:connectionscherished/widgets/connection_grid_item.dart';
+import 'package:connectionscherished/models/journal_model.dart';
+import 'package:connectionscherished/styles/styles.dart';
+import 'package:connectionscherished/widgets/buttons/connection/connection_grid_item.dart';
+import 'package:connectionscherished/widgets/buttons/journal/journal_grid_item.dart';
 import 'package:flutter/material.dart';
 
-class ConnectionsGrid extends StatefulWidget {
-  const ConnectionsGrid({super.key, required this.data, required this.onDelete});
-  final List<FriendModel> data;
-  final Function (FriendModel) onDelete;
+class JournalGrid extends StatefulWidget {
+  const JournalGrid({super.key, required this.data, required this.onDelete, required this.onUpdate});
+  final List<JournalModel> data;
+  final Function (JournalModel) onDelete;
+  final VoidCallback onUpdate;
 
   @override
-  _ConnectionsGridState createState() => _ConnectionsGridState();
+  _JournalGridState createState() => _JournalGridState();
 }
 
-class _ConnectionsGridState extends State<ConnectionsGrid> {
+class _JournalGridState extends State<JournalGrid> {
   late List<GlobalKey<ConnectionGridItemState>> _itemKeys = [];
 
   @override
@@ -21,7 +24,7 @@ class _ConnectionsGridState extends State<ConnectionsGrid> {
   }
 
   @override
-  void didUpdateWidget(covariant ConnectionsGrid oldWidget) {
+  void didUpdateWidget(covariant JournalGrid oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.data.length != widget.data.length) {
       _initializeKeys();
@@ -40,6 +43,14 @@ class _ConnectionsGridState extends State<ConnectionsGrid> {
     }
   }
 
+  void _handleUpdates(){
+    _initializeKeys();
+    for (int i = 0; i < _itemKeys.length; i++) {
+      _itemKeys[i].currentState?.expand();
+    }
+    widget.onUpdate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -51,15 +62,14 @@ class _ConnectionsGridState extends State<ConnectionsGrid> {
           spacing: 8,
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];
-            return ConnectionGridItem(
+            return JournalGridItem(
               key: _itemKeys[i],
-              image: item.profileImage,
-              name: item.name ?? '',
-              days: item.lastContactedDays,
-              color: item.getSeverityColor(),
+              title: item.title,
+              color: GlobalStyles.topNavBg,
               data: item,
               onCollapse: () => _handleCollapse(index: i),
               onDelete: (item)=> widget.onDelete(item),
+              onUpdate: _handleUpdates,
             );
           }),
         ),

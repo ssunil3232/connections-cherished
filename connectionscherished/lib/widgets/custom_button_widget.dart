@@ -95,7 +95,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
           foregroundColor: WidgetStateProperty.resolveWith<Color>(
             (Set<WidgetState> states) {
               if (states.contains(WidgetState.disabled)) {
-                 return GlobalStyles.globalTextDisabled;
+                 return GlobalStyles.textDisabled;
               }
               if (states.contains(WidgetState.pressed)) {
                 return widget.bgActive;
@@ -108,7 +108,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
               Color underlineColor;
               final TextStyle? baseTextStyle = widget.style.textStyle!.resolve({});
               if (states.contains(WidgetState.disabled)) {
-                 underlineColor = GlobalStyles.globalTextDisabled;
+                 underlineColor = GlobalStyles.textDisabled;
               }
               else if (states.contains(WidgetState.pressed)) {
                 underlineColor = widget.bgActive;
@@ -136,13 +136,13 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
           onPressed: onPressed,
           icon: (widget.icon) != null ? 
                 VariedIcon.varied(widget.icon!,
-                    color: (onPressed==null) ? GlobalStyles.globalTextDisabled : widget.textDefault)
+                    color: (onPressed==null) ? GlobalStyles.textDisabled : widget.textDefault)
                 : widget.showIsSaving != true ? null : SizedBox(
                   width: 15,
                   height: 15,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.0,
-                    color: GlobalStyles.globalTextDisabled,
+                    color: GlobalStyles.textDisabled,
                   ),
                 ),
           iconAlignment: widget.iconAlignment ?? IconAlignment.start,
@@ -154,7 +154,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                   return widget.bgActive;
                 }
                 if (states.contains(WidgetState.disabled)) {
-                  return GlobalStyles.globalBgDisabled;
+                  return GlobalStyles.btnBgDisabled;
                 }
                 return widget.bgDefault;
               },
@@ -162,7 +162,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
             foregroundColor: WidgetStateProperty.resolveWith<Color>(
               (Set<WidgetState> states) {
                 if (states.contains(WidgetState.disabled)) {
-                  return GlobalStyles.globalTextDisabled;
+                  return GlobalStyles.textDisabled;
                 }
                 return widget.textDefault;
               },
@@ -171,7 +171,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
               (Set<WidgetState> states) {
                 Color border = widget.border;
                 if (states.contains(WidgetState.disabled)) {
-                  border = GlobalStyles.globalBorderDisabled;
+                  border = GlobalStyles.defaultBorder;
                 }
                 else {
                   border = widget.border;

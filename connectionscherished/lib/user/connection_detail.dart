@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectionscherished/journals/journal_entries.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
@@ -8,7 +9,7 @@ import 'package:connectionscherished/widgets/digital_clock.dart';
 import 'package:connectionscherished/widgets/form-fields/date_picker/date_picker.dart';
 import 'package:connectionscherished/widgets/form-fields/switch_widget.dart';
 import 'package:connectionscherished/widgets/form-fields/timezone_picker_widget.dart';
-import 'package:connectionscherished/widgets/profile_img_name_update.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_update.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:connectionscherished/widgets/form-fields/freq_picker/freq_field.dart';
 import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum ConnectionType {add, edit, view}
 // ignore: must_be_immutable
@@ -61,6 +63,16 @@ class ConnectionViewState extends State<ConnectionView> {
       saving = false;
     });
     Navigator.pop(context);
+  }
+
+  Future<void> getJournals() async {
+    //retrieve journals & navigate to users journal with connection
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JournalEntries(friend: widget.friend)
+      ),
+    );
   }
 
   Future<void> deleteConnections() async {
@@ -387,6 +399,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 SizedBox(width: GlobalStyles.spacingStates.spacing16),
                                 Expanded(
                                   child: TimezonePickerWidget(
+                                    isDisabled: widget.type == ConnectionType.view,
                                     initialTimezone: widget.friend.timezone,
                                     onChanged: (value) {
                                       setState(() {
@@ -429,6 +442,13 @@ class ConnectionViewState extends State<ConnectionView> {
                   ],
                 ),
                 //////////////////Completed details/////////////////////
+              if(widget.type == ConnectionType.view)
+                CustomButtonWidget.secondary(
+                  text: 'View journals',
+                  onPressed: getJournals,
+                  icon: Symbols.arrow_forward_ios_rounded,
+                  iconAlignment: IconAlignment.end,
+                ),
               if(widget.type != ConnectionType.view)
               Column(
                 children: [

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/auth/create_account_screen.dart';
 import 'package:connectionscherished/dashboard.dart';
 import 'package:connectionscherished/home.dart';
+import 'package:connectionscherished/journals/journal_landing.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/auth_service.dart';
 import 'package:connectionscherished/services/friend_service.dart';
@@ -96,6 +97,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Routes.createAccount: (context) => const CreateAccountScreen(),
         Routes.userSettings: (context) => const UserSettingsScreen(),
         Routes.userProfile: (context) => const UserProfileScreen(),
+        Routes.journalLanding: (context) => const JournalLanding(),
       },
     );
   }

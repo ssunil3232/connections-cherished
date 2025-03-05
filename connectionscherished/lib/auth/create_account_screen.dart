@@ -1,4 +1,3 @@
-import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/routing_service.dart';
@@ -29,7 +28,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   bool _allValid = false;
   bool _showNameError = false;
   bool _isSaving = false;
-  TimezoneModel selectedTimezone = TimezoneModel(location: '', label: '', offset_hours: '');
+  String selectedTimezone = '';
 
   @override
   void initState() {
@@ -50,7 +49,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   // enable the button when all fields are filled and valid
   void _updateButtonState() {
     setState(() {
-      _allValid = _isNameValid() && selectedTimezone.label.isNotEmpty;
+      _allValid = _isNameValid() && (selectedTimezone !='');
     });
   }
 
@@ -58,7 +57,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   void _saveUserInfoAndNavigate() async {
     // save user info
     UserModel user = UserModel(
-      userName: _nameController.text
+      userName: _nameController.text,
+      timezone: selectedTimezone,
     );
     setState(() {
       _isSaving = true;
@@ -72,7 +72,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       });
       // Navigate to home screen
       Navigator.of(context).pop();
-      _navService.navigateTo(Routes.home);
+      _navService.navigateTo(Routes.dashboard);
       //To show pop up message
     } catch (e) {
       developer.log("failed");
@@ -89,7 +89,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: TopNavBarWidget(header: const Text(''), showBackButton: false, showBorder: false, bgColor: GlobalStyles.defaultBg,),
+      appBar: TopNavBarWidget(header: const Text(''), height: 100, showBackButton: false, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
@@ -137,9 +137,10 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           SizedBox(width: GlobalStyles.spacingStates.spacing20),
                           Expanded(
                             child: TimezonePickerWidget(
+                              isDisabled: _isSaving,
                               onChanged: (value) {
                                 setState(() {
-                                  selectedTimezone = value;
+                                  selectedTimezone = value.location;
                                 });
                                 _updateButtonState();
                               },

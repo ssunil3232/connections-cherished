@@ -86,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false, bgColor: GlobalStyles.defaultBg,),
+      appBar: TopNavBarWidget(header: const Text(''), height: 100.0, showBackButton: true, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,

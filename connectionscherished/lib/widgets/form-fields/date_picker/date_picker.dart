@@ -159,12 +159,12 @@ class DatePickerState extends State<DatePicker> {
                             color: const Color.fromARGB(97, 250, 205, 43),
                           ),
                         ),
-                        scrollController: FixedExtentScrollController(initialItem: widget.year - 2000),
+                        scrollController: FixedExtentScrollController(initialItem: widget.year - (currentYear - 20)),
                         itemExtent: 46,
                         backgroundColor: Colors.transparent,
                         onSelectedItemChanged: (int index) {
                           setState(() {
-                            widget.year = 2000 + index;
+                            widget.year = (currentYear - 20) + index;
                             maxDays = _daysInMonth(widget.year, widget.month);
                             if (widget.date > maxDays) {
                               widget.date = maxDays;
@@ -172,7 +172,7 @@ class DatePickerState extends State<DatePicker> {
                           });
                         },
                         children: [
-                          for (int i = 2000; i <= currentYear; i++) // Only allow the current year
+                          for (int i = (currentYear - 20); i <= currentYear; i++) // Only allow the current year
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: FreqField(

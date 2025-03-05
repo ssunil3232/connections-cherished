@@ -71,6 +71,9 @@ class AuthService {
           'email': user.email != currentData["email"] ? user.email : currentData["email"],
           'isDeleted': user.isDeleted != currentData["isDeleted"] ? user.isDeleted : currentData["isDeleted"],
           'enableNotifications': user.enableNotifications != currentData["enableNotifications"] ? user.enableNotifications : currentData["enableNotifications"],
+          'enableAi': user.enableAi != currentData["enableAi"] ? user.enableAi : currentData["enableAi"],
+          'message': user.message != currentData["message"] ? user.message : currentData["message"],
+          'timezone': user.timezone != currentData["timezone"] ? user.timezone : currentData["timezone"],
           'updatedAt': FieldValue.serverTimestamp(),
         });
       }
@@ -109,6 +112,9 @@ class AuthService {
           'updatedAt': FieldValue.serverTimestamp(),
           'isDeleted': false,
           'enableNotifications': true,
+          'timezone': '',
+          'enableAi': false,
+          'message': 'Free for a quick catch up?',
         });
         _navService.navigateTo(Routes.createAccount);
       }
@@ -310,7 +316,7 @@ class AuthService {
       await user.delete();
       await _authService.signOut();
       navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        Routes.splash,
+        Routes.authOptions,
         (route) => false,
       );
     } catch (e) {

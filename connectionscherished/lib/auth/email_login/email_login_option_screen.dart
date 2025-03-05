@@ -93,6 +93,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(
         header: const Text(''), 
+        height: 100.0,
         showBackButton: true, 
         showBorder: false,
         bgColor: GlobalStyles.defaultBg,

@@ -78,7 +78,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       navigatorKey: navigatorKey,
       navigatorObservers: [routeObserver],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: GlobalStyles.topNavBg),
+        colorScheme: ColorScheme.fromSeed(seedColor: GlobalStyles.primaryText),
         useMaterial3: true,
         iconTheme: const IconThemeData(color: GlobalStyles.primaryText,
           weight: 400,
@@ -89,12 +89,12 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       routes: {
         Routes.splash: (context) => const SplashScreen(),
         Routes.authOptions: (context) => const AuthOptionsScreen(), 
-        Routes.home: (context) => const HomePage(),
+        Routes.home: (context) => HomePage(),
         Routes.dashboard: (context) => const DashboardScreen(),
         Routes.emailOption: (context) => const EmailLoginScreen(),
         Routes.phoneOption: (context) => const PhoneLoginScreen(),
         Routes.createAccount: (context) => const CreateAccountScreen(),
-        Routes.userProfile: (context) => const UserProfileScreen(),
+        Routes.userProfile: (context) =>  UserProfileScreen(),
         Routes.journalLanding: (context) => const JournalLanding(),
       },
     );

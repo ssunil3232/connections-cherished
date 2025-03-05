@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/models/user_model.dart';
-import 'package:connectionscherished/services/auth_service.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/styles/button_styles.dart';
@@ -18,8 +17,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  UserModel ? user;
+  HomePage({super.key, this.user});
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -28,10 +29,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   List<FriendModel> connections = [];
   Future<List<FriendModel>>? connectionsFuture;
   final _userService = GetIt.I.get<UserService>();
-  final _accountService = GetIt.I.get<AuthService>();
   final _friendService = GetIt.I.get<FriendService>();
   UniqueKey futureBuilderKey = UniqueKey();
-  UserModel ? user;
 
   void loadData() {
     getConnections();
@@ -44,7 +43,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    loadUser();
     loadData();
   }
 
@@ -73,10 +71,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
     if (state == AppLifecycleState.resumed) {
       loadData();
     }
-  }
-
-  loadUser() async {
-    user = await _accountService.getLoggedInUser();
   }
 
   Future<void> getConnections() async {
@@ -175,9 +169,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                             SizedBox(width: GlobalStyles.spacingStates.spacing16),
                             SvgPicture.asset('assets/icons/wave_icon.svg', width: 36, height: 36),
                             SizedBox(width: GlobalStyles.spacingStates.spacing8),
-                            Text(
-                              'Hello ${user?.userName ?? ''}!',
-                              style: GlobalStyles.textStyles.textH2Bold
+                            Expanded(
+                              child: Container(
+                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 80),
+                                child: Text(
+                                  'Hello ${widget.user?.userName ?? ''}!',
+                                  style: GlobalStyles.textStyles.textH2Bold,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                             ),
                           ],
                         ),

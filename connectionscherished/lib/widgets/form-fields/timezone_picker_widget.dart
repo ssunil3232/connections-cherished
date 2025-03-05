@@ -38,9 +38,9 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
 
   initializeTimezone() async {
     if(widget.initialTimezone != null && widget.initialTimezone != "") {
-      // setState(() {
-      //   selectedTimezone = widget.initialTimezone;
-      // });
+      setState(() {
+        selectedTimezone = widget.initialTimezone;
+      });
       await setSelectedTimezone(widget.initialTimezone!);
     }
     else{
@@ -50,23 +50,22 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
 
   Future<void> setLocalTimezone() async {
     localTimezone = await _utilService.getLocalTimezone();
-    selectedTimezone = localTimezone.label;
-    widget.onChanged(localTimezone);
     if(mounted) {
       setState(() {
         selectedTimezone = localTimezone.location;
       });
     }
+    widget.onChanged(localTimezone);
   }
 
   setSelectedTimezone(String timezoneName) async {
     TimezoneModel timezone = await _utilService.getTimezone(timezoneName);
-    widget.onChanged(timezone);
     if(mounted){
       setState(() {
         selectedTimezone = timezone.location;
       });
     }
+    widget.onChanged(timezone);
   }
 
   Future<void>getFormattedTimezones() async {
@@ -76,9 +75,7 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // List<TimezoneModel> formattedTimezones = getFormattedTimezones();
     return CustomDropdownWidget(
-      // buttonHeight: 55,
       disabled: widget.isDisabled,
       onChanged:(value) {
         setSelectedTimezone(value);
@@ -94,7 +91,6 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
       initialValue: selectedTimezone,
       menuWidth: 0.8,
       menuHeight: 200,
-      // buttonWidth: 100,
     );
   }
 }

@@ -22,7 +22,9 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 // ignore: must_be_immutable
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  UserModel ? user;
+  
+  UserProfileScreen({super.key, this.user});
   @override
   UserProfileScreenState createState() => UserProfileScreenState();
 }
@@ -33,26 +35,25 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   final _accountService = GetIt.I.get<AuthService>();
   final _authService = FirebaseAuth.instance;
   String? _passwordEmail;
-  UserModel ? user;
   final _messageController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    if(mounted){
+    // if(mounted){
       setState(() {
         showSaveBtn = false;
       });
-      loadUser();
-    }
+      loadUserSettings();
+    // }
   }
 
-  loadUser() async {
-    user = await _accountService.getLoggedInUser();
+  Future<void> loadUserSettings() async {
+    debugPrint('User: ${widget.user?.timezone}');
     if (mounted) {
       setState(() {
         _passwordEmail = _accountService.getPasswordEmail();
-        _messageController.text = user?.message ?? 'Free for a quick catch up?';
+        _messageController.text = widget.user?.message ?? 'Free for a quick catch up?';
       });
     }
   }
@@ -60,22 +61,22 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   updateProfileData (data){
     if (mounted) {
       setState(() {
-        user?.userName = data['name'];
-        user?.profileImage = data['img'];
+        widget.user?.userName = data['name'];
+        widget.user?.profileImage = data['img'];
         showSaveBtn = true;
       });
     }
   }
 
   Future<void> saveChanges() async {
-    user?.message = _messageController.text;
+    widget.user?.message = _messageController.text;
     FocusScope.of(context).unfocus();
     if (mounted) {
       setState(() {
         saving = true;
       });
       try {
-        await _accountService.updateUser(user!);
+        await _accountService.updateUser(widget.user!);
       } catch (e) {
         Exception('Error saving user settings: $e');
       }
@@ -88,6 +89,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
 
   void logout() async {
     await _authService.signOut();
+    Navigator.pushNamedAndRemoveUntil(context, Routes.authOptions, (route) => false);
   }
 
   @override
@@ -160,8 +162,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       ProfileImgNameUpdate(
                         onUpdate: (value) => updateProfileData(value),
-                        name: user?.userName ?? 'John Doe',
-                        img: user?.profileImage ?? '',
+                        name: widget.user?.userName ?? 'John Doe',
+                        img: widget.user?.profileImage ?? '',
                         isEditEnabled: true,
                       ),
                       SizedBox(height: GlobalStyles.spacingStates.spacing20),
@@ -252,11 +254,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           margin: EdgeInsets.only(left:GlobalStyles.spacingStates.spacing4),
           child: SwitchWidget(
             isDisabled: false,
-            initialState: user?.enableNotifications ?? true,
+            initialState: widget.user?.enableNotifications ?? true,
             onChange: (value) {
               if(mounted){
                 setState(() {
-                  user?.enableNotifications = value;
+                  widget.user?.enableNotifications = value;
                   showSaveBtn = true;
                 });
               }
@@ -301,11 +303,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         Expanded(
           child: TimezonePickerWidget(
             isDisabled: false,
-            initialTimezone: user?.timezone,
+            initialTimezone: widget.user?.timezone,
             onChanged: (value) {
               if(mounted){
                 setState(() {
-                  user?.timezone = value.location;
+                  widget.user?.timezone = value.location;
                   showSaveBtn = true;
                 });
               }
@@ -371,11 +373,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   margin: EdgeInsets.only(right:GlobalStyles.spacingStates.spacing8),
                   child: SwitchWidget(
                     isDisabled: false,
-                    initialState: user?.enableAi ?? false,
+                    initialState: widget.user?.enableAi ?? false,
                     onChange: (value) {
                       if(mounted){
                         setState(() {
-                          user?.enableAi = value;
+                          widget.user?.enableAi = value;
                           showSaveBtn = true;
                         });
                       }
@@ -421,7 +423,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   controller: _messageController,
                   keyboardType: TextInputType.multiline,
                   placeholderText: 'Customize your scheduler message',
-                  readOnly: saving || user?.enableAi == true,
+                  readOnly: saving || widget.user?.enableAi == true,
                   multilineHeight: 80,
                 ),
               )

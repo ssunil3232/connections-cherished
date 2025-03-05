@@ -219,14 +219,23 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                 value: setInitialLoadValue(),
                 onChanged: widget.disabled ? null : (value) => handleSelection(value as String),
                 buttonStyleData: ButtonStyleData(
-                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
-                  height: widget.buttonHeight ?? 60,
+                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 12),
+                  height: widget.buttonHeight ?? 50,
                   width: widget.buttonWidth ?? double.infinity,
-                  decoration: BoxDecoration(
-                    border: widget.errorState ? widget.errorButtonBorder : isOpen ? widget.activeButtonBorder : widget.defaultButtonBorder,
-                    color:  widget.errorState ? GlobalStyles.globalErrorBg : widget.buttonBgColor ??  GlobalStyles.defaultBg,
+                  decoration: widget.disabled ? 
+                  BoxDecoration(
+                    border: Border.all(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                    color:  GlobalStyles.btnBgDisabled,
                     borderRadius: BorderRadius.circular(20.0),
-                  ),
+                  )
+                  : BoxDecoration(
+                      border: widget.errorState ? widget.errorButtonBorder : isOpen ? widget.activeButtonBorder : widget.defaultButtonBorder,
+                      color:  widget.errorState ? GlobalStyles.globalErrorBg : widget.buttonBgColor ??  GlobalStyles.defaultBg,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                 ),
                 dropdownStyleData: DropdownStyleData(
                   scrollbarTheme: ScrollbarThemeData(
@@ -262,7 +271,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                 ),
                 iconStyleData: IconStyleData(
                   openMenuIcon: VariedIcon.varied(Symbols.keyboard_arrow_up_rounded, color: widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText),
-                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText)
+                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.disabled ? Colors.transparent : widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText)
                 ),
               ),
             ),

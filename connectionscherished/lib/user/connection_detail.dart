@@ -141,7 +141,7 @@ class ConnectionViewState extends State<ConnectionView> {
               children: [
                 Column(
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing48),
+                    SizedBox(height: GlobalStyles.spacingStates.spacing32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +161,7 @@ class ConnectionViewState extends State<ConnectionView> {
                       onUpdate: updateProfileData,
                       name: widget.friend.name ?? 'John Doe',
                       img: widget.friend.profileImage,
-                      type: widget.type,
+                      isEditEnabled : widget.type != ConnectionType.view,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
@@ -194,7 +194,7 @@ class ConnectionViewState extends State<ConnectionView> {
                     
                     //////////////////Section on details/////////////////////
                     Container(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing48),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing40),
                       child: Column(
                         children: [
                           Container(

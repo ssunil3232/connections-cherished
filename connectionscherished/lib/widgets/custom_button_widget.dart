@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-enum ButtonType {primary, secondary, teritary, tertiaryAlert, primaryAlert}
+enum ButtonType {primary, secondary, teritary, tertiaryVariant, tertiaryAlert, primaryAlert}
 // ignore: must_be_immutable
 class CustomButtonWidget extends StatefulWidget {
   String? text; 
@@ -16,6 +16,7 @@ class CustomButtonWidget extends StatefulWidget {
   double? height;
   bool? isEnabled;
   bool? showIsSaving;
+  bool ? showUnderline;
 
   CustomButtonWidget({
     this.text,
@@ -26,6 +27,7 @@ class CustomButtonWidget extends StatefulWidget {
     this.height,
     this.isEnabled = true,
     this.showIsSaving = false,
+    this.showUnderline = true,
     super.key
   });
 
@@ -64,14 +66,21 @@ class CustomButtonWidget extends StatefulWidget {
         bgActive = ButtonStyles.primaryAlertButtonStyle.bgActive;
 
     // Tertiary Button
-  CustomButtonWidget.tertiary({super.key, required this.onPressed, required this.text, this.isEnabled})
+  CustomButtonWidget.tertiary({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.teritary,
         style = ButtonStyles.tertiaryButton,
         bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
         bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
+
+    // Tertiary Variant Button
+  CustomButtonWidget.tertiaryVariant({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
+      : btnType = ButtonType.teritary,
+        style = ButtonStyles.tertiaryVariantButton,
+        bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
+        bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
   
     // Tertiary Alert Button
-  CustomButtonWidget.tertiaryAlert({super.key, required this.onPressed, required this.text, this.isEnabled})
+  CustomButtonWidget.tertiaryAlert({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.tertiaryAlert,
         style = ButtonStyles.tertiaryAlertButton,
         bgDefault = ButtonStyles.tertiaryAlertBtnStyle.textDefault,
@@ -88,7 +97,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
 
     final onPressed = widget.isEnabled ?? true ? widget.onPressed : null;
 
-    return (widget.btnType == ButtonType.teritary || widget.btnType == ButtonType.tertiaryAlert)?
+    return (widget.btnType == ButtonType.teritary || widget.btnType == ButtonType.tertiaryVariant || widget.btnType == ButtonType.tertiaryAlert)?
       TextButton(
         onPressed: onPressed,
         style: widget.style.copyWith(
@@ -115,10 +124,11 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
               } else {
                 underlineColor = widget.bgDefault;
               }
-              return baseTextStyle!.copyWith(
-                decoration: TextDecoration.underline,
-                decorationColor: underlineColor,
-              );
+              return (widget.showUnderline ?? true) ? 
+                baseTextStyle!.copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationColor: underlineColor,
+                ) : baseTextStyle!;
             },
           ),
         ),

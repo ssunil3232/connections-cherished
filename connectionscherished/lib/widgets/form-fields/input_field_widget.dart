@@ -84,6 +84,7 @@ class InputFieldWidget extends StatelessWidget {
             height: multilineHeight ?? null,
             child: TextField(
               readOnly: readOnly,
+              enableSuggestions: false,
               textAlignVertical: keyboardType == TextInputType.multiline ? TextAlignVertical.top : TextAlignVertical.center,
               expands: keyboardType == TextInputType.multiline,
               maxLines: keyboardType == TextInputType.multiline ? null : 1,
@@ -101,11 +102,14 @@ class InputFieldWidget extends StatelessWidget {
               ],
               controller: controller,
               keyboardType: keyboardType,
-              style: GlobalStyles.textStyles.textBody,
+              enabled: !readOnly,
+              style: GlobalStyles.textStyles.textBody.copyWith(
+                color: readOnly ? GlobalStyles.textSubtle : GlobalStyles.primaryText
+              ),
               decoration: GlobalStyles.inputFieldDecoration.copyWith(
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-                filled: errorState && controller.text.isNotEmpty,
-                fillColor: errorState ? GlobalStyles.globalErrorBg : null,
+                filled: true,
+                fillColor: errorState ? GlobalStyles.globalErrorBg : readOnly ? GlobalStyles.btnBgDisabled : GlobalStyles.defaultBg,
                 hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
                 alignLabelWithHint: keyboardType == TextInputType.multiline,
                 labelText: (keyboardType != TextInputType.phone) ? placeholderText : null,
@@ -136,7 +140,11 @@ class InputFieldWidget extends StatelessWidget {
                     borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  suffixIcon: suffixIcon
+                  suffixIcon: suffixIcon,
+                  disabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
               ),
             )
         )

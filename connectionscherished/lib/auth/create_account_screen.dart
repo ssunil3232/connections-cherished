@@ -99,7 +99,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Row(
                       children: [

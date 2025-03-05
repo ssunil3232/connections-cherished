@@ -25,7 +25,7 @@ class GlobalStyles {
   static const Color defaultBg = Color(0xFFFFFFFF); // default-bg
   static Color defaultTextBg = neutral.neutral50; // default-text-bg
   static const Color defaultBorder = Color(0xFFB1BBC8); // default-border
-  static const Color defaultBorderEnabled = Color.fromARGB(255, 122, 127, 132); // default-border-enabled
+  static const Color defaultBorderEnabled = Color(0xFFB1BBC8); // default-border-enabled
   static const Color primaryText = Color(0xFF343A46); // primary-text
   static Color textSubtle = neutral.neutral500; // text-subtle
   static Color textDisabled = neutral.neutral500; // text-disabled

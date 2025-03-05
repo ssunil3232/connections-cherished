@@ -21,19 +21,18 @@ class _ListTileItemState extends State<ListTileItem> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: (widget.lastItem == true) ? null : Border(
-          bottom: BorderSide(
-            color: GlobalStyles.defaultBorder,
-            width: 1.0,
-          ),
-        ),
+        color: GlobalStyles.btnBgTertiary,
+        borderRadius: BorderRadius.circular(10),
       ),
       child: GestureDetector(
         onTap: () async {
           widget.function!();
         },
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          dense: true,
+          minVerticalPadding: 0,
+          minTileHeight: 0,
+          contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing4, horizontal: GlobalStyles.spacingStates.spacing16),
           leading: widget.icon,
           subtitle: (widget.subtitle != null)
           ? Text(
@@ -44,8 +43,8 @@ class _ListTileItemState extends State<ListTileItem> {
           title: (widget.subtitle != null) 
           ? Text(
               widget.text,
-              style: GlobalStyles.textStyles.textCaption2.copyWith(
-                color: GlobalStyles.textSubtle
+              style: GlobalStyles.textStyles.textCaption1.copyWith(
+                color: GlobalStyles.textSubtle,
               ),
             ) 
           : Text(

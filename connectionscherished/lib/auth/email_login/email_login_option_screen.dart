@@ -106,7 +106,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Text('Continue with email', style: GlobalStyles.textStyles.textH1),
                     // Email

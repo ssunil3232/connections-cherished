@@ -196,7 +196,7 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: 100),
+                      constraints: BoxConstraints(maxWidth: shrinkWidth-10),
                       child: Text(
                         widget.name,
                         overflow: TextOverflow.ellipsis,

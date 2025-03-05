@@ -96,7 +96,7 @@ class _SignInScreenState extends State<SignInScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Row(
                       children: [

@@ -11,7 +11,6 @@ import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/user_profile.dart';
-import 'package:connectionscherished/user/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
@@ -95,7 +94,6 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Routes.emailOption: (context) => const EmailLoginScreen(),
         Routes.phoneOption: (context) => const PhoneLoginScreen(),
         Routes.createAccount: (context) => const CreateAccountScreen(),
-        Routes.userSettings: (context) => const UserSettingsScreen(),
         Routes.userProfile: (context) => const UserProfileScreen(),
         Routes.journalLanding: (context) => const JournalLanding(),
       },

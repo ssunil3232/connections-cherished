@@ -18,7 +18,6 @@ class Routes {
   static const String emailOption = '/email_option';
   static const String phoneOption = '/phone_option';
   static const String createAccount = '/create_account';
-  static const String userSettings = '/userSettings';
   static const String userProfile = '/userProfile';
   static const String dashboard = '/dashboard';
   static const String journalLanding = '/journalLanding';

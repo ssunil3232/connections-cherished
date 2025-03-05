@@ -52,17 +52,21 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
     localTimezone = await _utilService.getLocalTimezone();
     selectedTimezone = localTimezone.label;
     widget.onChanged(localTimezone);
-    setState(() {
-      selectedTimezone = localTimezone.location;
-    });
+    if(mounted) {
+      setState(() {
+        selectedTimezone = localTimezone.location;
+      });
+    }
   }
 
   setSelectedTimezone(String timezoneName) async {
     TimezoneModel timezone = await _utilService.getTimezone(timezoneName);
     widget.onChanged(timezone);
-    setState(() {
-      selectedTimezone = timezone.location;
-    });
+    if(mounted){
+      setState(() {
+        selectedTimezone = timezone.location;
+      });
+    }
   }
 
   Future<void>getFormattedTimezones() async {
@@ -74,7 +78,7 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
   Widget build(BuildContext context) {
     // List<TimezoneModel> formattedTimezones = getFormattedTimezones();
     return CustomDropdownWidget(
-      buttonHeight: 55,
+      // buttonHeight: 55,
       disabled: widget.isDisabled,
       onChanged:(value) {
         setSelectedTimezone(value);

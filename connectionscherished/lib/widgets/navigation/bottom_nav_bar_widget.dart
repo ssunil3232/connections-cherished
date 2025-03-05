@@ -61,7 +61,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
                   backgroundColor: GlobalStyles.bottomNavBg,
                   onTap: (int index) {
                     setState(() {
-                      widget.selectedIndex = index+1;
+                      widget.selectedIndex = index;
                       widget.onTabSelected(widget.selectedIndex);
                     });
                   },

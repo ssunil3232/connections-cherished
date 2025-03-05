@@ -100,7 +100,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     SizedBox(height: GlobalStyles.spacingStates.spacing24),
                     Text('Continue with phone', style: GlobalStyles.textStyles.textH1,),

@@ -154,7 +154,7 @@ class JournalEntryState extends State<JournalEntry> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32),

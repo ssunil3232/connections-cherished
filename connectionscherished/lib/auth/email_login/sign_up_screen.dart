@@ -151,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     Text('Create an account', style: GlobalStyles.textStyles.textH1),
                     Padding(

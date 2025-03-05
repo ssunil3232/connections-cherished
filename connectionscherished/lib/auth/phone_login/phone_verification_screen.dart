@@ -126,7 +126,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     SizedBox(height: GlobalStyles.spacingStates.spacing24),
                     Text('Verify your phone', style: GlobalStyles.textStyles.textH1,),

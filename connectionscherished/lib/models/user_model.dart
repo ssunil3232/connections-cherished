@@ -2,13 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   String? userId;
-  final String userName;
+  String userName;
   String profileImage = '';
   String email;
   Timestamp? createdAt;
   Timestamp? updatedAt;
   bool isDeleted = false;
   bool enableNotifications = true;
+  bool enableAi = false;
+  String message = 'Free for a quick catch up?';
   String timezone;
 
   UserModel({
@@ -20,6 +22,8 @@ class UserModel {
       this.updatedAt,
       this.isDeleted = false,
       this.enableNotifications = true,
+      this.enableAi = false,
+      this.message = 'Free for a quick catch up?',
       this.timezone = ""
   });
 
@@ -33,6 +37,8 @@ class UserModel {
       'profileImage': profileImage,
       'isDeleted': isDeleted,
       'enableNotifications': enableNotifications,
+      'enableAi': enableAi,
+      'message': message,
       'timezone': timezone
     };
   }
@@ -47,6 +53,8 @@ class UserModel {
       isDeleted: map['isDeleted'] ?? false,
       profileImage: map['profileImage']?? '',
       enableNotifications: map['enableNotifications'] ?? true,
+      enableAi: map['enableAi'] ?? false,
+      message: map['message'] ?? 'Free for a quick catch up?',
       timezone: map['timezone'] ?? ''
       );
   }
@@ -60,6 +68,8 @@ class UserModel {
       '   profileImage: $profileImage,\n'
       '   isDeleted: $isDeleted,\n'
       '   enableNotifications: $enableNotifications\n'
+      '   enableAi: $enableAi\n'
+      '   message: $message\n'
       '   timezone: $timezone\n'
       ')';
   }

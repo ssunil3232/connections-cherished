@@ -11,6 +11,7 @@ class ButtonStyles {
   static PrimaryButtonStyle primaryBtnStyle = PrimaryButtonStyle();
   static SecondaryButtonStyle secondaryBtnStyle = SecondaryButtonStyle();
   static TertiaryButtonStyle tertiaryBtnStyle = TertiaryButtonStyle();
+  static TertiaryButtonStyle tertiaryBtnVariantStyle = TertiaryButtonStyle();
   static TertiaryAlertButtonStyle tertiaryAlertBtnStyle = TertiaryAlertButtonStyle();
   static PrimaryAlertButtonStyle primaryAlertButtonStyle = PrimaryAlertButtonStyle();
 
@@ -50,6 +51,20 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: tertiaryBtnStyle.textDefault,
     backgroundColor: tertiaryBtnStyle.bgDefault,
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing24),
+    shape: RoundedRectangleBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      // side: BorderSide(color: secondaryBtnStyle.border)
+    ),
+  );
+
+  static ButtonStyle tertiaryVariantButton = FilledButton.styleFrom(
+    overlayColor: Colors.transparent,
+    textStyle: GlobalStyles.textStyles.textButtonPrimary,
+    disabledForegroundColor: GlobalStyles.textDisabled,
+    disabledBackgroundColor: GlobalStyles.btnBgDisabled,
+    foregroundColor: tertiaryBtnStyle.textDefault,
+    backgroundColor: tertiaryBtnStyle.bgVariant,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing24),
     shape: RoundedRectangleBorder(
       borderRadius: const BorderRadius.all(Radius.circular(15)),
@@ -137,6 +152,7 @@ class ButtonColors {
   final Color buttonTertiaryTextDefault = GlobalStyles.primaryText;
   final Color buttonTertiaryTextActive = GlobalStyles.primaryText;//
   final Color buttonTertiaryBgDefault = GlobalStyles.btnBgTertiary;
+  final Color buttonTertiaryBgVariant = GlobalStyles.btnBgSecondary;
 
   final Color buttonErrorText = GlobalStyles.defaultBg;
   final Color buttonErrorBgDefault = GlobalStyles.btnBgError;
@@ -171,6 +187,7 @@ class TertiaryButtonStyle {
   final Color textDefault = colors.buttonTertiaryTextDefault;
   final Color textActive = colors.buttonTertiaryTextActive;
   final Color bgDefault = colors.buttonTertiaryBgDefault;
+  final Color bgVariant = colors.buttonTertiaryBgVariant;
 }
 
 class TertiaryAlertButtonStyle {

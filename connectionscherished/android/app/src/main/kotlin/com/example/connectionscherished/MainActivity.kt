@@ -1,4 +1,4 @@
-package com.example.connectionscherished
+package com.ccherished
 
 import io.flutter.embedding.android.FlutterActivity
 

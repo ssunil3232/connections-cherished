@@ -41,49 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBdgGBwUNbDi_1COrmXkwNpZ_r0L7hICjM',
-    appId: '1:815352262580:web:41aebc16321864530ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    authDomain: 'cherished-connections.firebaseapp.com',
-    storageBucket: 'cherished-connections.firebasestorage.app',
-    measurementId: 'G-LRE3J79GHV',
+    apiKey: 'AIzaSyBo2-eP0nCK7hvQBOSThm5lLtv62iglhYQ',
+    appId: '1:937642223539:web:80a22b3b689fdb7e118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    authDomain: 'connections-cherished.firebaseapp.com',
+    storageBucket: 'connections-cherished.firebasestorage.app',
+    measurementId: 'G-1MGDHTB62B',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBEKMhgyyZRsM1brTcjbRBhNu70_NX_uLg',
-    appId: '1:815352262580:android:c5dd96f70102889b0ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    storageBucket: 'cherished-connections.firebasestorage.app',
+    apiKey: 'AIzaSyC8Fmkw9IWLe2PcPc_cxZUR7JD59VuV9d0',
+    appId: '1:937642223539:android:a2a4d03519953cce118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    storageBucket: 'connections-cherished.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD34ZNQmblMhcFgeR4MC-Kj854d2oAyIAM',
-    appId: '1:815352262580:ios:4400334621ee37060ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    storageBucket: 'cherished-connections.firebasestorage.app',
-    iosBundleId: 'com.example.connectionscherished',
+    apiKey: 'AIzaSyDrf13P6ZAf7sTU6ASK_ZMc-6USixxK7tM',
+    appId: '1:937642223539:ios:c5e1c4dfb865c93d118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    storageBucket: 'connections-cherished.firebasestorage.app',
+    iosBundleId: 'com.ccherished',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyD34ZNQmblMhcFgeR4MC-Kj854d2oAyIAM',
-    appId: '1:815352262580:ios:4400334621ee37060ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    storageBucket: 'cherished-connections.firebasestorage.app',
-    iosBundleId: 'com.example.connectionscherished',
+    apiKey: 'AIzaSyDrf13P6ZAf7sTU6ASK_ZMc-6USixxK7tM',
+    appId: '1:937642223539:ios:c5e1c4dfb865c93d118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    storageBucket: 'connections-cherished.firebasestorage.app',
+    iosBundleId: 'com.ccherished',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCluAERjMdOPerOBFj1YabCL6fmYenrsss',
-    appId: '1:815352262580:web:14a4833ddeb0734f0ecce1',
-    messagingSenderId: '815352262580',
-    projectId: 'cherished-connections',
-    authDomain: 'cherished-connections.firebaseapp.com',
-    storageBucket: 'cherished-connections.firebasestorage.app',
-    measurementId: 'G-49JH9DQDQR',
+    apiKey: 'AIzaSyBo2-eP0nCK7hvQBOSThm5lLtv62iglhYQ',
+    appId: '1:937642223539:web:5a3c87d5543b71db118dc6',
+    messagingSenderId: '937642223539',
+    projectId: 'connections-cherished',
+    authDomain: 'connections-cherished.firebaseapp.com',
+    storageBucket: 'connections-cherished.firebasestorage.app',
+    measurementId: 'G-P2612HJCYH',
   );
 
 }

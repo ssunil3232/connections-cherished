@@ -164,7 +164,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                             CachedImageWidget(
                               height: 90,
                               width: 90,
-                              imageUrlProvided: 'assets/images/avatar1.png',
+                              imageUrlProvided: widget.user?.profileImage ?? '',
                             ),
                             SizedBox(width: GlobalStyles.spacingStates.spacing16),
                             SvgPicture.asset('assets/icons/wave_icon.svg', width: 36, height: 36),

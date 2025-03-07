@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:math';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:get_it/get_it.dart';
@@ -115,6 +116,22 @@ class UtilService {
       }
     }
     return TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC(+00:00)");
+  }
+
+  Future<String> getUserAvatar() async {
+    final List<String> imageUrls = [];
+    firebase_storage.ListResult avatars = await firebase_storage
+        .FirebaseStorage.instance
+        .ref('assets/images/avatars')
+        .listAll();
+
+    for (firebase_storage.Reference ref in avatars.items) {
+      final String url = await ref.fullPath;
+      imageUrls.add(url);
+    }
+    final random = Random();
+    final img = imageUrls.removeAt(random.nextInt(imageUrls.length));
+    return img;
   }
 
 }

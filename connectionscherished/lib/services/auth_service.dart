@@ -3,6 +3,7 @@ import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/routing_service.dart';
+import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/util/callback.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -14,6 +15,7 @@ class AuthService {
   final FirebaseAuth _authService = FirebaseAuth.instance;
   final _firestore = GetIt.I.get<FirebaseFirestore>();
   final _navService = GetIt.I.get<NavigationService>();
+  final _utilService = GetIt.I.get<UtilService>();
   final _userCollection = 'users';
 
   Future<bool> checkEmailExists(String email) async {
@@ -103,11 +105,12 @@ class AuthService {
       final docSnapshot = await userDoc.get();
       // If the user document does not exist, create it
       if (!docSnapshot.exists && userCred !=null) {
+        String profileImg = await _utilService.getUserAvatar();
         await userDoc.set({
           'userId': userCred.user!.uid,
           'userName': '',
           'email': loginMethod == SignInMethod.password ? userCred.user!.email : '',
-          'profileImage': '',
+          'profileImage': profileImg,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
           'isDeleted': false,

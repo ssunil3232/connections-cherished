@@ -3,10 +3,9 @@ import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/routing_service.dart';
-import 'package:connectionscherished/user/user_settings.dart';
+import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/util/callback.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'dart:developer' as developer;
 
@@ -16,6 +15,7 @@ class AuthService {
   final FirebaseAuth _authService = FirebaseAuth.instance;
   final _firestore = GetIt.I.get<FirebaseFirestore>();
   final _navService = GetIt.I.get<NavigationService>();
+  final _utilService = GetIt.I.get<UtilService>();
   final _userCollection = 'users';
 
   Future<bool> checkEmailExists(String email) async {
@@ -73,6 +73,9 @@ class AuthService {
           'email': user.email != currentData["email"] ? user.email : currentData["email"],
           'isDeleted': user.isDeleted != currentData["isDeleted"] ? user.isDeleted : currentData["isDeleted"],
           'enableNotifications': user.enableNotifications != currentData["enableNotifications"] ? user.enableNotifications : currentData["enableNotifications"],
+          'enableAi': user.enableAi != currentData["enableAi"] ? user.enableAi : currentData["enableAi"],
+          'message': user.message != currentData["message"] ? user.message : currentData["message"],
+          'timezone': user.timezone != currentData["timezone"] ? user.timezone : currentData["timezone"],
           'updatedAt': FieldValue.serverTimestamp(),
         });
       }
@@ -102,28 +105,35 @@ class AuthService {
       final docSnapshot = await userDoc.get();
       // If the user document does not exist, create it
       if (!docSnapshot.exists && userCred !=null) {
+        String profileImg = await _utilService.getUserAvatar();
         await userDoc.set({
           'userId': userCred.user!.uid,
           'userName': '',
           'email': loginMethod == SignInMethod.password ? userCred.user!.email : '',
-          'profileImage': '',
+          'profileImage': profileImg,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
           'isDeleted': false,
           'enableNotifications': true,
+          'timezone': '',
+          'enableAi': false,
+          'message': 'Free for a quick catch up?',
         });
-        // _navService.navigateTo(Routes.userSettings);
-        showDialog(
-          context: navigatorKey.currentContext!,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return const UserSettingsScreen();
-          },
-        );
+        _navService.navigateTo(Routes.createAccount);
       }
       else{
-        //Then navigate to Home screen directly
-      _navService.navigateTo(Routes.home);
+        if(docSnapshot.exists){
+          Map<String, dynamic>? data = docSnapshot.data();
+          if(data!=null){
+            UserModel user = UserModel.fromMap(data);
+            if(user.userName.isNotEmpty){
+              _navService.navigateTo(Routes.dashboard);
+            }
+            else{
+              _navService.navigateTo(Routes.createAccount);
+            }
+          }
+        }
       }
   }
 
@@ -309,7 +319,7 @@ class AuthService {
       await user.delete();
       await _authService.signOut();
       navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        Routes.splash,
+        Routes.authOptions,
         (route) => false,
       );
     } catch (e) {

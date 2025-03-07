@@ -1,17 +1,20 @@
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
 // ignore: must_be_immutable
 class DialogWidget extends StatelessWidget {
-  DialogWidget({super.key, required this.onResponse, required this.header, this.descriptions, this.cancelTitle, this.confirmTitle, this.image, this.isWarning=false, this.customCancelFunction, this.customConfirmFunction});
-  final String header;
+  DialogWidget({super.key, required this.onResponse, this.customBody, this.showCustomCancel = false, this.header, this.descriptions, this.cancelTitle, this.confirmTitle, this.image, this.isWarning=false, this.customCancelFunction, this.customConfirmFunction});
+  String ? header;
   List<String>? descriptions;
   String? cancelTitle;
   String? confirmTitle;
   Function(bool) onResponse;
   bool ? isWarning;
+  Widget ? customBody;
+  bool ? showCustomCancel = false;
   Function () ? customConfirmFunction;
   Function () ? customCancelFunction;
   ///Image.asset with dimensions
@@ -21,29 +24,48 @@ class DialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.spacing16),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      backgroundColor: GlobalStyles.defaultBg,
       shape: SmoothRectangleBorder(
           smoothness: 0.6,
           borderRadius: BorderRadius.circular(20.0),
         ),
-      child: Container(
-        padding: EdgeInsets.all(GlobalStyles.spacingStates.spacing24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-              children: [
-                if(image != null)
-                  Container(
-                    padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing24),
-                    child: image,
-                  ),
-                Text(
-                  header,
-                  style: GlobalStyles.textStyles.heading3,
-                  textAlign: TextAlign.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if(showCustomCancel == true)
+          Row(
+            children: [
+              Spacer(),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  onResponse(false);
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/close_icon.svg', 
+                  width: 24, 
+                  height: 24
                 ),
-                SizedBox(height: GlobalStyles.spacingStates.spacing16),
+              ),
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: GlobalStyles.spacingStates.spacing24,
+              right: GlobalStyles.spacingStates.spacing24,
+              top: customBody ==null ? GlobalStyles.spacingStates.spacing24 : 0,
+              bottom: GlobalStyles.spacingStates.spacing24
+            ),
+            child: customBody ?? Column(
+              children: [
+                if(header != null)
+                  Text(
+                    header ?? '',
+                    style: GlobalStyles.textStyles.textH3,
+                    textAlign: TextAlign.center,
+                  ),
+                if(header != null)
+                  SizedBox(height: GlobalStyles.spacingStates.spacing16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: descriptions?.map((description) {
@@ -52,12 +74,16 @@ class DialogWidget extends StatelessWidget {
                       child: Text(
                         description,
                         textAlign: TextAlign.center,
-                        style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),
+                        style: GlobalStyles.textStyles.textBody,
                       ),
                     );
                   }).toList() ?? [],
                 ),
-                SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                if(image != null)
+                  Container(
+                    padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing24),
+                    child: image,
+                  ),
                 CustomButtonWidget.primary(text: confirmTitle ?? 'Yes', onPressed: () {
                   if(customConfirmFunction == null){
                     Navigator.of(context).pop();
@@ -68,7 +94,9 @@ class DialogWidget extends StatelessWidget {
                     onResponse(true);
                   }
                 }),
+                if(showCustomCancel == false)
                 SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                if(showCustomCancel == false)
                 (isWarning==true)
                 ? CustomButtonWidget.tertiaryAlert(text: cancelTitle ?? 'No', onPressed: () {
                   if(customCancelFunction == null){
@@ -80,7 +108,7 @@ class DialogWidget extends StatelessWidget {
                     onResponse(false);
                   }
                 })
-                : CustomButtonWidget.tertiary(text: cancelTitle ?? 'No', onPressed: () {
+                : CustomButtonWidget.secondary(text: cancelTitle ?? 'No', onPressed: () {
                   if(customCancelFunction == null){
                     Navigator.of(context).pop();
                     onResponse(false);
@@ -92,8 +120,8 @@ class DialogWidget extends StatelessWidget {
                 }),
               ],
             ),
-          ],
-        ),
+          )
+        ]
       ),
     );
   }

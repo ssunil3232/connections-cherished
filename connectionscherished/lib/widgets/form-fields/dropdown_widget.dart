@@ -82,15 +82,15 @@ class CustomDropdownWidget extends StatefulWidget {
     this.selectionTextStyle
   }) :
     currentButtonBorder = Border.all(
-      color: defaultBorderColor ?? GlobalStyles.cardBorderDefault,
+      color: defaultBorderColor ?? GlobalStyles.defaultBorder,
       width: 1.0,
     ),
     defaultButtonBorder = Border.all(
-      color: defaultBorderColor ?? GlobalStyles.cardBorderDefault,
+      color: defaultBorderColor ?? GlobalStyles.defaultBorder,
       width: 1.0,
     ),
     activeButtonBorder = Border.all(
-      color: activeBorderColor ?? GlobalStyles.globalTextSubtle,
+      color: activeBorderColor ?? GlobalStyles.textSubtle,
       width: 2.0,
     ),
     errorButtonBorder = Border.all(
@@ -98,7 +98,7 @@ class CustomDropdownWidget extends StatefulWidget {
       width: 2.0,
     ),
     disabledButtonBorder = Border.all(
-      color: disabledBorderColor ?? GlobalStyles.globalBorderDisabled,
+      color: disabledBorderColor ?? GlobalStyles.defaultBorder,
       width: 1.0,
     );
 
@@ -167,16 +167,25 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // final renderBox = context.findRenderObject() as RenderBox?;
+    // final screenHeight = MediaQuery.of(context).size.height;
+    // final buttonPosition = renderBox?.localToGlobal(Offset.zero).dy ?? 0;
+    // final availableSpaceBelow = screenHeight - buttonPosition - (widget.buttonHeight ?? 60);
+    // final availableSpaceAbove = buttonPosition;
+
+    // // Decide if dropdown should open upwards
+    // final bool shouldOpenUp = availableSpaceBelow < (widget.menuHeight ?? 200) && availableSpaceAbove > availableSpaceBelow;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if(widget.labelText!= null)
           Row(children: [
-            Text(widget.labelText!, style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)),
+            Text(widget.labelText ?? '', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
             if(widget.isOptional==true) 
               Padding(
                 padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing4),
-                child: Text("(optional)", style: GlobalStyles.textStyles.caption2.copyWith(color: GlobalStyles.globalTextSubtle)),
+                child: Text("(optional)", style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle)),
               )
           ],),
         if(widget.labelText!= null)
@@ -191,33 +200,42 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         item.label,
-                        style: (widget.selectionTextStyle ?? GlobalStyles.textStyles.body1).copyWith(
+                        style: (widget.selectionTextStyle ?? GlobalStyles.textStyles.textBody).copyWith(
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     );
                   }).toList();
                 },
-                style: (widget.selectionTextStyle ?? GlobalStyles.textStyles.body1).copyWith(
+                style: (widget.selectionTextStyle ?? GlobalStyles.textStyles.textBody).copyWith(
                   overflow: TextOverflow.ellipsis,
                 ),
                 hint: Text(
                   widget.placeholderText ?? 'Select a value',
-                  style: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
+                  style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
                 ),
                 isExpanded: true,
                 items: getDropdownItems(),
                 value: setInitialLoadValue(),
                 onChanged: widget.disabled ? null : (value) => handleSelection(value as String),
                 buttonStyleData: ButtonStyleData(
-                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
-                  height: widget.buttonHeight ?? 60,
+                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 12),
+                  height: widget.buttonHeight ?? 50,
                   width: widget.buttonWidth ?? double.infinity,
-                  decoration: BoxDecoration(
-                    border: widget.errorState ? widget.errorButtonBorder : isOpen ? widget.activeButtonBorder : widget.defaultButtonBorder,
-                    color:  widget.errorState ? GlobalStyles.globalErrorBg : widget.buttonBgColor ??  GlobalStyles.globalBgDefault,
+                  decoration: widget.disabled ? 
+                  BoxDecoration(
+                    border: Border.all(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                    color:  GlobalStyles.btnBgDisabled,
                     borderRadius: BorderRadius.circular(20.0),
-                  ),
+                  )
+                  : BoxDecoration(
+                      border: widget.errorState ? widget.errorButtonBorder : isOpen ? widget.activeButtonBorder : widget.defaultButtonBorder,
+                      color:  widget.errorState ? GlobalStyles.globalErrorBg : widget.buttonBgColor ??  GlobalStyles.defaultBg,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                 ),
                 dropdownStyleData: DropdownStyleData(
                   scrollbarTheme: ScrollbarThemeData(
@@ -227,15 +245,15 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   padding: const EdgeInsets.all(0),
                   elevation: 0,
                   offset: widget.offset ?? Offset(0, -GlobalStyles.spacingStates.spacing8),
-                  width: widget.menuWidth,
+                  width: widget.menuWidth! < 1 ?  MediaQuery.of(context).size.width * widget.menuWidth! : widget.menuWidth,
                   maxHeight: widget.menuHeight,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: GlobalStyles.globalTextSubtle,
+                      color: GlobalStyles.textSubtle,
                       width: 1.0, 
                       strokeAlign: BorderSide.strokeAlignOutside
                     ),
-                    color: GlobalStyles.globalBgDefault,
+                    color: GlobalStyles.defaultBg,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   isOverButton: false,
@@ -245,15 +263,15 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: GlobalStyles.spacingStates.spacing12),
                   selectedMenuItemBuilder: (ctx, item) {
                     return Container(
-                      color: GlobalStyles.cardBgSelected,
+                      color: GlobalStyles.btnBgSecondary,
                       child: item
                     );
                   },
                   overlayColor: const WidgetStatePropertyAll<Color>(Colors.transparent),
                 ),
                 iconStyleData: IconStyleData(
-                  openMenuIcon: VariedIcon.varied(Symbols.keyboard_arrow_up_rounded, color: widget.errorState ? GlobalStyles.globalIconError : widget.dropdownColor ?? GlobalStyles.globalIconDefault),
-                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.errorState ? GlobalStyles.globalIconError : widget.dropdownColor ?? GlobalStyles.globalIconDefault)
+                  openMenuIcon: VariedIcon.varied(Symbols.keyboard_arrow_up_rounded, color: widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText),
+                  icon: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: widget.disabled ? Colors.transparent : widget.errorState ? GlobalStyles.globalErrorText : widget.dropdownColor ?? GlobalStyles.primaryText)
                 ),
               ),
             ),
@@ -266,7 +284,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                 softWrap: true,
                 maxLines: null,
                 overflow: TextOverflow.visible,
-                style: GlobalStyles.textStyles.caption1.copyWith(color: GlobalStyles.globalErrorText)),
+                style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.globalErrorText)),
             ),
         
       ],
@@ -297,7 +315,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   child: Text(
                     item.label,
                     overflow: TextOverflow.ellipsis,
-                    style: isSelected ? GlobalStyles.textStyles.boldBody1.copyWith(color: ButtonStyles.secondaryBtnStyle.text) : GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle)
+                    style: isSelected ? GlobalStyles.textStyles.textButtonPrimary.copyWith(color: ButtonStyles.secondaryBtnStyle.text) : GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)
                   )
                 ),
               if (isSelected) 

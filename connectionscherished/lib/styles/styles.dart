@@ -20,29 +20,36 @@ class GlobalStyles {
   ///Primary Color Palette
   static const PrimaryColorPalette primaryPalette = PrimaryColorPalette();
 
-  //=============Brand Colors=================//
-  static Color brandColor1 = const Color(0xff764374);
-  static Color brandColor2 = const Color(0xffAC94BA);
+  //New colour scheme
+  //============= Global Colors =================//
+  static const Color defaultBg = Color(0xFFFFFFFF); // default-bg
+  static Color defaultTextBg = neutral.neutral50; // default-text-bg
+  static const Color defaultBorder = Color(0xFFB1BBC8); // default-border
+  static const Color defaultBorderEnabled = Color(0xFFB1BBC8); // default-border-enabled
+  static const Color primaryText = Color(0xFF343A46); // primary-text
+  static Color textSubtle = neutral.neutral500; // text-subtle
+  static Color textDisabled = neutral.neutral500; // text-disabled
+  static Color inputPlaceholderText = neutral.neutral300; // input-placeholder-text
 
-  //=============Severity Colors=================//
-  static const Color severeColor = Color(0xffC88EE4);
-  static const Color warningColor = Color(0xffE3C1F3);
-  static const Color normalColor = Color(0xffECE1F1);
+  //============= Navigation Colors =================//
+  static const Color topNavBg = Color(0xFFE6F9F7); // top-nav-bg
+  static const Color bottomNavBg = Color(0xFFFFF7E9); // bottom-nav-bg
 
-  //=============Global Colors=================//
-  static Color globalBgDefault = neutral.neutral0;
-  static Color globalBgSubtle = neutral.neutral50;
-  static Color globalTextDefault = neutral.neutral950;
-  static Color globalTextSubtle = neutral.neutral500;
-  static Color globalIconError = error.error600;
-  static Color globalIconSuccess = success.success600;
-  static Color globalIconDefault = neutral.neutral500;
-  static Color inputPlaceholderText = neutral.neutral300;
+  //============= Button Colors =================//
+  static const Color btnBgPrimary = Color(0xFFFCDE85); // btn-bg-primary
+  static const Color btnBorderPrimary = Color(0xFFF99C07); // btn-border-primary
+  static const Color btnBgSecondary = Color(0xFFFFF3C6); // btn-bg-secondary
+  static const Color btnBorderSecondary = Color(0xFFF99C07); // btn-border-secondary
+  static const Color btnBgDisabled = Color(0xFFF6F7F9); // btn-bg-disabled
+  static const Color btnBorderDisabled = Color(0xFFB1BBC8); // btn-border-disabled
+  static const Color btnBgTertiary = Color(0xFFE5FCCE); // btn-bg-tertiary
+  static const Color btnBorderError = Color(0xFF9C1818); // btn-border-error
+  static const Color btnBgError = Color(0xFFDC1E1E); // btn-bg-error
 
-  //=================Disabled State Colors=====================//
-  static Color globalBgDisabled = neutral.neutral50;
-  static Color globalTextDisabled = neutral.neutral500;
-  static Color globalBorderDisabled = neutral.neutral300;
+  //============= Warning Colors =================//
+  static const Color warningColor = Color(0xFFE3D3FF); // warning-color
+  static const Color criticalColor = Color(0xFFC09DFF); // critical-color
+  static const Color neutralColor = Color(0xFFF6F1FF); // neutral-color
 
   //=================Error State Colors=====================//
   static Color globalErrorBg = error.error100;
@@ -55,67 +62,15 @@ class GlobalStyles {
   static Color globalSuccessBorder = success.success600;
   static Color globalSuccessText = success.success600;
 
-  //=============Card Colors=================//
-  static Color cardBgDefault = neutral.neutral0;
-  static Color cardBgSelected = const Color.fromARGB(255, 242, 226, 243);
-  static Color cardBorderDefault= neutral.neutral300;
-  static Color cardBorderSelected= primary.primary600;
-
-  //=============Others=================//
-  static Color chatBubbleBgAi = neutral.neutral100;
-  static Color chatBubbleBgAuthor = primary.primary300;
-  static Color chatFgDefault = neutral.neutral500;
-  static Color chatFgActive = neutral.neutral950;
-  static Color chatBorderDefault = neutral.neutral400;
-  static Color chatBorderActive = neutral.neutral500;
-  static Color menuDefault = neutral.neutral500;
-  static Color menuActive = neutral.neutral950;
-  static Color timeBgDefault = pastel.sky50;
-  static Color timeTextDefault = pastel.sky800;
-  static Color wordsBgDefault = pastel.mint50;
-  static Color wordsTextDefault = pastel.mint800;
-  static Color sentencesBgDefault = pastel.lavender50;
-  static Color sentencesTextDefault = pastel.lavender800;
-  static Color topicBgDefault = pastel.rose50;
-  static Color topicTextDefault = pastel.rose800;
-  static Color questionsBgDefault = pastel.honey50;
-  static Color questionsTextDefault = pastel.honey800;
-
   static TextStyles textStyles = TextStyles();
   static SpacingStates spacingStates = SpacingStates();
 
-  // Input Text field Decoration
-  static final InputDecoration chatFieldDecoration = InputDecoration(
-    floatingLabelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),
-    labelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),
-    hintStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
-    contentPadding: EdgeInsets.all(GlobalStyles.spacingStates.spacing16),
-    border: OutlineInputBorder(
-      borderSide: BorderSide(width: 1.0, color: GlobalStyles.cardBorderDefault),
-      borderRadius: BorderRadius.circular(20.0)),
-    focusedErrorBorder: OutlineInputBorder(
-      borderSide: const BorderSide(width: 2.0, color: Color(0xFFEA4432)),
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    errorBorder: OutlineInputBorder(
-      borderSide: const BorderSide(width: 2.0, color: Color(0xFFEA4432)),
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
-      borderRadius: BorderRadius.circular(20.0),
-    ),
-  );
 
   static final InputDecoration inputFieldDecoration = InputDecoration(
-    floatingLabelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),
-    labelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
-    hintStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
-    errorStyle: GlobalStyles.textStyles.caption1.copyWith(color: GlobalStyles.globalErrorText),
+    floatingLabelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
+    labelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
+    hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
+    errorStyle: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.globalErrorText),
     contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalErrorBorder),
@@ -126,20 +81,20 @@ class GlobalStyles {
       borderRadius: BorderRadius.circular(20.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
+      borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
       borderRadius: BorderRadius.circular(20.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 1.0, color: GlobalStyles.cardBorderDefault),
+      borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
       borderRadius: BorderRadius.circular(20.0),
     ),
   );
 
   static final InputDecorationTheme dropdownFieldDecoration = InputDecorationTheme(
-    floatingLabelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.globalTextSubtle),
-    labelStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
-    hintStyle: GlobalStyles.textStyles.body1.copyWith(color: GlobalStyles.inputPlaceholderText),
-    errorStyle: GlobalStyles.textStyles.caption1.copyWith(color: GlobalStyles.globalErrorText),
+    floatingLabelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
+    labelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
+    hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
+    errorStyle: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.globalErrorText),
     contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalErrorBorder),
@@ -150,11 +105,11 @@ class GlobalStyles {
       borderRadius: BorderRadius.circular(20.0),
     ),
     focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalTextSubtle),
+      borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
       borderRadius: BorderRadius.circular(20.0),
     ),
     enabledBorder: OutlineInputBorder(
-      borderSide: BorderSide(width: 1.0, color: GlobalStyles.cardBorderDefault),
+      borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
       borderRadius: BorderRadius.circular(20.0),
     ),
   );
@@ -282,72 +237,90 @@ class TextStyles {
     isSmallScreen = screenUtil.isSmallScreen;
   }
 
-  TextStyle get titular => GoogleFonts.caveat(
-    fontSize: isSmallScreen ? 24 : 28,
-    fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (20 / 16) : (24 / 20),
-    color: GlobalStyles.globalTextDefault,
+  //New Text Styles
+  TextStyle get titleHeader => GoogleFonts.mynerve(
+    fontSize: isSmallScreen ? 28 : 32,
+    fontWeight: FontWeight.w400,
+    color: GlobalStyles.primaryText,
   );
 
-  TextStyle get heading1 => GoogleFonts.quicksand(
+  TextStyle get textH1 => GoogleFonts.nunito(
     fontSize: isSmallScreen ? 28 : 32,
-    fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (36 / 28) : (40 / 32),
-    color: GlobalStyles.globalTextDefault
-  );
-  TextStyle get heading2 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 24 : 28,
-    fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (28 / 24) : (32 / 28),
-    color: GlobalStyles.globalTextDefault,
-  );
-  TextStyle get heading3 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 20 : 24,
-    fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (24 / 20) : (28 / 24),
-    color: GlobalStyles.globalTextDefault,
-  );
-  TextStyle get heading4 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 16 : 20,
     fontWeight: FontWeight.w600,
-    height: isSmallScreen ? (20 / 16) : (24 / 20),
-    color: GlobalStyles.globalTextDefault,
+    color: GlobalStyles.primaryText
   );
-  TextStyle get body1 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 16 : 18,
+
+  TextStyle get textH2 => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 22 : 24,
+    fontWeight: FontWeight.w400,
+    height: isSmallScreen ? (20 / 22) : (22 / 24),
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textH2Bold => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 22 : 24,
     fontWeight: FontWeight.w600,
-    height: isSmallScreen ? (18 / 16) : (20 / 18),
-    color: GlobalStyles.globalTextDefault,
+    height: isSmallScreen ? (20 / 22) : (22 / 24),
+    color: GlobalStyles.primaryText
   );
-  TextStyle get boldBody1 => GoogleFonts.quicksand(
+
+  TextStyle get textH3 => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 20 : 22,
+    fontWeight: FontWeight.w400,
+    height: isSmallScreen ? (18 / 20) : (20 / 22),
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textH3Varaint => GoogleFonts.mynerve(
+    fontSize: isSmallScreen ? 22 : 24,
+    fontWeight: FontWeight.w400,
+    height: isSmallScreen ? (24 / 22) : (26 / 24),
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textBody => GoogleFonts.nunito(
     fontSize: isSmallScreen ? 16 : 18,
-    fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (18 / 16) : (20 / 18),
-    color: GlobalStyles.globalTextDefault,
+    fontWeight: FontWeight.w400,
+    height: isSmallScreen ? (20 / 16) : (22 / 18),
+    color: GlobalStyles.primaryText,
   );
-  TextStyle get body2 => GoogleFonts.quicksand(
+
+  TextStyle get textCaption1=> GoogleFonts.nunito(
     fontSize: isSmallScreen ? 14 : 16,
     fontWeight: FontWeight.w400,
-    height: isSmallScreen ? (18 / 14) : (20 / 16),
-    color: GlobalStyles.globalTextDefault,
+    color: GlobalStyles.primaryText,
   );
-  TextStyle get boldBody2 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 14 : 16,
+
+  TextStyle get textCaption2 => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 12 : 14,
+    fontWeight: FontWeight.w400,
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textCaption3 => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 10 : 12,
+    fontWeight: FontWeight.w400,
+    height: isSmallScreen ? (12 / 10) : (14 / 12),
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textButtonPrimary => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 16 : 18,
     fontWeight: FontWeight.w700,
-    height: isSmallScreen ? (18 / 14) : (20 / 16),
-    color: GlobalStyles.globalTextDefault,
+    color: GlobalStyles.primaryText,
   );
-  TextStyle get caption1 => GoogleFonts.quicksand(
+
+  TextStyle get textButtonSecondary => GoogleFonts.nunito(
+    fontSize: isSmallScreen ? 16 : 18,
+    fontWeight: FontWeight.w400,
+    color: GlobalStyles.primaryText,
+  );
+
+  TextStyle get textButtonTertiary => GoogleFonts.nunito(
     fontSize: isSmallScreen ? 12 : 14,
     fontWeight: FontWeight.w400,
     height: isSmallScreen ? (14 / 12) : (16 / 14),
-    color: GlobalStyles.globalTextDefault,
-  );
-  TextStyle get caption2 => GoogleFonts.quicksand(
-    fontSize: isSmallScreen ? 10 : 12,
-    fontWeight: FontWeight.w400,
-    height: isSmallScreen ? (14 / 10) : (16 / 12),
-    color: GlobalStyles.globalTextDefault,
+    color: GlobalStyles.primaryText,
   );
 }
 
@@ -362,7 +335,13 @@ class SpacingStates {
   final double spacing24 = 24;
   final double spacing28 = 28;
   final double spacing32 = 32;
+  final double spacing36 = 36;
+  final double spacing40 = 40;
+  final double spacing44 = 44;
   final double spacing48 = 48;
+  final double spacing52 = 52;
+  final double spacing56 = 56;
+  final double spacing60 = 60;
   final double spacing64 = 64;
 
 }

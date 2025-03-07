@@ -1,13 +1,12 @@
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:flutter_svg/svg.dart';
 
 // ignore: must_be_immutable
 class BottomNavBarWidget extends StatefulWidget {
   int selectedIndex = 0;
   final Function(int) onTabSelected;
-  final List<GlobalKey> tipKeys;
-  BottomNavBarWidget({this.selectedIndex = 0, super.key, required this.onTabSelected, required this.tipKeys});
+  BottomNavBarWidget({this.selectedIndex = 0, super.key, required this.onTabSelected});
 
   @override
   _BottomNavBarWidgetState createState() =>
@@ -26,92 +25,79 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
     return Theme(
     data: ThemeData(
       splashColor: Colors.transparent,
-      highlightColor: Colors.transparent
+      highlightColor: const Color.fromARGB(0, 170, 15, 15)
     ),
     child: _buildNavigationBar());
   }
 
   Widget _buildNavigationBar() {
-    return 
-      LayoutBuilder(
-        builder: (context, constraints) {
-          double totalWidth = constraints.maxWidth;
-          double tabWidth = totalWidth/4;
-          double leftOffset = widget.selectedIndex * tabWidth;
-
-          return Stack(
-            children: [
-              Container(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0),
+                topRight: Radius.circular(20.0),
+              ),
+              child: Container(
                 decoration: BoxDecoration(
-                  color: GlobalStyles.globalBgDefault,
-                  border: Border(
-                    top: BorderSide(color: GlobalStyles.cardBorderDefault, width: 1.0),
-                  ),
+                  color: GlobalStyles.bottomNavBg,
                 ), 
-                child:
-                  BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    useLegacyColorScheme: false,
-                    enableFeedback: false,
-                    selectedFontSize: GlobalStyles.textStyles.boldBody2.fontSize!,
-                    unselectedFontSize: GlobalStyles.textStyles.boldBody2.fontSize!,
-                    showSelectedLabels: true,
-                    showUnselectedLabels: true,
-                    unselectedLabelStyle: GlobalStyles.textStyles.boldBody2.copyWith(
-                                  color: GlobalStyles.menuDefault
-                                ),
-                    selectedLabelStyle: GlobalStyles.textStyles.boldBody2.copyWith(
-                                  color: GlobalStyles.menuActive
-                                ),
-                    currentIndex: widget.selectedIndex,
-                    backgroundColor: GlobalStyles.globalBgDefault,
-                    onTap: (int index) {
-                      setState(() {
-                        widget.selectedIndex = index;
-                        widget.onTabSelected(index);
-                      });
-                    },
-                    items: <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: _buildIcon(icon: Symbols.home_filled_rounded, isSelected: false),
-                        activeIcon: _buildIcon(icon: Symbols.home_filled_rounded, isSelected: true),
-                        label: 'Home',   
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildIcon(icon: Symbols.voice_chat_rounded, isSelected: false),
-                        activeIcon: _buildIcon(icon: Symbols.voice_chat_rounded, isSelected: true),
-                        label: 'Kid Pal',   
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildIcon(icon: Symbols.extension_rounded, isSelected: false),
-                        activeIcon: _buildIcon(icon: Symbols.extension_rounded, isSelected: true),
-                        label: 'Evaluation',   
-                      ),
-                      BottomNavigationBarItem(
-                        icon: _buildIcon(icon: Symbols.chat_bubble_rounded, isSelected: false),
-                        activeIcon: _buildIcon(icon: Symbols.chat_bubble_rounded, isSelected: true),
-                        label: 'AI Advisor',   
-                      ),
-                    ],
-                  )
-                ),
-                Positioned(
-                  top: 0,
-                  left: leftOffset,
-                  child: Container(
-                    width: tabWidth,
-                    height: 2.0,
-                    color: GlobalStyles.menuActive,
-                  ),
-                ),
-    
-        ]);
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  useLegacyColorScheme: false,
+                  enableFeedback: false,
+                  selectedFontSize: 0,
+                  unselectedFontSize:0,
+                  iconSize: 0,
+                  // selectedFontSize: GlobalStyles.textStyles.textCaption3.fontSize!,
+                  // unselectedFontSize: GlobalStyles.textStyles.textCaption3.fontSize!,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  unselectedLabelStyle: GlobalStyles.textStyles.textCaption3,
+                  selectedLabelStyle: GlobalStyles.textStyles.textCaption3,
+                  currentIndex: widget.selectedIndex,
+                  backgroundColor: GlobalStyles.bottomNavBg,
+                  onTap: (int index) {
+                    setState(() {
+                      widget.selectedIndex = index;
+                      widget.onTabSelected(widget.selectedIndex);
+                    });
+                  },
+                  items: <BottomNavigationBarItem>[
+                    // BottomNavigationBarItem(
+                    //   icon: _buildIcon(icon: 'assets/icons/journal_logo.svg', isSelected: false),
+                    //   // activeIcon: _buildIcon(icon: 'assets/icons/journal_logo.svg', isSelected: true),
+                    //   label: 'Home',   
+                    // ),
+                    BottomNavigationBarItem(
+                      icon: _buildIcon(icon: 'assets/icons/journal_logo.svg', isSelected: false),
+                      // activeIcon: _buildIcon(icon: 'assets/icons/journal_logo.svg', isSelected: true),
+                      label: 'Journal',   
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildIcon(icon: 'assets/icons/insights_logo.svg', isSelected: false),
+                      // activeIcon: _buildIcon(icon: Symbols.voice_chat_rounded, isSelected: true),
+                      label: 'Insights',   
+                    ),
+                    BottomNavigationBarItem(
+                      icon: _buildIcon(icon: 'assets/icons/profile_logo.svg', isSelected: false),
+                      // activeIcon: _buildIcon(icon: Symbols.extension_rounded, isSelected: true),
+                      label: 'Profile',   
+                    ),
+                  ],
+                )
+              ),
+            )
+          ]
+        );
       }
     );
   }
 
   Widget _buildIcon({
-    required IconData icon,
+    required String icon,
     required bool isSelected,
   }) {
     return Column(
@@ -119,10 +105,11 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4, bottom: 0), 
-          child: VariedIcon.varied(icon, 
-            fill: isSelected ? 1: 0,
-            color: isSelected ? GlobalStyles.menuActive : GlobalStyles.globalIconDefault
+          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8, bottom: GlobalStyles.spacingStates.spacing4), 
+          child: SvgPicture.asset(
+            icon, 
+            width: 40, 
+            height: 40
           ),
         ),
       ],

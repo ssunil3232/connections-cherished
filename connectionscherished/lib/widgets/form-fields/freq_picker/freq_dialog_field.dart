@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class FreqField extends StatelessWidget {
-  int field;
+  dynamic field;
 
   FreqField({super.key, required this.field});
 

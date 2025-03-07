@@ -45,35 +45,20 @@ class _SplashScreenState extends State<SplashScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/images/logo_clear.png',
-                width: 150,
+              Text(
+                'Connections Cherished',
+                style: GlobalStyles.textStyles.titleHeader,
               ),
-              const SizedBox(height: 16),
-              RichText(
+              Image.asset(
+                'assets/images/logo.png',
+                width: 205,
+                height: 194,
+              ),
+              SizedBox(height: GlobalStyles.spacingStates.spacing8),
+              Text(
+                'Building relationships a \nconnection at a time',
                 textAlign: TextAlign.center,
-                text: TextSpan(
-                  text: 'Building ',
-                  style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.globalTextSubtle),
-                  children: [
-                    TextSpan(
-                      text: 'relationships\n',
-                      style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.brandColor1)
-                    ),
-                    TextSpan(
-                      text: 'a ',
-                      style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.globalTextSubtle)
-                    ),
-                    TextSpan(
-                      text: 'connection ',
-                      style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.brandColor2)
-                    ),
-                    TextSpan(
-                      text: 'at a time.',
-                      style: GlobalStyles.textStyles.titular.copyWith(color: GlobalStyles.globalTextSubtle)
-                    ),
-                  ]
-                )
+                style: GlobalStyles.textStyles.textBody
               ),
             ]
           )

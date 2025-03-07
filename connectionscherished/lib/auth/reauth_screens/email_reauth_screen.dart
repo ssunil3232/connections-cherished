@@ -8,7 +8,6 @@ import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart'
 import 'package:connectionscherished/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 
@@ -69,9 +68,9 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
     });
     try {
       await _authService.reauthenticateWithEmail(
-              email: widget.email,
-              password: _passwordController.text,
-              onSignIn: widget.onSignIn);
+        email: widget.email,
+        password: _passwordController.text,
+        onSignIn: widget.onSignIn);
     // ignore: unused_catch_clause
     } on Exception catch (e) {
       setState(() {
@@ -97,23 +96,12 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(
-        header: RichText(
-          text: TextSpan(
-            style: GoogleFonts.juliusSansOne(),
-            children: const [
-              TextSpan(
-                text: 'Delete ',
-                style: TextStyle(fontSize: 20, color: Color(0xff8719BB)),
-              ),
-              TextSpan(
-                text: 'account',
-                style: TextStyle(fontSize: 20, color: Colors.black87)
-              ),
-            ],
-          ),
-        ),
-      showBackButton: true, showBorder: true, bgColor: Theme.of(context).colorScheme.inversePrimary,),
-      backgroundColor: GlobalStyles.globalBgDefault,
+        header: Text("Delete account", style: GlobalStyles.textStyles.titleHeader),
+        showBackButton: true, 
+        showBorder: false,
+        height: 100,
+      ),
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -122,10 +110,10 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
                     SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text(widget.message, style: GlobalStyles.textStyles.body1,),
+                    Text(widget.message, style: GlobalStyles.textStyles.textBody,),
                     // Password
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),

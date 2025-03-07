@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectionscherished/styles/styles.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 
@@ -8,27 +9,45 @@ import 'package:flutter/material.dart';
 class CachedImageWidget extends StatelessWidget {
   final double height;
   final double width;
+  ShapeBorder ? shape;
   String imageUrlProvided;
 
-  CachedImageWidget({super.key, required this.height, required this.width, required this.imageUrlProvided});
-
+  CachedImageWidget({super.key, required this.height, required this.width, required this.imageUrlProvided, this.shape});
+  
+  Future<String> getImageUrl(String path) async {
+    debugPrint('path: $path');
+    final ref = FirebaseStorage.instance.ref().child(path);
+    
+    return await ref.getDownloadURL();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return FutureBuilder<String>(
+        future: getImageUrl(imageUrlProvided),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.hasError || !snapshot.hasData) {
+            return const Icon(Icons.error);
+          }
+          return Material(
             clipBehavior: Clip.hardEdge,
-            shape: CircleBorder(side: BorderSide(color: GlobalStyles.cardBorderDefault, width: 0.5)),
+            shape: shape ?? CircleBorder(side: BorderSide(color: GlobalStyles.defaultBorder, width: 0.5)),
             child: ClipOval(
               child: SizedBox(
                 width: width,
                 height: height,
                 child: CachedNetworkImage(
-                  imageUrl: imageUrlProvided,
+                  imageUrl: snapshot.data!,
                   placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Image.asset('assets/images/profile.png'),
+                  errorWidget: (context, url, error) => Image.asset('assets/images/avatar1.png'),
                 ),
               )
             )
           );
+        },
+      );
   }
 }

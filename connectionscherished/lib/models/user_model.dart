@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   String? userId;
-  final String userName;
+  String userName;
   String profileImage = '';
   String email;
   Timestamp? createdAt;
   Timestamp? updatedAt;
   bool isDeleted = false;
   bool enableNotifications = true;
+  bool enableAi = false;
+  String message = 'Free for a quick catch up?';
+  String timezone;
 
   UserModel({
       this.userId,
@@ -18,7 +21,10 @@ class UserModel {
       this.createdAt,
       this.updatedAt,
       this.isDeleted = false,
-      this.enableNotifications = true
+      this.enableNotifications = true,
+      this.enableAi = false,
+      this.message = 'Free for a quick catch up?',
+      this.timezone = ""
   });
 
   Map<String, dynamic> toMap() {
@@ -30,7 +36,10 @@ class UserModel {
       'updatedAt': FieldValue.serverTimestamp(),
       'profileImage': profileImage,
       'isDeleted': isDeleted,
-      'enableNotifications': enableNotifications
+      'enableNotifications': enableNotifications,
+      'enableAi': enableAi,
+      'message': message,
+      'timezone': timezone
     };
   }
 
@@ -43,7 +52,10 @@ class UserModel {
       updatedAt : map['updatedAt'],
       isDeleted: map['isDeleted'] ?? false,
       profileImage: map['profileImage']?? '',
-      enableNotifications: map['enableNotifications'] ?? true
+      enableNotifications: map['enableNotifications'] ?? true,
+      enableAi: map['enableAi'] ?? false,
+      message: map['message'] ?? 'Free for a quick catch up?',
+      timezone: map['timezone'] ?? ''
       );
   }
 
@@ -56,6 +68,9 @@ class UserModel {
       '   profileImage: $profileImage,\n'
       '   isDeleted: $isDeleted,\n'
       '   enableNotifications: $enableNotifications\n'
+      '   enableAi: $enableAi\n'
+      '   message: $message\n'
+      '   timezone: $timezone\n'
       ')';
   }
 }

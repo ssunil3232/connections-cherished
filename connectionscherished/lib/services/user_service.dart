@@ -25,6 +25,7 @@ class UserService {
         await userDoc.update({
           'userName': updatedUser.userName.isNotEmpty ? updatedUser.userName : currentData["userName"],
           'updatedAt': FieldValue.serverTimestamp(),
+          'timezone': updatedUser.timezone.isNotEmpty ? updatedUser.timezone : currentData["timezone"],
           // 'profileImage': updatedUser.profileImage,
         });
       }

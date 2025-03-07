@@ -74,7 +74,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error checking email: $e');
+      Exception('Error checking email: $e');
     }
     setState(() {
       _isSaving = false;
@@ -91,8 +91,14 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false),
-      backgroundColor: GlobalStyles.globalBgDefault,
+      appBar: TopNavBarWidget(
+        header: const Text(''), 
+        height: 100.0,
+        showBackButton: true, 
+        showBorder: false,
+        bgColor: GlobalStyles.defaultBg,
+      ),
+      backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
         child: GestureDetector(
@@ -101,10 +107,9 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
             children: [
               Expanded(
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                    Text('Continue with email', style: GlobalStyles.textStyles.heading2,),
+                    Text('Continue with email', style: GlobalStyles.textStyles.textH1),
                     // Email
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
@@ -121,7 +126,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   ]
                 )
               ),
-              CustomButtonWidget.primary(
+              CustomButtonWidget.secondary(
                 text: 'Continue',
                 onPressed: !_allValid || _isSaving ? null : _checkAccountStatus,
                 showIsSaving: _isSaving,

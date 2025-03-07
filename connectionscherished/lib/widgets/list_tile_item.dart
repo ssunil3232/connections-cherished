@@ -21,36 +21,35 @@ class _ListTileItemState extends State<ListTileItem> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: (widget.lastItem == true) ? null : Border(
-          bottom: BorderSide(
-            color: GlobalStyles.cardBorderDefault,
-            width: 1.0,
-          ),
-        ),
+        color: GlobalStyles.btnBgTertiary,
+        borderRadius: BorderRadius.circular(10),
       ),
       child: GestureDetector(
         onTap: () async {
           widget.function!();
         },
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          dense: true,
+          minVerticalPadding: 0,
+          minTileHeight: 0,
+          contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing4, horizontal: GlobalStyles.spacingStates.spacing16),
           leading: widget.icon,
           subtitle: (widget.subtitle != null)
           ? Text(
               widget.subtitle!,
-              style: GlobalStyles.textStyles.body1
+              style: GlobalStyles.textStyles.textBody
             )
           : null,
           title: (widget.subtitle != null) 
           ? Text(
               widget.text,
-              style: GlobalStyles.textStyles.body2.copyWith(
-                color: GlobalStyles.globalTextSubtle
+              style: GlobalStyles.textStyles.textCaption1.copyWith(
+                color: GlobalStyles.textSubtle,
               ),
             ) 
           : Text(
             widget.text,
-            style: GlobalStyles.textStyles.body1,
+            style: GlobalStyles.textStyles.textBody,
           ),
           trailing: widget.showTrailingIcon == false ? null : widget.trailingIcon ?? VariedIcon.varied(Symbols.arrow_forward_ios_rounded),
           splashColor: Colors.transparent,

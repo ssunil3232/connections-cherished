@@ -34,7 +34,7 @@ class ElevatedBorderWidget extends StatelessWidget {
       width: width,
       height: height,
       decoration: ShapeDecoration(
-        color: backgroundColor ?? GlobalStyles.cardBgDefault,
+        color: backgroundColor ?? GlobalStyles.defaultBorder,
         shape: SmoothRectangleBorder(borderRadius: BorderRadius.circular(radius ?? 20),
         side: borderColor != null ? BorderSide(width: 1, color: borderColor!): BorderSide.none,
         smoothness: smoothness ?? 0.6
@@ -43,7 +43,7 @@ class ElevatedBorderWidget extends StatelessWidget {
         // color: borderColor ?? ButtonStyles.btnColors.buttonBorder,
         shadows: [
           if(elevation !=0 ) BoxShadow(
-            color: (state == null) ? GlobalStyles.globalBorderDisabled : borderColor ?? ButtonStyles.btnColors.buttonBorder,
+            color: (state == null) ? GlobalStyles.defaultBorder : borderColor ?? ButtonStyles.btnColors.buttonPrimaryBorder,
             offset: Offset(0, elevation ?? GlobalStyles.spacingStates.spacing4),
             blurRadius: 0,
           ),

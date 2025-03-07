@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-enum ButtonType {primary, secondary, teritary, tertiaryAlert, primaryAlert}
+enum ButtonType {primary, secondary, teritary, tertiaryVariant, tertiaryAlert, primaryAlert}
 // ignore: must_be_immutable
 class CustomButtonWidget extends StatefulWidget {
   String? text; 
@@ -16,6 +16,7 @@ class CustomButtonWidget extends StatefulWidget {
   double? height;
   bool? isEnabled;
   bool? showIsSaving;
+  bool ? showUnderline;
 
   CustomButtonWidget({
     this.text,
@@ -26,6 +27,7 @@ class CustomButtonWidget extends StatefulWidget {
     this.height,
     this.isEnabled = true,
     this.showIsSaving = false,
+    this.showUnderline = true,
     super.key
   });
 
@@ -64,14 +66,21 @@ class CustomButtonWidget extends StatefulWidget {
         bgActive = ButtonStyles.primaryAlertButtonStyle.bgActive;
 
     // Tertiary Button
-  CustomButtonWidget.tertiary({super.key, required this.onPressed, required this.text, this.isEnabled})
+  CustomButtonWidget.tertiary({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.teritary,
         style = ButtonStyles.tertiaryButton,
         bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
         bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
+
+    // Tertiary Variant Button
+  CustomButtonWidget.tertiaryVariant({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
+      : btnType = ButtonType.teritary,
+        style = ButtonStyles.tertiaryVariantButton,
+        bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
+        bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
   
     // Tertiary Alert Button
-  CustomButtonWidget.tertiaryAlert({super.key, required this.onPressed, required this.text, this.isEnabled})
+  CustomButtonWidget.tertiaryAlert({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.tertiaryAlert,
         style = ButtonStyles.tertiaryAlertButton,
         bgDefault = ButtonStyles.tertiaryAlertBtnStyle.textDefault,
@@ -88,14 +97,14 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
 
     final onPressed = widget.isEnabled ?? true ? widget.onPressed : null;
 
-    return (widget.btnType == ButtonType.teritary || widget.btnType == ButtonType.tertiaryAlert)?
+    return (widget.btnType == ButtonType.teritary || widget.btnType == ButtonType.tertiaryVariant || widget.btnType == ButtonType.tertiaryAlert)?
       TextButton(
         onPressed: onPressed,
         style: widget.style.copyWith(
           foregroundColor: WidgetStateProperty.resolveWith<Color>(
             (Set<WidgetState> states) {
               if (states.contains(WidgetState.disabled)) {
-                 return GlobalStyles.globalTextDisabled;
+                 return GlobalStyles.textDisabled;
               }
               if (states.contains(WidgetState.pressed)) {
                 return widget.bgActive;
@@ -108,17 +117,18 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
               Color underlineColor;
               final TextStyle? baseTextStyle = widget.style.textStyle!.resolve({});
               if (states.contains(WidgetState.disabled)) {
-                 underlineColor = GlobalStyles.globalTextDisabled;
+                 underlineColor = GlobalStyles.textDisabled;
               }
               else if (states.contains(WidgetState.pressed)) {
                 underlineColor = widget.bgActive;
               } else {
                 underlineColor = widget.bgDefault;
               }
-              return baseTextStyle!.copyWith(
-                decoration: TextDecoration.underline,
-                decorationColor: underlineColor,
-              );
+              return (widget.showUnderline ?? true) ? 
+                baseTextStyle!.copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationColor: underlineColor,
+                ) : baseTextStyle!;
             },
           ),
         ),
@@ -136,13 +146,13 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
           onPressed: onPressed,
           icon: (widget.icon) != null ? 
                 VariedIcon.varied(widget.icon!,
-                    color: (onPressed==null) ? GlobalStyles.globalTextDisabled : widget.textDefault)
+                    color: (onPressed==null) ? GlobalStyles.textDisabled : widget.textDefault)
                 : widget.showIsSaving != true ? null : SizedBox(
                   width: 15,
                   height: 15,
                   child: CircularProgressIndicator(
                     strokeWidth: 2.0,
-                    color: GlobalStyles.globalTextDisabled,
+                    color: GlobalStyles.textDisabled,
                   ),
                 ),
           iconAlignment: widget.iconAlignment ?? IconAlignment.start,
@@ -154,7 +164,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                   return widget.bgActive;
                 }
                 if (states.contains(WidgetState.disabled)) {
-                  return GlobalStyles.globalBgDisabled;
+                  return GlobalStyles.btnBgDisabled;
                 }
                 return widget.bgDefault;
               },
@@ -162,7 +172,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
             foregroundColor: WidgetStateProperty.resolveWith<Color>(
               (Set<WidgetState> states) {
                 if (states.contains(WidgetState.disabled)) {
-                  return GlobalStyles.globalTextDisabled;
+                  return GlobalStyles.textDisabled;
                 }
                 return widget.textDefault;
               },
@@ -171,7 +181,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
               (Set<WidgetState> states) {
                 Color border = widget.border;
                 if (states.contains(WidgetState.disabled)) {
-                  border = GlobalStyles.globalBorderDisabled;
+                  border = GlobalStyles.defaultBorder;
                 }
                 else {
                   border = widget.border;

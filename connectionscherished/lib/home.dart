@@ -100,13 +100,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
     // });
   }
 
-  addConnection() {
+  addConnection() async {
     FriendModel newFriend = FriendModel(
       name: 'John Doe',
       lastContacted: Timestamp.now(),
       dob: null,
       alertOnBirthday: true,
       alert: PeriodicAlert(days: 0, months: 0, weeks: 1),
+      profileImage: "assets/images/avatars/avatar1.png",
     );
     Navigator.push(
       context,

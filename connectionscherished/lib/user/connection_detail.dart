@@ -41,6 +41,11 @@ class ConnectionViewState extends State<ConnectionView> {
     setUserConnection();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   setUserConnection() async {
     widget.friend.getSeverityColor();
   }

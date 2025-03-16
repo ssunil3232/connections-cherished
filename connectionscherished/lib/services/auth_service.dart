@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
+import 'package:connectionscherished/services/providers/profile_img_provider.dart';
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/util/callback.dart';
@@ -16,9 +17,11 @@ class AuthService {
   final _firestore = GetIt.I.get<FirebaseFirestore>();
   final _navService = GetIt.I.get<NavigationService>();
   final _utilService = GetIt.I.get<UtilService>();
+  final ProfileImgProvider _imgProvider = GetIt.instance<ProfileImgProvider>();
   final _userCollection = 'users';
 
   Future<bool> checkEmailExists(String email) async {
+    await _imgProvider.resetProvider();
     try {
       QuerySnapshot emailQuery = await _firestore.collection(_userCollection)
         .where("email", isEqualTo: email)
@@ -67,6 +70,9 @@ class AuthService {
       if (currentUser != null) {
         final userDoc = _firestore.collection(_userCollection).doc(currentUser.uid);
         final currentData = await userDoc.get();
+        if(user.profileImage.isEmpty){
+          user.profileImage = await _utilService.getUserAvatar();
+        }
         await userDoc.update({
           'userName': user.userName != currentData["userName"] ? user.userName : currentData["userName"],
           'profileImage': user.profileImage != currentData["profileImage"] ? user.profileImage : currentData["profileImage"],
@@ -88,6 +94,7 @@ class AuthService {
   }
 
   checkSplashState() async {
+    await _imgProvider.resetProvider();
     User? user = _authService.currentUser;
     if (user == null) {
       developer.log("User is not logged in");
@@ -100,6 +107,7 @@ class AuthService {
   }
 
   checkIfDocExists({UserCredential ? userCred, required String userId, userProvider, required SignInMethod loginMethod}) async {
+      await _imgProvider.setAvatars();
       //Fetch User Doc
       final userDoc = _firestore.collection(_userCollection).doc(userId);
       final docSnapshot = await userDoc.get();

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:connectionscherished/services/providers/profile_img_provider.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/cached_image_widget.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
@@ -7,6 +8,7 @@ import 'package:connectionscherished/widgets/form-fields/input_field_widget.dart
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ProfileImgNameDialog extends StatefulWidget {
@@ -20,10 +22,10 @@ class ProfileImgNameDialog extends StatefulWidget {
   String img;
   final Function(Map<String, String>) onChanged;
   @override
-  _ProfileImgNameDialogState createState() => _ProfileImgNameDialogState();
+  ProfileImgNameDialogState createState() => ProfileImgNameDialogState();
 }
 
-class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
+class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
   bool _allValid = true;
   bool _showNameError = false;
   final RegExp nameRegex = RegExp(r"^[a-zA-Z0-9_\xC0-\uFFFF]+([ \-']{0,1}[a-zA-Z0-9_\xC0-\uFFFF]+){0,2}[.]{0,1}$");
@@ -32,18 +34,7 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
   final ImagePicker _picker = ImagePicker();
   late String selectedAvatar;
 
-  final List<String> avatarOptions = [
-    'assets/images/avatar1.png',
-    'assets/images/avatar2.png',
-    'assets/images/avatar3.png',
-    // 'assets/images/avatar1.png',
-    // 'assets/images/avatar1.png',
-    // 'assets/images/avatar1.png',
-    // 'assets/images/avatar1.png',
-  ];
-
-
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
@@ -59,7 +50,6 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
     _nameController.text = widget.name;
     _nameController.addListener(_updateState);
     selectedAvatar = widget.img;
-    avatarOptions.insert(0, selectedAvatar);
   }
 
   void _updateState() {
@@ -78,6 +68,10 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
     return !_showNameError;
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,16 +94,20 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
             SizedBox(height: GlobalStyles.spacingStates.spacing20),
             Center(
               child: _imageFile != null
-              ? Image.file(
-                _imageFile!,
-                height: 136,
-                width: 136,
-                fit: BoxFit.cover,
+              ? Material(
+                clipBehavior: Clip.antiAlias,
+                shape: CircleBorder(side: BorderSide(color: GlobalStyles.defaultBorder, width: 0.5)),
+                child: Image.file(
+                  _imageFile!,
+                  height: 136,
+                  width: 136,
+                  fit: BoxFit.cover,
+                )
               )
               : CachedImageWidget(
                 height: 136, 
                 width: 136, 
-                imageUrlProvided: widget.img
+                imageUrlProvided: selectedAvatar
               ),
             ),
             SizedBox(height: GlobalStyles.spacingStates.spacing16),
@@ -125,7 +123,7 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
               text: 'Save',
               onPressed: _allValid ? () {
                 if(_allValid){
-                  widget.onChanged({'name': _nameController.text, 'img': widget.img});
+                  widget.onChanged({'name': _nameController.text, 'img': selectedAvatar});
                   Navigator.of(context).pop();
                 }
               }: null
@@ -137,19 +135,20 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
   }
 
   Widget _buildAvatarSection (){
+    Map<String,String> avatarOptions = Provider.of<ProfileImgProvider>(context).imageUrls;
     return SizedBox(
       height: 80,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          _buildAvatarOption('assets/icons/camera_icon.svg', () => _pickImage(ImageSource.camera)),
-          _buildAvatarOption('assets/icons/image_upload_icon.svg', () => _pickImage(ImageSource.gallery)),
-          ...avatarOptions.map(
+          _buildAvatarOption('assets/icons/camera_icon.svg', () => pickImage(ImageSource.camera)),
+          _buildAvatarOption('assets/icons/image_upload_icon.svg', () => pickImage(ImageSource.gallery)),
+          ...avatarOptions.entries.map(
             (avatar) => GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
                 setState(() {
-                  selectedAvatar = avatar;
+                  selectedAvatar = avatar.key;
                 });
               },
               child: Padding(
@@ -157,10 +156,10 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
                 child: CachedImageWidget(
                   height: 60, 
                   width: 60, 
-                  imageUrlProvided: avatar,
+                  imageUrlProvided: avatar.key,
                   shape: CircleBorder(
                     side: BorderSide(
-                      color: selectedAvatar == avatar ? GlobalStyles.btnBgPrimary : Colors.transparent, 
+                      color: selectedAvatar == avatar.key ? GlobalStyles.btnBgPrimary : Colors.transparent, 
                       width: 3.0
                     )
                   )
@@ -173,11 +172,11 @@ class _ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
     );
   }
 
-  Widget _buildAvatarOption(String icon, VoidCallback onTap) {
+  Widget _buildAvatarOption(String icon, VoidCallback onTapFn) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        onTap;
+        onTapFn();
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing4),

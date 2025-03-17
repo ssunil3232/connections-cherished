@@ -10,17 +10,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+class AvatarImgSelection {
+  String name;
+  String img;
+  File? imgFile;
+
+  AvatarImgSelection({required this.name, required this.img, this.imgFile});
+}
+
 // ignore: must_be_immutable
 class ProfileImgNameDialog extends StatefulWidget {
   ProfileImgNameDialog(
       {super.key,
-      required this.name,
-      required this.img,
+      required this.avatar,
       required this.onChanged});
 
-  String name;
-  String img;
-  final Function(Map<String, String>) onChanged;
+  AvatarImgSelection avatar;
+  final Function(AvatarImgSelection) onChanged;
   @override
   ProfileImgNameDialogState createState() => ProfileImgNameDialogState();
 }
@@ -39,7 +45,7 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
-        selectedAvatar = pickedFile.path;
+        selectedAvatar = 'assets/images/uploads/${pickedFile.name}'; //pickedFile.name; //
       });
     }
   }
@@ -47,9 +53,10 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.name;
+    _nameController.text = widget.avatar.name;
     _nameController.addListener(_updateState);
-    selectedAvatar = widget.img;
+    selectedAvatar = widget.avatar.img;
+    _imageFile = widget.avatar.imgFile;
   }
 
   void _updateState() {
@@ -93,21 +100,11 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
             ),
             SizedBox(height: GlobalStyles.spacingStates.spacing20),
             Center(
-              child: _imageFile != null
-              ? Material(
-                clipBehavior: Clip.antiAlias,
-                shape: CircleBorder(side: BorderSide(color: GlobalStyles.defaultBorder, width: 0.5)),
-                child: Image.file(
-                  _imageFile!,
-                  height: 136,
-                  width: 136,
-                  fit: BoxFit.cover,
-                )
-              )
-              : CachedImageWidget(
+              child: CachedImageWidget(
                 height: 136, 
                 width: 136, 
-                imageUrlProvided: selectedAvatar
+                imageUrlProvided: selectedAvatar,
+                imageFile: _imageFile,
               ),
             ),
             SizedBox(height: GlobalStyles.spacingStates.spacing16),
@@ -123,7 +120,13 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
               text: 'Save',
               onPressed: _allValid ? () {
                 if(_allValid){
-                  widget.onChanged({'name': _nameController.text, 'img': selectedAvatar});
+                  widget.onChanged(
+                    AvatarImgSelection(
+                      name: _nameController.text, 
+                      img: selectedAvatar, 
+                      imgFile: _imageFile
+                    )
+                  );
                   Navigator.of(context).pop();
                 }
               }: null

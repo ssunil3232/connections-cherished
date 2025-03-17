@@ -1,17 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/models/journal_model.dart';
+import 'package:connectionscherished/services/util_service.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:get_it/get_it.dart';
 
 class FriendService {
   final _firestore = GetIt.I.get<FirebaseFirestore>();
+  final _utilService = GetIt.I.get<UtilService>();
   final _friendsCollection = 'friends';
 
-  Future<void> addFriend(FriendModel friend) async {
+  Future<void> addFriend({required FriendModel friend, required AvatarImgSelection avatar}) async {
     try {
       final friendDocRef = _firestore.collection(_friendsCollection).doc();
       final friendUid = friendDocRef.id;
       friend.friendId = friendUid;
+      await _utilService.uploadImage(avatar, friendUid);
       await friendDocRef.set(friend.toMap());
     } catch (e) {
       throw Exception('Error adding friend to friends collection');
@@ -29,6 +33,7 @@ class FriendService {
   Future<void> deleteFriend(String friendId) async {
     try {
       await _firestore.collection(_friendsCollection).doc(friendId).delete();
+      await _utilService.deleteAssociatedImg(friendId, 'associatedId');
     } catch (e) {
       throw Exception('Error deleting friend: $e');
     }

@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:connectionscherished/services/providers/profile_img_provider.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 
 class UtilService {
   final _firestore = GetIt.I.get<FirebaseFirestore>();
+  final FirebaseAuth _authService = FirebaseAuth.instance;
+  final ProfileImgProvider _imgProvider = GetIt.instance<ProfileImgProvider>();
   final timezoneCollection = "timezones";
 
   // to get list of timezones from firestore
@@ -132,6 +138,60 @@ class UtilService {
     final random = Random();
     final img = imageUrls.removeAt(random.nextInt(imageUrls.length));
     return img;
+  }
+
+  Future<void> uploadImage(AvatarImgSelection avatar, String id) async {
+    if (avatar.imgFile == null) return;
+    //String fileName = path.basename(avatar.imgFile!.path);
+    String fileName = path.basename(avatar.img);
+    String userId = _authService.currentUser?.uid ?? '';
+    try {
+      await deleteAssociatedImg(id, 'associatedId');
+      // Create a reference to the location you want to upload to in Firebase Storage
+      final ref = firebase_storage.FirebaseStorage.instance.ref().child('assets/images/uploads/$fileName');
+
+      final metadata = firebase_storage.SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {
+          'associatedId': id,
+          'userId': userId, //user?.userId ?? '',
+          'uploadedAt': DateTime.now().toIso8601String(),
+        },
+      );
+
+      // Upload the file to Firebase Storage
+      firebase_storage.TaskSnapshot snapshot = await ref.putFile(avatar.imgFile!, metadata);
+
+      // Retrieve the download URL after successful upload
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+      _imgProvider.updateAvatars(avatar.img, downloadUrl);
+
+    } catch (e) {
+      print('Error uploading image: $e');
+    }
+  }
+
+  Future<void> deleteAssociatedImg(String id, String field) async {
+    try {
+      // List all files in the directory
+      firebase_storage.ListResult result = await firebase_storage.FirebaseStorage.instance
+          .ref('assets/images/uploads')
+          .listAll();
+
+      // Iterate through each file
+      for (firebase_storage.Reference ref in result.items) {
+        // Get the metadata of the file
+        firebase_storage.FullMetadata metadata = await ref.getMetadata();
+
+        // Check if the associatedID matches the friendId
+        if (metadata.customMetadata != null && metadata.customMetadata![field] == id) {
+          // Delete the file
+          await ref.delete();
+        }
+      }
+    } catch (e) {
+      print('Error deleting files: $e');
+    }
   }
 
 }

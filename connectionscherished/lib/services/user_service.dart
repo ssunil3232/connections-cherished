@@ -4,6 +4,7 @@ import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -70,13 +71,13 @@ class UserService {
     }
   }
 
-  Future<void> addFriendToUser(FriendModel friend) async {
+  Future<void> addFriendToUser(FriendModel friend, AvatarImgSelection avatar) async {
     try {
       User? user = _authService.currentUser;
       if (user != null) {
 
         friend.userId = user.uid;
-        await _friendService.addFriend(friend);
+        await _friendService.addFriend(friend: friend, avatar: avatar);
         
         _navService.showPopup("Connection added successfully!",
             color: getSnackbarColor(SnackbarType.success));

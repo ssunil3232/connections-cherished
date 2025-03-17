@@ -22,6 +22,24 @@ class ProfileImgProvider extends ChangeNotifier {
           .getDownloadURL();
       _imageUrls[url] = downloadUrl;
     }
+
+    firebase_storage.ListResult avatarUploads = await firebase_storage
+        .FirebaseStorage.instance
+        .ref('assets/images/uploads')
+        .listAll();
+
+    for (firebase_storage.Reference ref in avatarUploads.items) {
+      final String url = ref.fullPath;
+      String downloadUrl = await firebase_storage.FirebaseStorage.instance
+          .ref(url)
+          .getDownloadURL();
+      _imageUrls[url] = downloadUrl;
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateAvatars(String url, String downloadUrl) async {
+    _imageUrls[url] = downloadUrl;
     notifyListeners();
   }
 

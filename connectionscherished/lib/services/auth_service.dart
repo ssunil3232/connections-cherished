@@ -323,7 +323,7 @@ class AuthService {
       await _firestore.collection(_userCollection).doc(user.uid).update({
         'isDeleted': true
       });
-
+      await _utilService.deleteAssociatedImg(user.uid, 'userId');
       await user.delete();
       await _authService.signOut();
       navigatorKey.currentState!.pushNamedAndRemoveUntil(

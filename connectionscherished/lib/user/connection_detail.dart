@@ -62,6 +62,7 @@ class ConnectionViewState extends State<ConnectionView> {
   }
 
   Future<void> saveConnections() async {
+    if (!mounted) return;
     setState(() {
       saving = true;
     });
@@ -77,6 +78,7 @@ class ConnectionViewState extends State<ConnectionView> {
       Exception("Failed to add connection");
     }
     
+    if (!mounted) return;
     setState(() {
       saving = false;
     });
@@ -94,6 +96,7 @@ class ConnectionViewState extends State<ConnectionView> {
   }
 
   Future<void> deleteConnections() async {
+    if (!mounted) return;
     setState(() {
       saving = true;
     });
@@ -102,7 +105,7 @@ class ConnectionViewState extends State<ConnectionView> {
     } catch(error){
       Exception("Failed to delete connection");
     }
-    
+    if (!mounted) return;
     setState(() {
       saving = false;
     });

@@ -1,4 +1,5 @@
 import 'package:connectionscherished/home.dart';
+import 'package:connectionscherished/insights/insight_landing.dart';
 import 'package:connectionscherished/journals/journal_landing.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/services/auth_service.dart';
@@ -47,6 +48,10 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
     }
     else if (index == 1) {
         // Insights Page
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => InsightLanding()),
+      );
     } 
     else if (index == 2) {
         Navigator.push(

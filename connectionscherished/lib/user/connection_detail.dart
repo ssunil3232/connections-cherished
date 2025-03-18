@@ -155,7 +155,7 @@ class ConnectionViewState extends State<ConnectionView> {
         ] : null,
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.spacing20,
         child: Center(
           child: saving
           ? const CircularProgressIndicator()
@@ -481,8 +481,8 @@ class ConnectionViewState extends State<ConnectionView> {
                   ),
                   if(widget.type == ConnectionType.edit)
                   Container(
-                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing12),
-                    child: CustomButtonWidget.secondary(
+                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4),
+                    child: CustomButtonWidget.tertiaryAlert(
                       text: 'Delete connection',
                       onPressed: (){
                         showDialog(

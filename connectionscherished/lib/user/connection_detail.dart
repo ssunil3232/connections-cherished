@@ -3,12 +3,14 @@ import 'package:connectionscherished/journals/journal_entries.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
+import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/dialog_widget.dart';
 import 'package:connectionscherished/widgets/digital_clock.dart';
 import 'package:connectionscherished/widgets/form-fields/date_picker/date_picker.dart';
 import 'package:connectionscherished/widgets/form-fields/switch_widget.dart';
 import 'package:connectionscherished/widgets/form-fields/timezone_picker_widget.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:connectionscherished/widgets/profile/profile_img_name_update.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:connectionscherished/widgets/form-fields/freq_picker/freq_field.dart';
@@ -34,6 +36,11 @@ class ConnectionViewState extends State<ConnectionView> {
   bool saving = false;
   final _userService = GetIt.I.get<UserService>();
   final _friendService = GetIt.I.get<FriendService>();
+  final _utilService = GetIt.I.get<UtilService>();
+  AvatarImgSelection userProfile = AvatarImgSelection(
+    name: 'John Doe', 
+    img: 'assets/images/avatars/avatar1.png', 
+  );
 
   @override
   void initState() {
@@ -41,24 +48,37 @@ class ConnectionViewState extends State<ConnectionView> {
     setUserConnection();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   setUserConnection() async {
     widget.friend.getSeverityColor();
+    userProfile = AvatarImgSelection(
+      name: widget.friend.name ?? 'John Doe', 
+      img: widget.friend.profileImage, 
+    );
   }
 
   Future<void> saveConnections() async {
+    if (!mounted) return;
     setState(() {
       saving = true;
     });
     try {
+      // await _utilService.uploadImage(userProfile.imgFile, widget.friend.friendId!);
       if(widget.type == ConnectionType.add) {
-        await _userService.addFriendToUser(widget.friend);
+        await _userService.addFriendToUser(widget.friend, userProfile);
       } else {
+        await _utilService.uploadImage(userProfile, widget.friend.friendId!);
         await _friendService.updateFriend(widget.friend.friendId!, widget.friend.toMap());
       }
     } catch(error){
       Exception("Failed to add connection");
     }
     
+    if (!mounted) return;
     setState(() {
       saving = false;
     });
@@ -76,6 +96,7 @@ class ConnectionViewState extends State<ConnectionView> {
   }
 
   Future<void> deleteConnections() async {
+    if (!mounted) return;
     setState(() {
       saving = true;
     });
@@ -84,7 +105,7 @@ class ConnectionViewState extends State<ConnectionView> {
     } catch(error){
       Exception("Failed to delete connection");
     }
-    
+    if (!mounted) return;
     setState(() {
       saving = false;
     });
@@ -98,11 +119,13 @@ class ConnectionViewState extends State<ConnectionView> {
     // dataUpdate['color'] = calculateSeverity(dataUpdate['days']);
   }
 
-  updateProfileData (data){
+  updateProfileData (AvatarImgSelection data) async {
     setState(() {
-      widget.friend.name = data['name'];
-      widget.friend.profileImage = data['img'];
+      widget.friend.name = data.name;
+      widget.friend.profileImage = data.img;
+      userProfile = data;
     });
+    // await _imgProvider.updateAvatars(userProfile, friendUid);
   }
 
   @override
@@ -159,8 +182,7 @@ class ConnectionViewState extends State<ConnectionView> {
                     ),
                     ProfileImgNameUpdate(
                       onUpdate: updateProfileData,
-                      name: widget.friend.name ?? 'John Doe',
-                      img: widget.friend.profileImage,
+                      avatar: userProfile,
                       isEditEnabled : widget.type != ConnectionType.view,
                     ),
                     Container(

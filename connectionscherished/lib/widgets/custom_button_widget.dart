@@ -10,6 +10,7 @@ enum ButtonType {primary, secondary, teritary, tertiaryVariant, tertiaryAlert, p
 class CustomButtonWidget extends StatefulWidget {
   String? text; 
   IconData? icon;
+  Widget? customIcon;
   IconAlignment? iconAlignment;
   VoidCallback? onPressed;
   double? width;
@@ -25,6 +26,7 @@ class CustomButtonWidget extends StatefulWidget {
     this.onPressed,
     this.width,
     this.height,
+    this.customIcon,
     this.isEnabled = true,
     this.showIsSaving = false,
     this.showUnderline = true,
@@ -39,7 +41,7 @@ class CustomButtonWidget extends StatefulWidget {
   ButtonType btnType = ButtonType.primary;
 
   // Primary Button
-  CustomButtonWidget.primary({super.key, this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
+  CustomButtonWidget.primary({super.key, this.customIcon, this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
       : btnType = ButtonType.primary,
         style = ButtonStyles.primaryButton,
         textDefault = ButtonStyles.primaryBtnStyle.text,
@@ -48,7 +50,7 @@ class CustomButtonWidget extends StatefulWidget {
         bgActive = ButtonStyles.primaryBtnStyle.bgActive;
 
     // Secondary Button
-  CustomButtonWidget.secondary({super.key, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
+  CustomButtonWidget.secondary({super.key, this.customIcon, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
       : btnType = ButtonType.secondary,
         style = ButtonStyles.secondaryButton,
         textDefault = ButtonStyles.secondaryBtnStyle.text,
@@ -144,7 +146,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
         child: 
         ElevatedButton.icon(
           onPressed: onPressed,
-          icon: (widget.icon) != null ? 
+          icon: (widget.customIcon !=null)? widget.customIcon : (widget.icon) != null ? 
                 VariedIcon.varied(widget.icon!,
                     color: (onPressed==null) ? GlobalStyles.textDisabled : widget.textDefault)
                 : widget.showIsSaving != true ? null : SizedBox(

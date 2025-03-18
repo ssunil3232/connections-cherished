@@ -6,14 +6,18 @@ import 'package:connectionscherished/journals/journal_landing.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/auth_service.dart';
 import 'package:connectionscherished/services/friend_service.dart';
+import 'package:connectionscherished/services/providers/profile_img_provider.dart';
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/user_profile.dart';
+import 'package:connectionscherished/util/screen_util.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -28,6 +32,7 @@ void setupLocator(FirebaseApp firebaseApp) {
   GetIt.I.registerLazySingleton(() => UserService());
   GetIt.I.registerLazySingleton(() => UtilService());
   GetIt.I.registerLazySingleton(() => FriendService());
+  GetIt.I.registerLazySingleton<ProfileImgProvider>(()=>ProfileImgProvider());
 }
 
 
@@ -38,7 +43,12 @@ void main() async {
   );
   setupLocator(firebaseApp);
   tz.initializeTimeZones();
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ProfileImgProvider(),
+      child: MyApp()
+    )
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -73,30 +83,48 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Connections Cherished',
-      navigatorKey: navigatorKey,
-      navigatorObservers: [routeObserver],
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: GlobalStyles.primaryText),
-        useMaterial3: true,
-        iconTheme: const IconThemeData(color: GlobalStyles.primaryText,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        ScreenUtil.init(context);
+        MaterialSymbolsBase.setRoundedVariationDefaults(
+          size: 24,
+          fill: 0.0,
           weight: 400,
-          opticalSize: 24),
-        scaffoldBackgroundColor: GlobalStyles.defaultBg,
-      ),
-      initialRoute: Routes.splash,
-      routes: {
-        Routes.splash: (context) => const SplashScreen(),
-        Routes.authOptions: (context) => const AuthOptionsScreen(), 
-        Routes.home: (context) => HomePage(),
-        Routes.dashboard: (context) => const DashboardScreen(),
-        Routes.emailOption: (context) => const EmailLoginScreen(),
-        Routes.phoneOption: (context) => const PhoneLoginScreen(),
-        Routes.createAccount: (context) => const CreateAccountScreen(),
-        Routes.userProfile: (context) =>  UserProfileScreen(),
-        Routes.journalLanding: (context) => const JournalLanding(),
-      },
+          grade: 0.0,
+          opticalSize: 24,
+          color: GlobalStyles.primaryText,
+        );
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => GetIt.I<ProfileImgProvider>()),
+          ],
+          builder: (context, child) => MaterialApp(
+            title: 'Connections Cherished',
+            navigatorKey: navigatorKey,
+            navigatorObservers: [routeObserver],
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: GlobalStyles.primaryText),
+              useMaterial3: true,
+              iconTheme: const IconThemeData(color: GlobalStyles.primaryText,
+                weight: 400,
+                opticalSize: 24),
+              scaffoldBackgroundColor: GlobalStyles.defaultBg,
+            ),
+            initialRoute: Routes.splash,
+            routes: {
+              Routes.splash: (context) => const SplashScreen(),
+              Routes.authOptions: (context) => const AuthOptionsScreen(), 
+              Routes.home: (context) => HomePage(),
+              Routes.dashboard: (context) => const DashboardScreen(),
+              Routes.emailOption: (context) => const EmailLoginScreen(),
+              Routes.phoneOption: (context) => const PhoneLoginScreen(),
+              Routes.createAccount: (context) => const CreateAccountScreen(),
+              Routes.userProfile: (context) =>  UserProfileScreen(),
+              Routes.journalLanding: (context) => const JournalLanding(),
+            },
+          ),
+        );
+      }
     );
   }
 }

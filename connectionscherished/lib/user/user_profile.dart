@@ -2,6 +2,7 @@ import 'package:connectionscherished/auth/reauth_screens/email_reauth_screen.dar
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/auth_service.dart';
+import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/button_styles.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/bottom_drawer_widget.dart';
@@ -13,6 +14,7 @@ import 'package:connectionscherished/widgets/list_tile_item.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart';
 import 'package:connectionscherished/widgets/page_padding.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:connectionscherished/widgets/profile/profile_img_name_update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +35,14 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   bool saving = false;
   bool showSaveBtn = false;
   final _accountService = GetIt.I.get<AuthService>();
+  final _utilService = GetIt.I.get<UtilService>();
   final _authService = FirebaseAuth.instance;
   String? _passwordEmail;
   final _messageController = TextEditingController();
+  AvatarImgSelection userProfile = AvatarImgSelection(
+    name: 'John Doe', 
+    img: 'assets/images/avatars/avatar1.png', 
+  );
 
   @override
   void initState() {
@@ -49,6 +56,10 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> loadUserSettings() async {
+    userProfile = AvatarImgSelection(
+      name: widget.user?.userName ?? 'John Doe', 
+      img: widget.user?.profileImage ?? 'assets/images/avatars/avatar1.png', 
+    );
     debugPrint('User: ${widget.user?.timezone}');
     if (mounted) {
       setState(() {
@@ -58,11 +69,12 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     }
   }
 
-  updateProfileData (data){
+  updateProfileData (AvatarImgSelection data){
     if (mounted) {
       setState(() {
-        widget.user?.userName = data['name'];
-        widget.user?.profileImage = data['img'];
+        widget.user?.userName = data.name;
+        widget.user?.profileImage = data.img;
+        userProfile = data;
         showSaveBtn = true;
       });
     }
@@ -76,6 +88,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         saving = true;
       });
       try {
+        await _utilService.uploadImage(userProfile, widget.user?.userId ?? '');
         await _accountService.updateUser(widget.user!);
       } catch (e) {
         Exception('Error saving user settings: $e');
@@ -162,8 +175,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                       ProfileImgNameUpdate(
                         onUpdate: (value) => updateProfileData(value),
-                        name: widget.user?.userName ?? 'John Doe',
-                        img: widget.user?.profileImage ?? '',
+                        avatar: userProfile,
                         isEditEnabled: true,
                       ),
                       SizedBox(height: GlobalStyles.spacingStates.spacing20),

@@ -3,6 +3,8 @@ import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
 import 'package:connectionscherished/services/routing_service.dart';
+import 'package:connectionscherished/services/util_service.dart';
+import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -11,6 +13,7 @@ class UserService {
   final _firestore = GetIt.I.get<FirebaseFirestore>();
   final _navService = GetIt.I.get<NavigationService>();
   final FriendService _friendService = GetIt.I<FriendService>();
+  final _utilService = GetIt.I.get<UtilService>();
   final _userCollection = 'users';
 
   Future<void> addUserInfo(UserModel updatedUser) async {
@@ -19,14 +22,14 @@ class UserService {
       if (user != null) {
         final userDoc = _firestore.collection(_userCollection).doc(user.uid);
         final currentData = await userDoc.get();
-        // if(updatedUser.profileImage.isEmpty){
-        //   updatedUser.profileImage = await getUserAvatar();
-        // }
+        if(updatedUser.profileImage.isEmpty){
+          updatedUser.profileImage = await _utilService.getUserAvatar();
+        }
         await userDoc.update({
           'userName': updatedUser.userName.isNotEmpty ? updatedUser.userName : currentData["userName"],
           'updatedAt': FieldValue.serverTimestamp(),
           'timezone': updatedUser.timezone.isNotEmpty ? updatedUser.timezone : currentData["timezone"],
-          // 'profileImage': updatedUser.profileImage,
+          'profileImage': updatedUser.profileImage,
         });
       }
       else {
@@ -68,13 +71,13 @@ class UserService {
     }
   }
 
-  Future<void> addFriendToUser(FriendModel friend) async {
+  Future<void> addFriendToUser(FriendModel friend, AvatarImgSelection avatar) async {
     try {
       User? user = _authService.currentUser;
       if (user != null) {
 
         friend.userId = user.uid;
-        await _friendService.addFriend(friend);
+        await _friendService.addFriend(friend: friend, avatar: avatar);
         
         _navService.showPopup("Connection added successfully!",
             color: getSnackbarColor(SnackbarType.success));

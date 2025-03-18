@@ -6,12 +6,11 @@ import 'package:flutter_svg/svg.dart';
 
 // ignore: must_be_immutable
 class ProfileImgNameUpdate extends StatefulWidget {
-  String name;
-  String img;
+  AvatarImgSelection avatar;
   bool isEditEnabled = true;
-  final Function(dynamic) onUpdate;
+  final Function(AvatarImgSelection) onUpdate;
 
-  ProfileImgNameUpdate({super.key, required this.name, required this.img, required this.onUpdate, required this.isEditEnabled});
+  ProfileImgNameUpdate({super.key, required this.avatar, required this.onUpdate, required this.isEditEnabled});
   @override
   ProfileImgNameUpdateState createState() => ProfileImgNameUpdateState();
 }
@@ -22,11 +21,12 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
     super.initState();
   }
 
-  void updateData(value) {
-    widget.name = value["name"];
-    widget.img = value["img"];
+  void updateData(AvatarImgSelection value) {
+    widget.avatar.name = value.name;
+    widget.avatar.img = value.img;
+    widget.avatar.imgFile = value.imgFile;
     setState(() {
-      widget.onUpdate({'name': widget.name, 'img': widget.img});
+      widget.onUpdate(value);
     });
   }
 
@@ -39,7 +39,8 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
         CachedImageWidget(
           height: 80, 
           width: 80, 
-          imageUrlProvided: widget.img
+          imageUrlProvided: widget.avatar.img,
+          imageFile: widget.avatar.imgFile,
         ),
         Padding(
           padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing20, right: GlobalStyles.spacingStates.spacing8),
@@ -48,7 +49,7 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
               maxWidth: 200
             ),
             child: Text(
-              widget.name,
+              widget.avatar.name,
               style: GlobalStyles.textStyles.textH1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -61,9 +62,8 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
               context: context,
               builder: (BuildContext context) {
                 return ProfileImgNameDialog(
-                  name: widget.name,
-                  img: widget.img,
-                  onChanged: (value) {
+                  avatar: widget.avatar,
+                  onChanged: (AvatarImgSelection value) {
                     setState(() {
                       updateData(value);
                     });

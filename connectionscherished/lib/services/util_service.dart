@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class UtilService {
@@ -192,6 +193,155 @@ class UtilService {
     } catch (e) {
       print('Error deleting files: $e');
     }
+  }
+
+  Future <Map<String, Map<String,dynamic>>> getAnalytics() async {
+    List<Map<String, dynamic>> data = [
+      {
+        "friendId": "CIfRqrwcjXDnMscPd9sG",
+        "data": [
+          "2024-12-03", "2024-12-24",
+          "2025-01-01", "2025-01-05",
+          "2025-02-12", 
+          "2025-03-02","2025-03-03","2025-03-11","2025-03-17"
+        ]
+      },
+      {
+        "friendId": "OZUTmihqy4BzUlidCllw",
+        "data": [
+          "2024-12-02", "2024-12-05","2024-12-12","2024-12-20","2024-12-30",
+          "2025-01-12", "2025-01-22",
+          "2025-02-12", "2025-02-22",
+          "2025-03-02","2025-03-03","2025-03-11","2025-03-17", "2025-03-18"
+        ]
+      },
+    ];
+
+    Map<String, Map<String,dynamic>> result = {};
+
+    for (int i = 0; i < data.length; i++) {
+      String friendKey = data[i]['friendId'];
+      List<dynamic> contactedDates = data[i]['data'];
+      Map<String, dynamic> weeklyCounts = getWeeklyCounts(contactedDates);
+      Map<String, dynamic> monthlyCounts = getMonthlyCounts(contactedDates);
+      Map<String, dynamic> yearlyCounts = getYearlyCounts(contactedDates);;
+      result[friendKey] = {"week": weeklyCounts, "month": monthlyCounts, "year": yearlyCounts};
+    }
+    // debugPrint("Result: ${result.toString()}");
+    result = getAllCounts(result);
+    return result;
+  }
+
+  getAllCounts(Map<String, Map<String,dynamic>> result){
+    Map<String, dynamic> allWeeklyCounts = {};
+    Map<String, dynamic> allMonthlyCounts = {};
+    Map<String, dynamic> allYearlyCounts = {};
+
+    result.forEach((key, value){
+      Map<String, dynamic> weeklyCounts = value['week'];
+      Map<String, dynamic> monthlyCounts = value['month'];
+      Map<String, dynamic> yearlyCounts = value['year'];
+      weeklyCounts.forEach((day, count) {
+        if (allWeeklyCounts.containsKey(day)) {
+          allWeeklyCounts[day] = allWeeklyCounts[day] + count;
+        } else {
+          allWeeklyCounts[day] = count;
+        }
+      });
+
+      monthlyCounts.forEach((month, count) {
+        if (allMonthlyCounts.containsKey(month)) {
+          allMonthlyCounts[month] = allMonthlyCounts[month] + count;
+        } else {
+          allMonthlyCounts[month] = count;
+        }
+      });
+
+      yearlyCounts.forEach((year, count) {
+        if (allYearlyCounts.containsKey(year)) {
+          allYearlyCounts[year] = allYearlyCounts[year] + count;
+        } else {
+          allYearlyCounts[year] = count;
+        }
+      });
+    });
+    result["all"] = 
+      {
+        "week": allWeeklyCounts,
+        "month": allMonthlyCounts,
+        "year": allYearlyCounts
+      };
+    return result;
+  }
+
+  getYearlyCounts(List<dynamic> dates){
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int startYear = currentYear - 5;
+
+    Map<String, int> yearlyCounts = {};
+
+    for (int year = startYear; year <= currentYear; year++) {
+      yearlyCounts[year.toString()] = 0;
+    }
+
+    dates.forEach((date){
+      DateTime dateTime = DateTime.parse(date);
+      int year = dateTime.year;
+      if (yearlyCounts.containsKey(year.toString())) {
+        yearlyCounts[year.toString()] = yearlyCounts[year.toString()]! + 1;
+      }
+    });
+    return yearlyCounts;
+  }
+
+  getMonthlyCounts(List<dynamic> dates){
+    DateTime now = DateTime.now();
+    DateTime startOfYear = DateTime(now.year, 1, 1);
+    DateTime endOfYear = DateTime(now.year, 12, 31);
+
+    Map<String, int> monthlyCounts = {};
+
+    for (int i = 1; i <= 12; i++) {
+      DateTime startOfMonth = DateTime(now.year, i, 1);
+      String monthString = DateFormat('MMM').format(startOfMonth);
+      monthlyCounts[monthString] = 0;
+    }
+    dates.forEach((date){
+      DateTime dateTime = DateTime.parse(date);
+      if (dateTime.isAfter(startOfYear.subtract(Duration(days: 1))) && dateTime.isBefore(endOfYear.add(Duration(days: 1)))) {
+        String monthString = DateFormat('MMM').format(dateTime);
+        if (monthlyCounts.containsKey(monthString)) {
+          monthlyCounts[monthString] = monthlyCounts[monthString]! + 1;
+        }
+      }
+    });
+    return monthlyCounts;
+  }
+
+  getWeeklyCounts(List<dynamic> dates){
+    DateTime now = DateTime.now();
+    DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+
+    Map<String, int> weeklyCounts = {};
+
+    for (int i = 0; i < 7; i++) {
+      DateTime day = startOfWeek.add(Duration(days: i));
+      String dayString = DateFormat('E').format(day);
+      weeklyCounts[dayString] = 0;
+    }
+
+    dates.forEach((date){
+      DateTime dateTime = DateTime.parse(date);
+      if (dateTime.isAfter(startOfWeek.subtract(Duration(days: 1))) && dateTime.isBefore(endOfWeek.add(Duration(days: 1)))) {
+        String dayString = DateFormat('E').format(dateTime);
+        if (weeklyCounts.containsKey(dayString)) {
+          weeklyCounts[dayString] = weeklyCounts[dayString]! + 1;
+        }
+      }
+    });
+    return weeklyCounts;
   }
 
 }

@@ -19,7 +19,7 @@ class _ArcGaugeState extends State<ArcGauge> {
       children: [
         SizedBox(
           width: 300,
-          height: 200,
+          height: 180,
           child: CustomPaint(
             painter: ArcGaugePainter(percentage: widget.percentage),
           ),

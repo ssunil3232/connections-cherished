@@ -9,7 +9,6 @@ import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart'
 import 'package:connectionscherished/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart';
 
 class JournalEntries extends StatefulWidget {
   const JournalEntries({super.key, required this.friend});
@@ -140,7 +139,7 @@ class JournalEntriesState extends State<JournalEntries> {
           onPressed: () {
             // Add action for the button here
             JournalModel newEntry = JournalModel(
-              title: 'Entry ${DateFormat('d MMM yyyy HH:mm').format(DateTime.now()).toString()}',
+              title: 'Journal entry',
               content: '',
               notes: '',
               mood: '',

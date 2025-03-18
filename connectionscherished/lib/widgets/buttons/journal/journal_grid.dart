@@ -2,6 +2,7 @@ import 'package:connectionscherished/models/journal_model.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/buttons/journal/journal_grid_item.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class JournalGrid extends StatefulWidget {
   const JournalGrid({super.key, required this.data, required this.onDelete, required this.onUpdate});
@@ -64,6 +65,7 @@ class _JournalGridState extends State<JournalGrid> {
             return JournalGridItem(
               key: _itemKeys[i],
               title: item.title,
+              subtitle: DateFormat('d MMM yyyy HH:mm').format(item.entryTimestamp.toDate()).toString(),
               color: GlobalStyles.topNavBg,
               data: item,
               onCollapse: () => _handleCollapse(index: i),

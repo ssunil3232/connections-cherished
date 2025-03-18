@@ -150,29 +150,6 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                     physics: BouncingScrollPhysics(),
                     children: [
                       SizedBox(height: GlobalStyles.spacingStates.spacing24),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing20),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                                    child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: 32, height: 32),
-                                  ),
-                                  Text(
-                                    'Hello there,',
-                                    style: GlobalStyles.textStyles.textBody,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ),
-                        ],
-                      ),
                       ProfileImgNameUpdate(
                         onUpdate: (value) => updateProfileData(value),
                         avatar: userProfile,

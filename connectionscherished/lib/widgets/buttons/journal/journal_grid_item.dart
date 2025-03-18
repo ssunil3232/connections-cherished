@@ -9,6 +9,7 @@ class JournalGridItem extends StatefulWidget {
   const JournalGridItem({
     super.key,
     required this.title,
+    required this.subtitle,
     required this.color,
     required this.data,
     required this.onCollapse,
@@ -17,6 +18,7 @@ class JournalGridItem extends StatefulWidget {
   });
 
   final String title;
+  final String subtitle;
   final Color color;
   final JournalModel data;
   final VoidCallback onCollapse;
@@ -197,11 +199,23 @@ class JournalGridItemState extends State<JournalGridItem> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: showText ? fullWidth-50 : shrinkWidth-50),
+                      constraints: BoxConstraints(maxWidth: shrinkWidth-50),
                       child: Text(
                         widget.title,
                         overflow: TextOverflow.ellipsis,
                         style: GlobalStyles.textStyles.textButtonSecondary,
+                      ),
+                    )
+                  ),
+                  AnimatedOpacity(
+                    opacity: showText ? 1 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: Visibility(
+                      visible: showText,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                        child: Text(widget.subtitle,
+                          style: GlobalStyles.textStyles.textCaption3.copyWith(color: GlobalStyles.textSubtle)),
                       ),
                     )
                   ),

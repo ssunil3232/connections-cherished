@@ -68,7 +68,7 @@ class InsightLandingState extends State<InsightLanding> {
           AbsorbPointer(
             absorbing: !isSubscribed,
             child: SingleChildScrollView(
-              physics: isSubscribed
+              physics: isSubscribed && connections.isNotEmpty
                   ? const BouncingScrollPhysics()
                   : const NeverScrollableScrollPhysics(),
               child: ConstrainedBox(

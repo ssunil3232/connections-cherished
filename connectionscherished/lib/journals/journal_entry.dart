@@ -202,41 +202,49 @@ class JournalEntryState extends State<JournalEntry> {
                             child: Text('Mood:', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
                           ),
                           Expanded(
-                            child:
-                          CustomDropdownWidget(
-                            disabled: saving || widget.type == JournalEntryType.view,
-                            offset: Offset(0, (200+55+8)),
-                            placeholderText: 'Select a mood',
-                            onChanged:(value) {
-                              setState(() {
-                                _selectedMood = value;
-                              });
-                              _updateButtonState();
-                            }, 
-                            dropdownItems: moodOptions
-                              .asMap().entries.map((entry){
-                                int index = entry.key;
-                                String value = entry.value;
-                                return DropdownItems(
-                                  value: value,
-                                  label: value,
-                                  customItem: Row(
-                                    children: [
-                                      Text(value),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 8),
-                                        child: SvgPicture.asset('assets/icons/${moodEmojis[index]}', width: 24, height: 24),
-                                      )
-                                    ],
-                                  ),
-                                  enabledButton: true
-                                );
-                              }).toList(),
-                            initialValue: _selectedMood,
-                            menuWidth: MediaQuery.of(context).size.width * 0.5,
-                            menuHeight: 200,
-                            buttonWidth: MediaQuery.of(context).size.width * 0.5,
-                          ),
+                            child: Row(
+                              children : [
+                                CustomDropdownWidget(
+                                  disabled: saving || widget.type == JournalEntryType.view,
+                                  offset: Offset(0, (200+55+8)),
+                                  placeholderText: 'Select a mood',
+                                  onChanged:(value) {
+                                    setState(() {
+                                      _selectedMood = value;
+                                    });
+                                    _updateButtonState();
+                                  }, 
+                                  dropdownItems: moodOptions
+                                    .asMap().entries.map((entry){
+                                      int index = entry.key;
+                                      String value = entry.value;
+                                      return DropdownItems(
+                                        value: value,
+                                        label: value,
+                                        customItem: Row(
+                                          children: [
+                                            Text(value),
+                                            Padding(
+                                              padding: EdgeInsets.only(left: 8),
+                                              child: SvgPicture.asset('assets/icons/${moodEmojis[index]}', width: 24, height: 24),
+                                            )
+                                          ],
+                                        ),
+                                        enabledButton: true
+                                      );
+                                    }).toList(),
+                                  initialValue: _selectedMood,
+                                  menuWidth: MediaQuery.of(context).size.width * 0.5,
+                                  menuHeight: 200,
+                                  buttonWidth: MediaQuery.of(context).size.width * 0.5,
+                                ),
+                                if(_selectedMood != null && moodOptions.contains(_selectedMood!)) 
+                                Padding(
+                                  padding: EdgeInsets.only(left: 8),
+                                  child: SvgPicture.asset('assets/icons/${moodEmojis[moodOptions.indexOf(_selectedMood!)]}', width: 24, height: 24),
+                                )
+                              ]
+                            )
                           )
                         ],
                       )

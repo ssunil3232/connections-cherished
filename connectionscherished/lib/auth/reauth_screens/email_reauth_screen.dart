@@ -76,13 +76,16 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
       setState(() {
         _passwordValidateFailed = true;
       });
+      setState(() {
+        _isSaving = false;
+      });
     } catch (e) {
       _routingService.showPopup("Internal Server Error!",
           color: getSnackbarColor(SnackbarType.alert));
-    }
-    setState(() {
-      _isSaving = false;
-    });
+      setState(() {
+        _isSaving = false;
+      });
+    } 
   }
 
   @override

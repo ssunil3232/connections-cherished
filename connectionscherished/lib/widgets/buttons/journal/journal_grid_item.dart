@@ -29,22 +29,23 @@ class JournalGridItem extends StatefulWidget {
 
 class JournalGridItemState extends State<JournalGridItem> {
   bool isCollapsed = false;
+  bool showText = true;
 
   void toggleExpansion() {
     setState(() {
       isCollapsed = !isCollapsed;
-      // if (isCollapsed) {
-      //   widget.onCollapse();
-      //   showText = false;
-      // } else {
-      //   Future.delayed(const Duration(milliseconds: 200), () {
-      //     if (mounted) {
-      //       setState(() {
-      //         showText = true;
-      //       });
-      //     }
-      //   });
-      // }
+      if (isCollapsed) {
+        widget.onCollapse();
+        showText = false;
+      } else {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          if (mounted) {
+            setState(() {
+              showText = true;
+            });
+          }
+        });
+      }
     });
   }
 
@@ -52,13 +53,13 @@ class JournalGridItemState extends State<JournalGridItem> {
     setState(() {
       isCollapsed = false;
     });
-    // Future.delayed(const Duration(milliseconds: 200), () {
-    //   if (mounted) {
-    //     setState(() {
-    //       showText = true;
-    //     });
-    //   }
-    // });
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (mounted) {
+        setState(() {
+          showText = true;
+        });
+      }
+    });
   }
 
   @override
@@ -196,7 +197,7 @@ class JournalGridItemState extends State<JournalGridItem> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(maxWidth: shrinkWidth),
+                      constraints: BoxConstraints(maxWidth: showText ? fullWidth-50 : shrinkWidth-50),
                       child: Text(
                         widget.title,
                         overflow: TextOverflow.ellipsis,

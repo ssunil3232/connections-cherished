@@ -1,6 +1,5 @@
 import 'package:connectionscherished/models/journal_model.dart';
 import 'package:connectionscherished/styles/styles.dart';
-import 'package:connectionscherished/widgets/buttons/connection/connection_grid_item.dart';
 import 'package:connectionscherished/widgets/buttons/journal/journal_grid_item.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,7 @@ class JournalGrid extends StatefulWidget {
 }
 
 class _JournalGridState extends State<JournalGrid> {
-  late List<GlobalKey<ConnectionGridItemState>> _itemKeys = [];
+  late List<GlobalKey<JournalGridItemState>> _itemKeys = [];
 
   @override
   void initState() {
@@ -32,7 +31,7 @@ class _JournalGridState extends State<JournalGrid> {
   }
 
   void _initializeKeys() {
-    _itemKeys = List.generate(widget.data.length, (_) => GlobalKey<ConnectionGridItemState>());
+    _itemKeys = List.generate(widget.data.length, (_) => GlobalKey<JournalGridItemState>());
   }
 
   void _handleCollapse({int? index}) {

@@ -60,16 +60,18 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
           onPressed: () async {
             showDialog(
               context: context,
-              builder: (BuildContext context) {
-                return ProfileImgNameDialog(
+              builder: (context) => MediaQuery.removeViewInsets(
+                context: context,
+                removeBottom: true,
+                child: ProfileImgNameDialog(
                   avatar: widget.avatar,
                   onChanged: (AvatarImgSelection value) {
                     setState(() {
                       updateData(value);
                     });
                   }
-                );
-              }
+                )
+              )
             );
           },
           icon: SvgPicture.asset(

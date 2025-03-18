@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class AvatarImgSelection {
   String name;
@@ -43,10 +44,39 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-        selectedAvatar = 'assets/images/uploads/${pickedFile.name}'; //pickedFile.name; //
-      });
+      // Launch the cropper UI for the picked image.
+      File? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+        ),
+        iosUiSettings: IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      );
+      // If cropping was successful, update the state with the cropped image.
+      if (croppedFile != null) {
+        setState(() {
+          _imageFile = File(croppedFile.path);
+          selectedAvatar = 'assets/images/uploads/${pickedFile.name}';
+        });
+      } else{
+        setState(() {
+          _imageFile = File(pickedFile.path);
+          selectedAvatar = 'assets/images/uploads/${pickedFile.name}';
+        });
+      }
     }
   }
 

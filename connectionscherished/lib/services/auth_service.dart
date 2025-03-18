@@ -107,7 +107,7 @@ class AuthService {
   }
 
   checkIfDocExists({UserCredential ? userCred, required String userId, userProvider, required SignInMethod loginMethod}) async {
-      await _imgProvider.setAvatars();
+      await _imgProvider.setAvatars(userId);
       //Fetch User Doc
       final userDoc = _firestore.collection(_userCollection).doc(userId);
       final docSnapshot = await userDoc.get();

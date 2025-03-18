@@ -9,7 +9,7 @@ class ProfileImgProvider extends ChangeNotifier {
   Map<String, String> get imageUrls => _imageUrls;
   String get avatarImgUrl => _avatarImgUrl;
 
-  Future<void> setAvatars () async {
+  Future<void> setAvatars (String userId) async {
     firebase_storage.ListResult avatars = await firebase_storage
         .FirebaseStorage.instance
         .ref('assets/images/avatars')
@@ -29,11 +29,15 @@ class ProfileImgProvider extends ChangeNotifier {
         .listAll();
 
     for (firebase_storage.Reference ref in avatarUploads.items) {
-      final String url = ref.fullPath;
-      String downloadUrl = await firebase_storage.FirebaseStorage.instance
-          .ref(url)
-          .getDownloadURL();
-      _imageUrls[url] = downloadUrl;
+      firebase_storage.FullMetadata metadata = await ref.getMetadata();
+      // Check if the userId in metadata matches the provided userId
+      if (metadata.customMetadata != null && metadata.customMetadata!['userId'] == userId) {
+        final String url = ref.fullPath;
+        String downloadUrl = await firebase_storage.FirebaseStorage.instance
+            .ref(url)
+            .getDownloadURL();
+        _imageUrls[url] = downloadUrl;
+      }
     }
     notifyListeners();
   }

@@ -51,7 +51,7 @@ class FreqField extends StatelessWidget {
         ),
         SizedBox(width: GlobalStyles.spacingStates.spacing4),
         Text(label, style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle)),
-        SizedBox(width: GlobalStyles.spacingStates.spacing12),
+        SizedBox(width: GlobalStyles.spacingStates.spacing4),
       ]
     );
   }

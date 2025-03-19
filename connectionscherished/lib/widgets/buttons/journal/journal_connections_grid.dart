@@ -33,6 +33,7 @@ class _JournalsConnectionGridState extends State<JournalsConnectionGrid> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 100),
         child: Column(

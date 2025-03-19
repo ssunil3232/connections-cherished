@@ -54,11 +54,10 @@ class _JournalGridState extends State<JournalGrid> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 100),
+        constraints: BoxConstraints(minHeight: 100),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 8,
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];

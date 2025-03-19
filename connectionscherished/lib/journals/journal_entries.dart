@@ -72,17 +72,16 @@ class JournalEntriesState extends State<JournalEntries> {
       ),
       body: PagePadding(
         bottomPadding: GlobalStyles.spacingStates.spacing32,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if(journalEntries.isNotEmpty)
-              Column(
+        child: journalEntries.isNotEmpty
+            ? Column(
                 children: [
                   SizedBox(height: GlobalStyles.spacingStates.spacing32),
                   Row(
                     children: [
-                      Text('You have', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),),
+                      Text(
+                        'You have',
+                        style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
+                      ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing12),
                         child: Container(
@@ -97,23 +96,25 @@ class JournalEntriesState extends State<JournalEntries> {
                           ),
                         ),
                       ),
-                      Text('journal entries', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),),
+                      Text(
+                        'journal entries',
+                        style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
+                      ),
                     ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32),
-                    child: JournalGrid(
-                      data: journalEntries,
-                      onDelete: (item) => deleteJournalEntry(item),
-                      onUpdate: loadData,
+                  Expanded( // Ensure the parent Column has constraints
+                    child: Padding(
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32, bottom: GlobalStyles.spacingStates.spacing64 + GlobalStyles.spacingStates.spacing16),
+                      child: JournalGrid(
+                        data: journalEntries,
+                        onDelete: (item) => deleteJournalEntry(item),
+                        onUpdate: loadData,
+                      ),
                     ),
                   ),
-                ]
-              ),
-              if(journalEntries.isEmpty)
-              Spacer(),
-              if(journalEntries.isEmpty)
-              Center(
+                ],
+              )
+            : Center(
                 child: Container(
                   decoration: BoxDecoration(
                     color: GlobalStyles.defaultTextBg,
@@ -121,20 +122,16 @@ class JournalEntriesState extends State<JournalEntries> {
                   ),
                   padding: EdgeInsets.symmetric(
                     vertical: GlobalStyles.spacingStates.spacing44,
-                    horizontal: GlobalStyles.spacingStates.spacing60
+                    horizontal: GlobalStyles.spacingStates.spacing60,
                   ),
                   child: Text(
                     "You have no journal entries\nwith this connection yet",
                     textAlign: TextAlign.center,
-                    style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)
-                  )
+                    style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
+                  ),
                 ),
               ),
-              if(journalEntries.isEmpty)
-              Spacer(),
-            ]
-          )
-        ),
+            ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Add action for the button here

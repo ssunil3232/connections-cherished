@@ -62,7 +62,7 @@ class JournalLandingState extends State<JournalLanding> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: GlobalStyles.spacingStates.spacing40),
+              SizedBox(height: GlobalStyles.spacingStates.spacing32),
               RichText(
                 text: TextSpan(
                   children:[
@@ -86,9 +86,11 @@ class JournalLandingState extends State<JournalLanding> {
                 style: GlobalStyles.textStyles.textBody
               ),
               if(connections.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing40),
-                child: JournalsConnectionGrid(data: connections),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing40),
+                  child: JournalsConnectionGrid(data: connections),
+                )
               ),
               if(connections.isEmpty)
               Spacer(),

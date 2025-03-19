@@ -155,7 +155,7 @@ class ConnectionViewState extends State<ConnectionView> {
         ] : null,
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing20,
+        bottomPadding: widget.type == ConnectionType.edit ? GlobalStyles.spacingStates.spacing20 : GlobalStyles.spacingStates.spacing32,
         child: Center(
           child: saving
           ? const CircularProgressIndicator()

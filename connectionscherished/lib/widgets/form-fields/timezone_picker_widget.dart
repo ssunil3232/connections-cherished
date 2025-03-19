@@ -1,8 +1,10 @@
 import 'package:connectionscherished/models/timezone_model.dart';
 import 'package:connectionscherished/services/util_service.dart';
-import 'package:connectionscherished/widgets/form-fields/dropdown_widget.dart';
+import 'package:connectionscherished/styles/styles.dart';
+import 'package:connectionscherished/widgets/timezone_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 // ignore: must_be_immutable
 class TimezonePickerWidget extends StatefulWidget {
@@ -34,6 +36,11 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
     super.initState();
     getFormattedTimezones();
     initializeTimezone();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   initializeTimezone() async {
@@ -75,22 +82,74 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomDropdownWidget(
-      disabled: widget.isDisabled,
-      onChanged:(value) {
-        setSelectedTimezone(value);
+    return GestureDetector(
+      onTap: widget.isDisabled ? null : () {
+        showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(30.0),
+            ),
+          ),
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+          ),
+          backgroundColor: Colors.white,
+          context: context,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (BuildContext context) {
+            return TimezoneListPage(
+              formattedTimezones: formattedTimezones,
+              selectedTimezone: (value){
+                setSelectedTimezone(value);
+              },
+            );
+          }
+        );
       }, 
-      dropdownItems: formattedTimezones
-        .map((TimezoneModel zone) {
-          return DropdownItems(
-            value: zone.location,
-            label: zone.label,
-            enabledButton: true
-          );
-        }).toList(),
-      initialValue: selectedTimezone,
-      menuWidth: 0.8,
-      menuHeight: 200,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing12, vertical: 10),
+        decoration: BoxDecoration(
+          color: widget.isDisabled ? GlobalStyles.defaultTextBg : GlobalStyles.defaultBg,
+          border: Border.all(color: widget.isDisabled ? Colors.transparent : GlobalStyles.defaultBorderEnabled),
+          borderRadius: BorderRadius.circular(widget.isDisabled ? 10.0 : 15),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                selectedTimezone ?? 'Select timezone',
+                style: GlobalStyles.textStyles.textBody,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if(!widget.isDisabled)
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: GlobalStyles.primaryText)
+            )
+          ],
+        )
+      ),
     );
+    
+  //   return CustomDropdownWidget(
+  //     disabled: widget.isDisabled,
+  //     onChanged:(value) {
+  //       setSelectedTimezone(value);
+  //     }, 
+  //     dropdownItems: formattedTimezones
+  //       .map((TimezoneModel zone) {
+  //         return DropdownItems(
+  //           value: zone.location,
+  //           label: zone.label,
+  //           enabledButton: true
+  //         );
+  //       }).toList(),
+  //     initialValue: selectedTimezone,
+  //     menuWidth: 0.8,
+  //     menuHeight: 200,
+  //   );
   }
 }

@@ -46,6 +46,7 @@ dependencies:
   path: ^1.9.0
   http: ^1.2.2
   timezone: ^0.9.2
+  azlistview: ^2.0.0
   loading_indicator: ^3.1.1
   provider: ^6.1.2
   fl_chart: ^0.70.2

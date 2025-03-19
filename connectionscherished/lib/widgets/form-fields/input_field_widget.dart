@@ -18,9 +18,11 @@ class InputFieldWidget extends StatelessWidget {
   final bool readOnly;
   bool ? isOptional;
   bool ? isMandatory;
+  double ? verticalPadding;
   /// Update with more countryCodes if new ones are added
   final String ? countryCode;
   Widget ? suffixIcon;
+  Widget ? prefixIcon;
   bool obscureText;
   double ? multilineHeight;
 
@@ -38,6 +40,8 @@ class InputFieldWidget extends StatelessWidget {
     this.showErrorText = true,
     this.errorText = 'Invalid input',
     this.suffixIcon,
+    this.prefixIcon,
+    this.verticalPadding,
     this.isOptional = false,
     this.isMandatory = false,
     this.obscureText = false,
@@ -141,10 +145,13 @@ class InputFieldWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   suffixIcon: suffixIcon,
+                  prefixIcon: prefixIcon,
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: verticalPadding ?? 18),
+                  isDense: verticalPadding !=null,
               ),
             )
         )

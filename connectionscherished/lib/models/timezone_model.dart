@@ -1,27 +1,33 @@
 import 'dart:convert';
+import 'package:azlistview/azlistview.dart';
 
-class TimezoneModel {
+class TimezoneModel extends ISuspensionBean {
   String location = '';
   String label = '';
   String offset_hours = '';
+  String tag;
 
   TimezoneModel({
-    required this.location, required this.label, this.offset_hours = ''
+    required this.location, required this.label, this.offset_hours = '', this.tag = '',
   });
 
-  TimezoneModel.empty();
+  TimezoneModel.empty()
+      : location = '',
+        label = '',
+        offset_hours = '',
+        tag = '';
 
-  TimezoneModel.fromJson(Map<String, dynamic> data) {
-    location = data['location'] ?? 'Unknown';
-    label = data['label'] ?? 'Unknown, (UTC+00:00)';
-    offset_hours = data['offset_hours'] ?? '+00:00';
-  }
+  TimezoneModel.fromJson(Map<String, dynamic> data)
+      : location = data['location'] ?? 'Unknown',
+        label = data['label'] ?? 'Unknown, (UTC+00:00)',
+        offset_hours = data['offset_hours'] ?? '+00:00',
+        tag = '';
 
   factory TimezoneModel.fromMap(Map<String, dynamic> data) {
     return TimezoneModel(
       location: data['location'] ?? 'Unknown',
       label: data['label'] ?? 'Unknown, (UTC+00:00)',
-      offset_hours: data['offset_hours'] ?? '+00:00'
+      offset_hours: data['offset_hours'] ?? '+00:00',
     );
   }
 
@@ -33,15 +39,21 @@ class TimezoneModel {
     };
   }
 
-  String toJson() {
-    return jsonEncode(toMap());
-  }
+  String toJson() => jsonEncode(toMap());
 
-  TimezoneModel copyWith({String? location, String? label, String ? offset_hours}) {
+  TimezoneModel copyWith({String? location, String? label, String? offset_hours}) {
     return TimezoneModel(
       location: location ?? this.location,
       label: label ?? this.label,
       offset_hours: offset_hours ?? this.offset_hours,
     );
   }
+
+  String get cityName {
+    final parts = location.split('/');
+    return parts.isNotEmpty ? parts.last : location;
+  }
+
+  @override
+  String getSuspensionTag() => tag;
 }

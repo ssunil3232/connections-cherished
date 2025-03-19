@@ -41,10 +41,14 @@ class ConnectionViewState extends State<ConnectionView> {
     name: 'John Doe', 
     img: 'assets/images/avatars/avatar1.png', 
   );
+  bool isEditEnabled = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      isEditEnabled = widget.type != ConnectionType.view;
+    });
     setUserConnection();
   }
 
@@ -131,19 +135,21 @@ class ConnectionViewState extends State<ConnectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: TopNavBarWidget(
         height: 100.0,
         header: Text(
-          widget.type == ConnectionType.add ? "Add connection" : widget.type == ConnectionType.edit ? "Edit connection" : "Connection", 
+          widget.type == ConnectionType.add ? "Add connection" : widget.type == ConnectionType.edit || isEditEnabled ? "Edit connection" : "Connection", 
           style: GlobalStyles.textStyles.titleHeader
         ),
         showBackButton: true,
         showBorder: false,
-        actions: widget.type == ConnectionType.view ? [
+        actions: widget.type == ConnectionType.view && !isEditEnabled ? [
           IconButton(
             onPressed: () {
               setState(() {
                 widget.type = ConnectionType.edit;
+                isEditEnabled = true;
               });
             },
             icon: SvgPicture.asset(
@@ -183,7 +189,7 @@ class ConnectionViewState extends State<ConnectionView> {
                     ProfileImgNameUpdate(
                       onUpdate: updateProfileData,
                       avatar: userProfile,
-                      isEditEnabled : widget.type != ConnectionType.view,
+                      isEditEnabled : widget.type != ConnectionType.view || isEditEnabled,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
@@ -242,7 +248,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                   ),
                                 ),
                                 SizedBox(width: GlobalStyles.spacingStates.spacing4),
-                                if(widget.type != ConnectionType.view)
+                                if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
                                     DateTime lastContactedDate = widget.friend.lastContacted.toDate();
@@ -287,7 +293,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 Row(
                                   children: [
                                     FreqField(
-                                      isDisabled: widget.type == ConnectionType.view,
+                                      isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                       friend: widget.friend,
                                       fieldVal: widget.friend.alert.months.toString(),
                                       label: 'months',
@@ -302,7 +308,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                       },
                                     ),
                                     FreqField(
-                                      isDisabled: widget.type == ConnectionType.view,
+                                      isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                       friend: widget.friend,
                                       fieldVal: widget.friend.alert.weeks.toString(),
                                       label: 'weeks',
@@ -317,7 +323,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                       },
                                     ),
                                     FreqField(
-                                      isDisabled: widget.type == ConnectionType.view,
+                                      isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                       friend: widget.friend,
                                       fieldVal: widget.friend.alert.days.toString(),
                                       label: 'days',
@@ -359,7 +365,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                   ),
                                 ),
                                 SizedBox(width: GlobalStyles.spacingStates.spacing4),
-                                if(widget.type != ConnectionType.view)
+                                if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
                                     DateTime birthdate = (widget.friend.dob ?? Timestamp.fromDate(DateTime(2024, 1, 1))).toDate();
@@ -391,7 +397,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 Container(
                                   margin: EdgeInsets.only(left:GlobalStyles.spacingStates.spacing4),
                                   child: SwitchWidget(
-                                    isDisabled: widget.type == ConnectionType.view,
+                                    isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                     initialState: widget.friend.alertOnBirthday,
                                     onChange: (value) {
                                       setState(() {
@@ -421,7 +427,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 SizedBox(width: GlobalStyles.spacingStates.spacing16),
                                 Expanded(
                                   child: TimezonePickerWidget(
-                                    isDisabled: widget.type == ConnectionType.view,
+                                    isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                     initialTimezone: widget.friend.timezone,
                                     onChanged: (value) {
                                       setState(() {
@@ -433,7 +439,7 @@ class ConnectionViewState extends State<ConnectionView> {
                               ],
                             ),
                           ),
-                          if(widget.type == ConnectionType.view)
+                          if(widget.type == ConnectionType.view && !isEditEnabled)
                           Container(
                             margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
                             child: Row(
@@ -464,14 +470,14 @@ class ConnectionViewState extends State<ConnectionView> {
                   ],
                 ),
                 //////////////////Completed details/////////////////////
-              if(widget.type == ConnectionType.view)
+              if(widget.type == ConnectionType.view && !isEditEnabled)
                 CustomButtonWidget.secondary(
                   text: 'View journals',
                   onPressed: getJournals,
                   icon: Symbols.arrow_forward_ios_rounded,
                   iconAlignment: IconAlignment.end,
                 ),
-              if(widget.type != ConnectionType.view)
+              if(widget.type != ConnectionType.view || isEditEnabled)
               Column(
                 children: [
                   CustomButtonWidget.primary(
@@ -479,7 +485,7 @@ class ConnectionViewState extends State<ConnectionView> {
                     onPressed: saveConnections,
                     showIsSaving: saving,
                   ),
-                  if(widget.type == ConnectionType.edit)
+                  if(widget.type == ConnectionType.edit || isEditEnabled)
                   Container(
                     padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4),
                     child: CustomButtonWidget.tertiaryAlert(

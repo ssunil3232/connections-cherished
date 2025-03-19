@@ -90,6 +90,7 @@ class TimezoneListPageState extends State<TimezoneListPage> {
               height: 100,
               color: GlobalStyles.defaultBg,
               child: Column(
+                mainAxisSize: MainAxisSize.min, 
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
@@ -150,7 +151,7 @@ class TimezoneListPageState extends State<TimezoneListPage> {
             onTap: () {
               widget.selectedTimezone(timezone.location);
               // Handle tap (e.g., return the selected timezone)
-              Navigator.pop(context, timezone);
+              Navigator.pop(context);
             },
           );
         },

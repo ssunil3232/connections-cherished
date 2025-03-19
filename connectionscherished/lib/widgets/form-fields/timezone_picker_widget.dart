@@ -44,14 +44,16 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
   }
 
   initializeTimezone() async {
-    if(widget.initialTimezone != null && widget.initialTimezone != "") {
-      setState(() {
-        selectedTimezone = widget.initialTimezone;
-      });
-      await setSelectedTimezone(widget.initialTimezone!);
-    }
-    else{
-      await setLocalTimezone();
+    if(mounted){
+      if(widget.initialTimezone != null && widget.initialTimezone != "") {
+        setState(() {
+          selectedTimezone = widget.initialTimezone;
+        });
+        await setSelectedTimezone(widget.initialTimezone!);
+      }
+      else{
+        await setLocalTimezone();
+      }
     }
   }
 

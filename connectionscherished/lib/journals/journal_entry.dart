@@ -33,10 +33,14 @@ class JournalEntryState extends State<JournalEntry> {
   List<String> moodOptions = ['Happy', 'Excited', 'Sad', 'Angry'];
   List<String> moodEmojis = ['happy_emoji.svg', 'excited_emoji.svg', 'sad_emoji.svg', 'angry_emoji.svg'];
   String ? _selectedMood;
+  bool isEditEnabled = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      isEditEnabled = widget.type != JournalEntryType.view;
+    });
     _titleController.addListener(_updateButtonState);
     _contentController.addListener(_updateButtonState);
     _notesController.addListener(_updateButtonState);
@@ -125,17 +129,18 @@ class JournalEntryState extends State<JournalEntry> {
       appBar: TopNavBarWidget(
         height: 100.0,
         header: Text(
-          widget.type == JournalEntryType.add ? "New entry" : widget.type == JournalEntryType.edit ? "Edit entry" : widget.journal.title, 
+          widget.type == JournalEntryType.add ? "New entry" : widget.type == JournalEntryType.edit || isEditEnabled ? "Edit entry" : widget.journal.title, 
           style: GlobalStyles.textStyles.titleHeader
         ),
         showBackButton: true,
         showBorder: false,
         backAction: navigationAction,
-        actions: widget.type == JournalEntryType.view ? [
+        actions: widget.type == JournalEntryType.view && !isEditEnabled ? [
           IconButton(
             onPressed: () {
               setState(() {
                 widget.type = JournalEntryType.edit;
+                isEditEnabled = true;
               });
             },
             icon: SvgPicture.asset(
@@ -166,7 +171,7 @@ class JournalEntryState extends State<JournalEntry> {
                         errorState: _showTitleError,
                         errorText: "❌ Title cannot be empty",
                         errorMaxLines: 4,
-                        readOnly: saving || widget.type == JournalEntryType.view,
+                        readOnly: saving || (widget.type == JournalEntryType.view && !isEditEnabled),
                       ),
                     ),
                     Padding(
@@ -177,7 +182,7 @@ class JournalEntryState extends State<JournalEntry> {
                         labelText: 'How was your conversation?',
                         placeholderText: 'Enter your thoughts here',
                         multilineHeight: 240,
-                        readOnly: saving || widget.type == JournalEntryType.view,
+                        readOnly: saving || (widget.type == JournalEntryType.view && !isEditEnabled),
                       ),
                     ),
                     Padding(
@@ -187,7 +192,7 @@ class JournalEntryState extends State<JournalEntry> {
                         keyboardType: TextInputType.multiline,
                         labelText: 'Anything you wish to remember?',
                         placeholderText: 'Keep your special reminders or notes here',
-                        readOnly: saving || widget.type == JournalEntryType.view,
+                        readOnly: saving || (widget.type == JournalEntryType.view && !isEditEnabled),
                         multilineHeight: 150,
                       ),
                     ),
@@ -205,7 +210,7 @@ class JournalEntryState extends State<JournalEntry> {
                             child: Row(
                               children : [
                                 CustomDropdownWidget(
-                                  disabled: saving || widget.type == JournalEntryType.view,
+                                  disabled: saving || (widget.type == JournalEntryType.view && !isEditEnabled),
                                   offset: Offset(0, (200+55+8)),
                                   placeholderText: 'Select a mood',
                                   onChanged:(value) {
@@ -253,7 +258,7 @@ class JournalEntryState extends State<JournalEntry> {
                 ),
               ),
                 //////////////////Completed details/////////////////////
-              if(widget.type != JournalEntryType.view)
+              if(widget.type != JournalEntryType.view|| isEditEnabled)
                 CustomButtonWidget.secondary(
                   text: 'Save',
                   onPressed: !_allValid || saving ? null : saveEntry,

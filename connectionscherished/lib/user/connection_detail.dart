@@ -161,7 +161,7 @@ class ConnectionViewState extends State<ConnectionView> {
         ] : null,
       ),
       body: PagePadding(
-        bottomPadding: widget.type == ConnectionType.edit || isEditEnabled ? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12) : GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
+        bottomPadding: ((widget.type == ConnectionType.edit || isEditEnabled) && widget.type != ConnectionType.add) ? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12) : GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
         child: Center(
           child: saving
           ? const CircularProgressIndicator()
@@ -491,7 +491,7 @@ class ConnectionViewState extends State<ConnectionView> {
                     onPressed: saveConnections,
                     showIsSaving: saving,
                   ),
-                  if(widget.type == ConnectionType.edit || isEditEnabled)
+                  if((widget.type == ConnectionType.edit || isEditEnabled) && widget.type != ConnectionType.add)
                   Container(
                     padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
                     child: CustomButtonWidget.tertiaryAlert(

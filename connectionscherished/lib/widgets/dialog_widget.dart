@@ -23,11 +23,11 @@ class DialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.spacing16),
+      insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
       backgroundColor: GlobalStyles.defaultBg,
       shape: SmoothRectangleBorder(
           smoothness: 0.6,
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
         ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,18 +43,18 @@ class DialogWidget extends StatelessWidget {
                 },
                 icon: SvgPicture.asset(
                   'assets/icons/close_icon.svg', 
-                  width: 24, 
-                  height: 24
+                  width: GlobalStyles.spacingStates.iconSize, 
+                  height: GlobalStyles.spacingStates.iconSize
                 ),
               ),
             ],
           ),
           Container(
             padding: EdgeInsets.only(
-              left: GlobalStyles.spacingStates.spacing24,
-              right: GlobalStyles.spacingStates.spacing24,
-              top: customBody ==null ? GlobalStyles.spacingStates.spacing24 : 0,
-              bottom: GlobalStyles.spacingStates.spacing24
+              left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true),
+              right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true),
+              top: customBody ==null ? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24) : 0,
+              bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)
             ),
             child: customBody ?? Column(
               children: [
@@ -65,12 +65,12 @@ class DialogWidget extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 if(header != null)
-                  SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                  SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: descriptions?.map((description) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Text(
                         description,
                         textAlign: TextAlign.center,
@@ -81,7 +81,7 @@ class DialogWidget extends StatelessWidget {
                 ),
                 if(image != null)
                   Container(
-                    padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing24),
+                    padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     child: image,
                   ),
                 CustomButtonWidget.primary(text: confirmTitle ?? 'Yes', onPressed: () {
@@ -95,7 +95,7 @@ class DialogWidget extends StatelessWidget {
                   }
                 }),
                 if(showCustomCancel == false)
-                SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                 if(showCustomCancel == false)
                 (isWarning==true)
                 ? CustomButtonWidget.tertiaryAlert(text: cancelTitle ?? 'No', onPressed: () {

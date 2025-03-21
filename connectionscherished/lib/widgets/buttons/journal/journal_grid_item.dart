@@ -87,12 +87,12 @@ class JournalGridItemState extends State<JournalGridItem> {
 
   Widget _gridActionsLayer(){
     return Container(
-      height: 44,
+      height: GlobalStyles.spacingStates.imageThumbnails,
       decoration: BoxDecoration(
         color: Color(0xFF4E4C4C),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.imageThumbnails),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -113,9 +113,9 @@ class JournalGridItemState extends State<JournalGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/edit_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
-            ),//Icon(Icons.edit, color: Colors.white),
+              width: GlobalStyles.spacingStates.iconSize,
+              height: GlobalStyles.spacingStates.iconSize
+            ),
           ),
           IconButton(
             onPressed: () {
@@ -144,8 +144,8 @@ class JournalGridItemState extends State<JournalGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/delete_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ), //VariedIcon.varied(Symbols.delete_outline_rounded, color: Colors.white),//Icon(Icons.delete, color: Colors.white),
           ),
           IconButton(
@@ -166,8 +166,8 @@ class JournalGridItemState extends State<JournalGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/view_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ), //Icon(Icons.remove_red_eye, color: Colors.white),
           ),
         ],
@@ -177,16 +177,16 @@ class JournalGridItemState extends State<JournalGridItem> {
 
   Widget _gridContentLayer(){
     double fullWidth = MediaQuery.of(context).size.width;
-    double shrinkWidth = fullWidth * 0.55;
+    double shrinkWidth = fullWidth * 0.5;
     return ClipRect(
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         width: isCollapsed ? shrinkWidth : fullWidth,
-        height: 44,
+        height: GlobalStyles.spacingStates.imageThumbnails,
         decoration: BoxDecoration(
           color: widget.color,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.imageThumbnails),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -197,7 +197,7 @@ class JournalGridItemState extends State<JournalGridItem> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                    padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: shrinkWidth-50),
                       child: Text(
@@ -213,7 +213,7 @@ class JournalGridItemState extends State<JournalGridItem> {
                     child: Visibility(
                       visible: showText,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                         child: Text(widget.subtitle,
                           style: GlobalStyles.textStyles.textCaption3.copyWith(color: GlobalStyles.textSubtle)),
                       ),

@@ -92,7 +92,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       appBar: TopNavBarWidget(header: const Text(''), height: 100, showBackButton: false, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -105,14 +105,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       children: [
                         Text('Welcome!', style: GlobalStyles.textStyles.textH1),
                         Padding(
-                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing16),
-                          child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: 32, height: 32),
+                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
+                          child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: GlobalStyles.spacingStates.emojiSize, height: GlobalStyles.spacingStates.emojiSize),
                         ),
                       ],
                     ),
                     // Name
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _nameController,
                         keyboardType: TextInputType.name,
@@ -126,15 +126,15 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     ),
                     // Timezone
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Row(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                            child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: 24, height: 24),
+                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                            child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                           ),
                           Text('Timezone', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
-                          SizedBox(width: GlobalStyles.spacingStates.spacing20),
+                          SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20, useWidth: true)),
                           Expanded(
                             child: TimezonePickerWidget(
                               isDisabled: _isSaving,
@@ -153,7 +153,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: GlobalStyles.spacingStates.spacing64 + GlobalStyles.spacingStates.spacing16),
+                        SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing64) + GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                         RichText(
                           text: TextSpan(
                             children:[
@@ -164,14 +164,14 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-                                  child: SvgPicture.asset('assets/icons/heart_icon.svg', width: 24, height: 24),
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                  child: SvgPicture.asset('assets/icons/heart_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                 ),
                               )
                             ],
                           ),
                         ),
-                        SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                        SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                         RichText(
                           text: TextSpan(
                             children:[
@@ -190,8 +190,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                               WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
                                 child: Padding(
-                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-                                  child: SvgPicture.asset('assets/icons/star_icon.svg', width: 24, height: 24),
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                  child: SvgPicture.asset('assets/icons/star_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                 ),
                               )
                             ],

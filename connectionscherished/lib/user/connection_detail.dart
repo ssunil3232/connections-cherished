@@ -154,30 +154,34 @@ class ConnectionViewState extends State<ConnectionView> {
             },
             icon: SvgPicture.asset(
               'assets/icons/edit_icon.svg', 
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ),
           )
         ] : null,
       ),
       body: PagePadding(
-        bottomPadding: widget.type == ConnectionType.edit ? GlobalStyles.spacingStates.spacing20 : GlobalStyles.spacingStates.spacing32,
+        bottomPadding: widget.type == ConnectionType.edit || isEditEnabled ? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12) : GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
         child: Center(
           child: saving
           ? const CircularProgressIndicator()
-          : Column(
+          : GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing32),
+                Expanded(
+                  child: ListView(
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing20),
+                            padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
                             child: Text(
                               'Your connection with,',
                               style: GlobalStyles.textStyles.textBody,
@@ -192,7 +196,7 @@ class ConnectionViewState extends State<ConnectionView> {
                       isEditEnabled : widget.type != ConnectionType.view || isEditEnabled,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Text(
                         'You last cherished your connection',
                         style: GlobalStyles.textStyles.textBody
@@ -203,10 +207,10 @@ class ConnectionViewState extends State<ConnectionView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                          padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
                           decoration: BoxDecoration(
                             color: GlobalStyles.btnBgTertiary,
-                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.spacing16),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                           ),
                           child: Text(
                             '${widget.friend.lastContactedDays}',
@@ -214,7 +218,7 @@ class ConnectionViewState extends State<ConnectionView> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing12),
+                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true)),
                           child: Text('days ago', style: GlobalStyles.textStyles.textCaption1.copyWith(color: GlobalStyles.textSubtle)),
                         )
                       ],
@@ -222,11 +226,11 @@ class ConnectionViewState extends State<ConnectionView> {
                     
                     //////////////////Section on details/////////////////////
                     Container(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing40),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)),
                       child: Column(
                         children: [
                           Container(
-                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
+                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -235,19 +239,19 @@ class ConnectionViewState extends State<ConnectionView> {
                                   'Last contacted',
                                   style: GlobalStyles.textStyles.textBody
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                                SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing32, vertical: GlobalStyles.spacingStates.spacing12),
+                                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   decoration: BoxDecoration(
                                     color: GlobalStyles.defaultTextBg,
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   ),
                                   child: Text(
                                     DateFormat('d MMM yyyy').format(DateTime.parse(widget.friend.lastContacted.toDate().toString())),
                                     style: GlobalStyles.textStyles.textH3,
                                   ),
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing4),
+                                // SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                                 if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
@@ -272,15 +276,15 @@ class ConnectionViewState extends State<ConnectionView> {
                                   },
                                   icon: SvgPicture.asset(
                                     'assets/icons/calendar_icon.svg', 
-                                    width: 24, 
-                                    height: 24
+                                    width: GlobalStyles.spacingStates.iconSize, 
+                                    height: GlobalStyles.spacingStates.iconSize
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
+                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -289,7 +293,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                   'Alert every',
                                   style: GlobalStyles.textStyles.textBody
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                                SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                                 Row(
                                   children: [
                                     FreqField(
@@ -343,7 +347,7 @@ class ConnectionViewState extends State<ConnectionView> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
+                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             child: Row(
                               crossAxisAlignment:CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -352,19 +356,19 @@ class ConnectionViewState extends State<ConnectionView> {
                                   'Birthday',
                                   style: GlobalStyles.textStyles.textBody
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                                SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing32, vertical: GlobalStyles.spacingStates.spacing12),
+                                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   decoration: BoxDecoration(
                                     color: GlobalStyles.defaultTextBg,
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   ),
                                   child: Text(
                                     DateFormat('d MMM').format(DateTime.parse(((widget.friend.dob ?? Timestamp.fromDate(DateTime(2024, 1, 1)))).toDate().toString())),
                                     style: GlobalStyles.textStyles.textH3,
                                   ),
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing4),
+                                // SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                                 if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
@@ -390,12 +394,12 @@ class ConnectionViewState extends State<ConnectionView> {
                                   },
                                   icon: SvgPicture.asset(
                                     'assets/icons/calendar_icon.svg', 
-                                    width: 24, 
-                                    height: 24
+                                    width: GlobalStyles.spacingStates.iconSize, 
+                                    height: GlobalStyles.spacingStates.iconSize
                                   ),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.only(left:GlobalStyles.spacingStates.spacing4),
+                                  margin: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                                   child: SwitchWidget(
                                     isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
                                     initialState: widget.friend.alertOnBirthday,
@@ -411,20 +415,20 @@ class ConnectionViewState extends State<ConnectionView> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
+                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             child: Row(
                               crossAxisAlignment:CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                                  child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: 24, height: 24),
+                                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                  child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                 ),
                                 Text(
                                   'Timezone',
                                   style: GlobalStyles.textStyles.textBody
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                                SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                                 Expanded(
                                   child: TimezonePickerWidget(
                                     isDisabled: widget.type == ConnectionType.view && !isEditEnabled,
@@ -441,7 +445,7 @@ class ConnectionViewState extends State<ConnectionView> {
                           ),
                           if(widget.type == ConnectionType.view && !isEditEnabled)
                           Container(
-                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing12),
+                            margin: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             child: Row(
                               crossAxisAlignment:CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -451,10 +455,10 @@ class ConnectionViewState extends State<ConnectionView> {
                                   style: GlobalStyles.textStyles.textBody
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-                                  child: SvgPicture.asset('assets/icons/time_icon.svg', width: 24, height: 24),
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                  child: SvgPicture.asset('assets/icons/time_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                 ),
-                                SizedBox(width: GlobalStyles.spacingStates.spacing16),
+                                SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                                 Center(
                                   child: DigitalClock(
                                     key: ValueKey(widget.friend.timezone),
@@ -464,10 +468,12 @@ class ConnectionViewState extends State<ConnectionView> {
                               ],
                             ),
                           ),
+                          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                         ],
                       ),
                     ),
                   ],
+                ),
                 ),
                 //////////////////Completed details/////////////////////
               if(widget.type == ConnectionType.view && !isEditEnabled)
@@ -487,7 +493,7 @@ class ConnectionViewState extends State<ConnectionView> {
                   ),
                   if(widget.type == ConnectionType.edit || isEditEnabled)
                   Container(
-                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4),
+                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
                     child: CustomButtonWidget.tertiaryAlert(
                       text: 'Delete connection',
                       onPressed: (){
@@ -519,6 +525,7 @@ class ConnectionViewState extends State<ConnectionView> {
             ]
           )
         )
+      )
       )
     );
   }

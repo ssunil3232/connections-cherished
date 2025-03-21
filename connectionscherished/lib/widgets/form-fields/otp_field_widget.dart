@@ -72,13 +72,13 @@ class _OTPInputFieldState extends State<OtpFieldWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Enter verification code', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
-        SizedBox(height: GlobalStyles.spacingStates.spacing4,),
+        SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(6, (index) {
             return Expanded(
               child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing4),
+              padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
               child: 
               TextField(
                 readOnly: processingState(),
@@ -95,7 +95,7 @@ class _OTPInputFieldState extends State<OtpFieldWidget> {
                 decoration: GlobalStyles.inputFieldDecoration.copyWith(
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   counterText: "",
-                  contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 22)
+                  contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))
                 ),
                 onChanged: (value) => _onTextChanged(value, index, context),
               ),

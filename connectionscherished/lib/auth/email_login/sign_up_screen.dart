@@ -26,7 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final correctIcon = VariedIcon.varied(Symbols.close_small_rounded, color: GlobalStyles.globalErrorText);
   final incorrectIcon = VariedIcon.varied(Symbols.check_small_rounded, color: GlobalStyles.globalSuccessText);
   final errorTextStyle = GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle);
-  final errorIconSpacing = SizedBox(width: GlobalStyles.spacingStates.spacing8,);
+  final errorIconSpacing = SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true));
   final passwordWeakIcon = VariedIcon.varied(Symbols.error_rounded, color: GlobalStyles.globalErrorText);
   final passwordSuccessIcon = VariedIcon.varied(Symbols.check_circle_rounded, color: GlobalStyles.globalSuccessText);
   final passwordWeakText = Text('Password strength: weak', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.globalErrorText));
@@ -144,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: TopNavBarWidget(header: const Text(''), height: 100.0, showBackButton: true, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -155,12 +155,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   children: [
                     Text('Create an account', style: GlobalStyles.textStyles.textH1),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing12),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                       child: Text("It seems that you don't have an account yet with us. Please create a password.", style: GlobalStyles.textStyles.textBody)
                     ),
                     // Password
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,
@@ -179,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     // Verify Password
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _confirmPasswordController,
                         keyboardType: TextInputType.visiblePassword,
@@ -196,11 +196,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // enableIMEPersonalizedLearning: false,
                       ),
                     ),
-                    SizedBox(height: GlobalStyles.spacingStates.spacing16,),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                     if(_showPasswordError) Column(children: errors),
                     if (_passwordController.text.isNotEmpty && !_showPasswordError)
                       Row (children:[passwordSuccessIcon, errorIconSpacing, passwordSuccessText],),
-                    SizedBox(height: GlobalStyles.spacingStates.spacing8,),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                     if(!_showPasswordError && _showConfirmPasswordError && _passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty)
                       Row (children:[passwordWeakIcon, errorIconSpacing, passwordDoNotMatchText],),
                     if(!_showPasswordError && !_showConfirmPasswordError && _passwordController.text.isNotEmpty && _confirmPasswordController.text.isNotEmpty)

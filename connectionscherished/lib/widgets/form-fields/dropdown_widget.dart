@@ -184,12 +184,12 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
             Text(widget.labelText ?? '', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
             if(widget.isOptional==true) 
               Padding(
-                padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing4),
+                padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                 child: Text("(optional)", style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle)),
               )
           ],),
         if(widget.labelText!= null)
-          SizedBox(height: GlobalStyles.spacingStates.spacing4,),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
           DropdownButtonHideUnderline(
             child: 
               DropdownButton2<dynamic>(
@@ -219,7 +219,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                 value: setInitialLoadValue(),
                 onChanged: widget.disabled ? null : (value) => handleSelection(value as String),
                 buttonStyleData: ButtonStyleData(
-                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 12),
+                  padding: widget.buttonPadding ?? EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                   height: widget.buttonHeight ?? 50,
                   width: widget.buttonWidth ?? double.infinity,
                   decoration: widget.disabled ? 
@@ -229,12 +229,12 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       width: 1.0,
                     ),
                     color:  GlobalStyles.btnBgDisabled,
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   )
                   : BoxDecoration(
                       border: widget.errorState ? widget.errorButtonBorder : isOpen ? widget.activeButtonBorder : widget.defaultButtonBorder,
                       color:  widget.errorState ? GlobalStyles.globalErrorBg : widget.buttonBgColor ??  GlobalStyles.defaultBg,
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                     ),
                 ),
                 dropdownStyleData: DropdownStyleData(
@@ -244,7 +244,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                   ),
                   padding: const EdgeInsets.all(0),
                   elevation: 0,
-                  offset: widget.offset ?? Offset(0, -GlobalStyles.spacingStates.spacing8),
+                  offset: widget.offset ?? Offset(0, -(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8))),
                   width: widget.menuWidth! < 1 ?  MediaQuery.of(context).size.width * widget.menuWidth! : widget.menuWidth,
                   maxHeight: widget.menuHeight,
                   decoration: BoxDecoration(
@@ -254,13 +254,13 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
                       strokeAlign: BorderSide.strokeAlignOutside
                     ),
                     color: GlobalStyles.defaultBg,
-                    borderRadius: BorderRadius.circular(16.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ),
                   isOverButton: false,
                 ),
                 menuItemStyleData: MenuItemStyleData(
                   customHeights: getCustomHeight(),
-                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: GlobalStyles.spacingStates.spacing12),
+                  padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                   selectedMenuItemBuilder: (ctx, item) {
                     return Container(
                       color: GlobalStyles.btnBgSecondary,
@@ -277,7 +277,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
             ),
           if(widget.errorState)
             Container(
-              padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4),
+              padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
               child: widget.customErrorMessage ??
               Text(
                 widget.errorText, 

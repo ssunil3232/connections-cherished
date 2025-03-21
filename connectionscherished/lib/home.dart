@@ -151,223 +151,237 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
                   showBackButton: false,
                 ),
                 body: PagePadding(
-                  bottomPadding: GlobalStyles.spacingStates.spacing20,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(height: GlobalStyles.spacingStates.spacing24,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CachedImageWidget(
-                              height: 90,
-                              width: 90,
-                              imageUrlProvided: widget.user?.profileImage ?? '',
-                            ),
-                            SizedBox(width: GlobalStyles.spacingStates.spacing16),
-                            SvgPicture.asset('assets/icons/wave_icon.svg', width: 36, height: 36),
-                            SizedBox(width: GlobalStyles.spacingStates.spacing8),
-                            Expanded(
-                              child: Container(
-                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 80),
-                                child: Text(
-                                  'Hello ${widget.user?.userName ?? ''}!',
-                                  style: GlobalStyles.textStyles.textH2Bold,
-                                  overflow: TextOverflow.ellipsis,
+                  bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
+                  child: Stack(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CachedImageWidget(
+                                height: GlobalStyles.spacingStates.imageMainSize,
+                                width: GlobalStyles.spacingStates.imageMainSize,
+                                imageUrlProvided: widget.user?.profileImage ?? '',
+                              ),
+                              SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
+                              SvgPicture.asset('assets/icons/wave_icon.svg', width: GlobalStyles.spacingStates.emojiSize, height: GlobalStyles.spacingStates.emojiSize),
+                              SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                              Expanded(
+                                child: Container(
+                                  constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 80),
+                                  child: Text(
+                                    'Hello ${widget.user?.userName ?? ''}!',
+                                    style: GlobalStyles.textStyles.textH2Bold,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
+                              ),
+                            ],
+                          ),
+                          Padding(padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8))),
+                          (connections.isEmpty)
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/logo.png',
+                                      width: GlobalStyles.spacingStates.logoWidth,
+                                      height: GlobalStyles.spacingStates.logoHeight,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'Where you can ',
+                                              style: GlobalStyles.textStyles.textH3,
+                                            ),
+                                            TextSpan(
+                                              text: 'cherish\n',
+                                              style: GlobalStyles.textStyles.textH3Varaint,
+                                            ),
+                                            TextSpan(
+                                              text: 'your ',
+                                              style: GlobalStyles.textStyles.textH3,
+                                            ),
+                                            TextSpan(
+                                              text: 'connections',
+                                              style: GlobalStyles.textStyles.textH3Varaint,
+                                            ),
+                                            TextSpan(
+                                              text: ' better',
+                                              style: GlobalStyles.textStyles.textH3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(
+                                        top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
+                                        bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Start by adding a connection',
+                                        style: GlobalStyles.textStyles.textCaption1.copyWith(
+                                          color: GlobalStyles.textSubtle,
+                                        ),
+                                      ),
+                                    ),
+                                    FilledButton(
+                                      style: ButtonStyles.tertiaryButton.copyWith(
+                                        padding: WidgetStatePropertyAll(
+                                          EdgeInsets.symmetric(
+                                            vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
+                                            horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: addConnection,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true),
+                                        children: [
+                                          Text('Add Connection', style: GlobalStyles.textStyles.textButtonSecondary),
+                                          VariedIcon.varied(Symbols.add_rounded, weight: 300, color: GlobalStyles.primaryText),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
+                                      alignment: Alignment.center,
+                                      child: RichText(
+                                        textAlign: TextAlign.center,
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'Cherish',
+                                              style: GlobalStyles.textStyles.textH3Varaint,
+                                            ),
+                                            TextSpan(
+                                              text: ' your ',
+                                              style: GlobalStyles.textStyles.textH3,
+                                            ),
+                                            TextSpan(
+                                              text: 'connection',
+                                              style: GlobalStyles.textStyles.textH3Varaint,
+                                            ),
+                                            TextSpan(
+                                              text: ' with',
+                                              style: GlobalStyles.textStyles.textH3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    getTopConnection(),
+                                  ],
+                                ),
+                          if (connections.isNotEmpty)
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
+                              child: Row(
+                                children: [
+                                  const Expanded(
+                                    child: Classification(),
+                                  ),
+                                  FilledButton(
+                                    style: ButtonStyles.tertiaryButton.copyWith(
+                                      padding: WidgetStatePropertyAll(
+                                        EdgeInsets.symmetric(
+                                          vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
+                                          horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: addConnection,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true),
+                                      children: [
+                                        VariedIcon.varied(Symbols.add_rounded, weight: 300, color: GlobalStyles.primaryText),
+                                        Text('Add\nconnection', style: GlobalStyles.textStyles.textButtonTertiary, textAlign: TextAlign.center),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (connections.isNotEmpty)
+                            Container(
+                              padding: EdgeInsets.only(
+                                bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
+                                right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
+                                left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text('Connection', style: GlobalStyles.textStyles.textCaption1),
+                                  Spacer(),
+                                  Text('Last contacted', style: GlobalStyles.textStyles.textCaption1),
+                                ],
+                              ),
+                            ),
+                          if (connections.isNotEmpty)
+                            Expanded(
+                              child: ConnectionsGrid(
+                                data: connections,
+                                onDelete: (item) => deleteConnection(item),
+                              ),
+                            ),
+                        ],
+                      ),
+                      if (connections.isEmpty)
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/quote-bg-image.png',
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20, useWidth: true)),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    textAlign: TextAlign.center,
+                                    '"The connections we share are the footprints we leave behind in the hearts of others."',
+                                    style: GlobalStyles.textStyles.textCaption1,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
+                                    child: Text(
+                                      textAlign: TextAlign.center,
+                                      '- Tim Fargo',
+                                      style: GlobalStyles.textStyles.textCaption1,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                        Padding(padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8)),
-                        (connections.isEmpty)?
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/logo.png',
-                                width: 146,
-                                height: 140,
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: RichText(
-                                  textAlign:TextAlign.center,
-                                  text: TextSpan(
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'Where you can ',
-                                        style: GlobalStyles.textStyles.textH3
-                                      ),
-                                      TextSpan(
-                                        text: 'cherish\n',
-                                        style: GlobalStyles.textStyles.textH3Varaint
-                                      ),
-                                      TextSpan(
-                                        text: 'your ',
-                                        style: GlobalStyles.textStyles.textH3
-                                      ),
-                                      TextSpan(
-                                        text: 'connections',
-                                        style: GlobalStyles.textStyles.textH3Varaint
-                                      ),
-                                      TextSpan(
-                                        text: ' better',
-                                        style: GlobalStyles.textStyles.textH3
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32, bottom: GlobalStyles.spacingStates.spacing8),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Start by adding a connection',
-                                  style: GlobalStyles.textStyles.textCaption1.copyWith(
-                                    color: GlobalStyles.textSubtle,
-                                  ),
-                                ),
-                              ),
-                              FilledButton(
-                                style: ButtonStyles.tertiaryButton,
-                                onPressed: addConnection, 
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text('Add Connection', style: GlobalStyles.textStyles.textButtonSecondary), 
-                                    SizedBox(width: 4),
-                                    VariedIcon.varied(Symbols.add_rounded, size: 24, weight: 300, color: GlobalStyles.primaryText),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: GlobalStyles.spacingStates.spacing24,
-                              ),
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/quote-bg-image.png',
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          textAlign: TextAlign.center,
-                                          '"The connections we share are the footprints we leave behind in the hearts of others."',
-                                          style:GlobalStyles.textStyles.textCaption1
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8),
-                                          child: Text(
-                                            textAlign: TextAlign.center,
-                                            '- Tim Fargo',
-                                            style: GlobalStyles.textStyles.textCaption1
-                                          )
-                                        )
-                                      ]
-                                    )
-                                  )
-                                ],
-                              )
-                            ]
-                          )
-                          :
-                          Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing24),
-                                alignment: Alignment.center,
-                                child: RichText(
-                                  textAlign:TextAlign.center,
-                                  text: TextSpan(
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'Cherish',
-                                        style: GlobalStyles.textStyles.textH3Varaint
-                                      ),
-                                      TextSpan(
-                                        text: ' your ',
-                                        style: GlobalStyles.textStyles.textH3
-                                      ),
-                                      TextSpan(
-                                        text: 'connection',
-                                        style: GlobalStyles.textStyles.textH3Varaint
-                                      ),
-                                      TextSpan(
-                                        text: ' with',
-                                        style: GlobalStyles.textStyles.textH3
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              getTopConnection()
-                            ],
-                          ),
-                        if(connections.isNotEmpty)
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing24),
-                          child: Row(
-                            children: [
-                              const Expanded(
-                                child: Classification(),
-                              ),
-                              FilledButton(
-                                style: ButtonStyles.tertiaryButton.copyWith(
-                                  padding: WidgetStatePropertyAll(
-                                    EdgeInsets.symmetric(
-                                      vertical: GlobalStyles.spacingStates.spacing8, 
-                                      horizontal: GlobalStyles.spacingStates.spacing8
-                                    )
-                                  ),
-                                ),
-                                onPressed: addConnection, 
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  spacing: 4,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    VariedIcon.varied(Symbols.add_rounded, size: 24, weight: 500, color: GlobalStyles.primaryText),
-                                    Text('Add\nconnection', style: GlobalStyles.textStyles.textButtonTertiary, textAlign: TextAlign.center), 
-                                  ],
-                                ),
-                              )
-                            ]
-                          )
-                        ),
-                        if(connections.isNotEmpty)
-                        Container(
-                          padding: EdgeInsets.only(
-                            bottom: GlobalStyles.spacingStates.spacing4, 
-                            right: GlobalStyles.spacingStates.spacing16,
-                            left: GlobalStyles.spacingStates.spacing8
-                          ),
-                          child: Row(
-                            children: [
-                              Text('Connection', style: GlobalStyles.textStyles.textCaption1,),
-                              Spacer(),
-                              Text('Last contacted', style: GlobalStyles.textStyles.textCaption1,),
-                            ]
-                          ),
-                        ),
-                        Expanded(
-                          child: ConnectionsGrid(
-                            data: connections,
-                            onDelete: (item) => deleteConnection(item),
-                          )
-                        ),
-                      ],
-                    ),
-                  )
+                      ),
+                    ],
+                  ),
                 ),
               );
             }
@@ -377,7 +391,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
 
   Widget getTopConnection(){
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
+      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
       child: FilledButton(
         style: ButtonStyles.tertiaryButton.copyWith(
           backgroundColor: WidgetStateProperty.all(GlobalStyles.defaultTextBg),

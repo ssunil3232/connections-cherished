@@ -150,8 +150,8 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                 VariedIcon.varied(widget.icon!,
                     color: (onPressed==null) ? GlobalStyles.textDisabled : widget.textDefault)
                 : widget.showIsSaving != true ? null : SizedBox(
-                  width: 15,
-                  height: 15,
+                  width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16),
+                  height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
                   child: CircularProgressIndicator(
                     strokeWidth: 2.0,
                     color: GlobalStyles.textDisabled,
@@ -191,7 +191,7 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
                 return SmoothRectangleBorder(
                   side: BorderSide( color: border),
                   smoothness: 1,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20),)),
                 );
               },
             ),

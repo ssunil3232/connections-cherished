@@ -119,7 +119,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
       appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -128,15 +128,15 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     Text('Verify your phone', style: GlobalStyles.textStyles.textH1,),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Text("We just sent you an SMS. Enter the \nverification code sent to ${phoneNumberMask(widget.phoneNumber)}", style: GlobalStyles.textStyles.textBody,)
                     ),
                     // OTP Field
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: OtpFieldWidget(
                         processingOtp: processingOtp || disabledOtpField,
                         inComplete: (isIncomplete) {
@@ -153,7 +153,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                         },
                       )
                     ),
-                    SizedBox(height: GlobalStyles.spacingStates.spacing16,),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                     if(!processingOtp)
                       Align(
                         alignment: Alignment.centerRight,

@@ -89,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
       appBar: TopNavBarWidget(header: const Text(''), height: 100.0, showBackButton: true, showBorder: false, bgColor: GlobalStyles.defaultBg,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -102,18 +102,18 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: [
                         Text('Welcome back!', style: GlobalStyles.textStyles.textH1),
                         Padding(
-                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing16),
-                          child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: 32, height: 32),
+                          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
+                          child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: GlobalStyles.spacingStates.emojiSize, height: GlobalStyles.spacingStates.emojiSize),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing12),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                       child: Text('Please enter your password to sign into your account.', style: GlobalStyles.textStyles.textBody,)
                     ),
                     // Password
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,

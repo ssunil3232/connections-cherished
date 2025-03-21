@@ -76,11 +76,11 @@ class InsightLandingState extends State<InsightLanding> {
                   minHeight: MediaQuery.of(context).size.height,
                 ),
                 child: PagePadding(
-                  bottomPadding: GlobalStyles.spacingStates.spacing32,
+                  bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: GlobalStyles.spacingStates.spacing40),
+                      SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)),
                       Text(
                         "Let’s see how well you’ve fared in cherishing your connections!",
                         style: GlobalStyles.textStyles.textBody,
@@ -88,8 +88,7 @@ class InsightLandingState extends State<InsightLanding> {
                       ArcGauge(percentage: connections.isNotEmpty ? 0.7 : 0),
                       if (connections.isNotEmpty)
                         Padding(
-                          padding: EdgeInsets.only(
-                              top: GlobalStyles.spacingStates.spacing32),
+                          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                           child: InsightDetail(connections: connections),
                         ),
                     ],
@@ -121,21 +120,21 @@ class InsightLandingState extends State<InsightLanding> {
                     ],
                   ),
                 ),
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: GlobalStyles.spacingStates.spacing20,
-                        horizontal: GlobalStyles.spacingStates.spacing24,
+                        horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
                       ),
                       child: CustomButtonWidget.secondary(
+                        height: 60,
                         customIcon: Image.asset(
                           'assets/icons/unlock_icon.gif',
-                          width: 30,
-                          height: 30,
+                          width: GlobalStyles.spacingStates.emojiSize,
+                          height: GlobalStyles.spacingStates.emojiSize,
                         ),
                         text: 'Unlock premium now!',
                         onPressed: () {
@@ -172,11 +171,11 @@ class InsightLandingState extends State<InsightLanding> {
           Container(
             decoration: BoxDecoration(
               color: GlobalStyles.defaultTextBg,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
             ),
             padding: EdgeInsets.symmetric(
-              vertical: GlobalStyles.spacingStates.spacing44,
-              horizontal: GlobalStyles.spacingStates.spacing60,
+              vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing44),
+              horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing60, useWidth: true),
             ),
             child: Text(
               "No connection streaks yet!",
@@ -186,7 +185,7 @@ class InsightLandingState extends State<InsightLanding> {
               ),
             ),
           ),
-          SizedBox(height: GlobalStyles.spacingStates.spacing40),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)),
           RichText(
             text: TextSpan(
               children: [
@@ -201,13 +200,13 @@ class InsightLandingState extends State<InsightLanding> {
               ],
             ),
           ),
-          SizedBox(height: GlobalStyles.spacingStates.spacing24),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
           Image.asset(
             'assets/images/logo.png',
-            width: 146,
-            height: 140,
+            width: GlobalStyles.spacingStates.logoWidth,
+            height: GlobalStyles.spacingStates.logoHeight,
           ),
-          SizedBox(height: GlobalStyles.spacingStates.spacing40),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
         ],
       ),
     );

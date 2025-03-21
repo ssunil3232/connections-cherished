@@ -31,7 +31,7 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
         scrolledUnderElevation: 0,
         toolbarHeight: 100.0,
         leading: showBackButton ? Padding(
-          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing16),
+          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
           child: leading ?? IconButton(
                   icon: VariedIcon.varied(
                     Symbols.arrow_back_ios_rounded,
@@ -60,7 +60,7 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         actions: actions?.map((action) {
                 return Padding(
-                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8, bottom: GlobalStyles.spacingStates.spacing4),
+                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true), bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
                   child: action,
                 );
               }).toList(),

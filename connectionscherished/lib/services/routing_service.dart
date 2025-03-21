@@ -21,7 +21,7 @@ class NavigationService {
           ),
           backgroundColor: color,
           behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing20, vertical: GlobalStyles.spacingStates.spacing12),
+          margin: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(ScreenUtil.setSp(10.0)),
           ),

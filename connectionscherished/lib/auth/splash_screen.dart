@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PagePadding(
-        bottomPadding: 64,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing64),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 width: 205,
                 height: 194,
               ),
-              SizedBox(height: GlobalStyles.spacingStates.spacing8),
+              SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
               Text(
                 'Building relationships a \nconnection at a time',
                 textAlign: TextAlign.center,

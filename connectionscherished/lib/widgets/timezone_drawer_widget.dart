@@ -76,7 +76,7 @@ class TimezoneListPageState extends State<TimezoneListPage> {
         clipBehavior: Clip.hardEdge,
         children: [
           Positioned.fill(
-            top: 100,
+            top: 100 + GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
             child: _scrollableList()
           ),
           Positioned(
@@ -85,16 +85,16 @@ class TimezoneListPageState extends State<TimezoneListPage> {
             right: 0,
             child: SmoothContainer(
               borderRadius: BorderRadius.vertical(
-                top: Radius.circular(30.0),
+                top: Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
               ),
-              height: 100,
+              height: 100 + GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
               color: GlobalStyles.defaultBg,
               child: Column(
                 mainAxisSize: MainAxisSize.min, 
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                     child: Text(
                       'Choose a Timezone',
                       style: GlobalStyles.textStyles.textCaption1.copyWith(
@@ -103,12 +103,12 @@ class TimezoneListPageState extends State<TimezoneListPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),),
                     child: InputFieldWidget(
                       controller: _searchController,
                       placeholderText: 'Search a city',
                       prefixIcon: const Icon(Icons.search),
-                      verticalPadding: 4,
+                      verticalPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
                     ),
                   ),
                 ],
@@ -136,7 +136,7 @@ class TimezoneListPageState extends State<TimezoneListPage> {
             dense: true,
             minVerticalPadding: 0,
             minTileHeight: 0,
-            contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing12, horizontal: GlobalStyles.spacingStates.spacing16),
+            contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
             title: Text(
               timezone.location.replaceAll('_', ' '),
               style: GlobalStyles.textStyles.textBody,
@@ -183,7 +183,7 @@ class TimezoneListPageState extends State<TimezoneListPage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 30,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
       color: GlobalStyles.btnBgSecondary,
       alignment: Alignment.centerLeft,
       child: Text(

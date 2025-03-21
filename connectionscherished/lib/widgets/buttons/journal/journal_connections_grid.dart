@@ -39,23 +39,23 @@ class _JournalsConnectionGridState extends State<JournalsConnectionGrid> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: 8,
+          spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];
             return GestureDetector(
               onTap: ()=> viewJournals(item),
               child: Container(
-                height: 44,
+                height: GlobalStyles.spacingStates.imageThumbnails,
                 decoration: BoxDecoration(
                   color: GlobalStyles.btnBgTertiary,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.imageThumbnails),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CachedImageWidget(
-                      height: 44, 
-                      width: 44, 
+                      height: GlobalStyles.spacingStates.imageThumbnails, 
+                      width: GlobalStyles.spacingStates.imageThumbnails, 
                       imageUrlProvided: item.profileImage
                     ),
                     Expanded(
@@ -64,7 +64,7 @@ class _JournalsConnectionGridState extends State<JournalsConnectionGrid> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                            padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
                             child: ConstrainedBox(
                               constraints: BoxConstraints(maxWidth: 100),
                               child: Text(
@@ -75,7 +75,7 @@ class _JournalsConnectionGridState extends State<JournalsConnectionGrid> {
                             )
                           ),
                           Padding(
-                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing12),
+                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true)),
                             child: VariedIcon.varied(Symbols.arrow_forward_ios_rounded,)
                           )
                         ],

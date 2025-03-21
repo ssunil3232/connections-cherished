@@ -57,12 +57,12 @@ class JournalLandingState extends State<JournalLanding> {
         showBackButton: true,
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: GlobalStyles.spacingStates.spacing32),
+              SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
               RichText(
                 text: TextSpan(
                   children:[
@@ -73,14 +73,14 @@ class JournalLandingState extends State<JournalLanding> {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: Padding(
-                        padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-                        child: SvgPicture.asset('assets/icons/smile_icon.svg', width: 24, height: 24),
+                        padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                        child: SvgPicture.asset('assets/icons/smile_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                       ),
                     )
                   ],
                 ),
               ),
-              SizedBox(height: GlobalStyles.spacingStates.spacing16),
+              SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
               Text(
                 "This space allows you to jot down your reflections, feelings, and insights from your past interactions.",
                 style: GlobalStyles.textStyles.textBody
@@ -88,7 +88,7 @@ class JournalLandingState extends State<JournalLanding> {
               if(connections.isNotEmpty)
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing40),
+                  padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)),
                   child: JournalsConnectionGrid(data: connections),
                 )
               ),
@@ -103,11 +103,11 @@ class JournalLandingState extends State<JournalLanding> {
                     Container(
                       decoration: BoxDecoration(
                         color: GlobalStyles.defaultTextBg,
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                       ),
                       padding: EdgeInsets.symmetric(
-                        vertical: GlobalStyles.spacingStates.spacing44,
-                        horizontal: GlobalStyles.spacingStates.spacing60
+                        vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing44),
+                        horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing60, useWidth: true),
                       ),
                       child: Text(
                         "No connections yet!",
@@ -115,7 +115,7 @@ class JournalLandingState extends State<JournalLanding> {
                         style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)
                       )
                     ),
-                    SizedBox(height: GlobalStyles.spacingStates.spacing40),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)),
                     RichText(
                       text: TextSpan(
                         children:[
@@ -130,11 +130,11 @@ class JournalLandingState extends State<JournalLanding> {
                         ],
                       ),
                     ),
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     Image.asset(
                       'assets/images/logo.png',
-                      width: 146,
-                      height: 140,
+                      width: GlobalStyles.spacingStates.logoWidth,
+                      height: GlobalStyles.spacingStates.logoHeight,
                     ),
                   ]
                 )

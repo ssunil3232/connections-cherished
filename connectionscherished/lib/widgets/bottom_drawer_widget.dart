@@ -15,24 +15,24 @@ class BottomDrawerWidget extends StatelessWidget {
             widthFactor: 1.0,
             heightFactor: heightFactor,
             child: Container(
-              padding: EdgeInsets.all(GlobalStyles.spacingStates.spacing20),
+              padding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                 Align(
                   alignment: Alignment.center,
                   child: Container(
-                    width: 52.0,
-                    height: 4.3,
+                    width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing52, useWidth: true),
+                    height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4),
                     decoration: BoxDecoration(
                       color: Color(0xFFA9A9A9),
-                      borderRadius: BorderRadius.circular(2.5),
+                      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
                     ),
                   ),
                 ),
-                SizedBox(height: GlobalStyles.spacingStates.spacing32),
+                SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                 Text(header, style: GlobalStyles.textStyles.textH2Bold),
-                SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                 Flexible(
                   child: Scrollbar(
                     thumbVisibility: true,
@@ -42,7 +42,7 @@ class BottomDrawerWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: GlobalStyles.spacingStates.spacing20),
+                SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
               ],)));
   }
 }
@@ -58,7 +58,7 @@ void openBottomSheet(
   showModalBottomSheet(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(12.0),
+        top: Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
       ),
     ),
     constraints: BoxConstraints(

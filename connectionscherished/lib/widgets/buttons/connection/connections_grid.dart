@@ -1,4 +1,5 @@
 import 'package:connectionscherished/models/friends_model.dart';
+import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/buttons/connection/connection_grid_item.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class _ConnectionsGridState extends State<ConnectionsGrid> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: 8,
+          spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];
             return ConnectionGridItem(

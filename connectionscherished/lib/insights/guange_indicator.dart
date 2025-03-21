@@ -18,8 +18,8 @@ class _ArcGaugeState extends State<ArcGauge> {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: 300,
-          height: 180,
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.2,
           child: CustomPaint(
             painter: ArcGaugePainter(percentage: widget.percentage),
           ),
@@ -45,7 +45,7 @@ class ArcGaugePainter extends CustomPainter {
     final backgroundPaint = Paint()
       ..color = GlobalStyles.defaultTextBg
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 18
+      ..strokeWidth = GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)+2
       ..strokeCap = StrokeCap.round;
     
     canvas.drawArc(
@@ -69,7 +69,7 @@ class ArcGaugePainter extends CustomPainter {
     final activePaint = Paint()
       ..color = activeColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 18
+      ..strokeWidth = GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)+2
       ..strokeCap = StrokeCap.round;
 
     final activeSweepAngle = sweepAngle * percentage;
@@ -123,13 +123,13 @@ class ArcGaugePainter extends CustomPainter {
     canvas.rotate(angle + math.pi / 2);
     final textOffset = Offset(
       -textPainter.width / 2,
-      -textPainter.height / 2 - 18,
+      -textPainter.height / 2 - (GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
     );
     textPainter.paint(canvas, textOffset);
 
-    final double triangleWidth = 12;
-    final double triangleHeight = 10;
-    final double gap = 4;
+    final double triangleWidth = GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true);
+    final double triangleHeight = GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)-2;
+    final double gap = GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4);
 
     final textBottomY = textOffset.dy + textPainter.height;
     // The triangle's top is a few pixels below the text

@@ -37,8 +37,8 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                topRight: Radius.circular(20.0),
+                topLeft: Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
+                topRight: Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
               ),
               child: Container(
                 decoration: BoxDecoration(
@@ -105,11 +105,11 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8, bottom: GlobalStyles.spacingStates.spacing4), 
+          padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)), 
           child: SvgPicture.asset(
             icon, 
-            width: 40, 
-            height: 40
+            width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40, useWidth: true), 
+            height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40)
           ),
         ),
       ],

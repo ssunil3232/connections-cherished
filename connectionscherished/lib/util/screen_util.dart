@@ -10,6 +10,8 @@ class ScreenUtil {
   static const double _small2Medium = 410;
   static const double _medium2Large = 660;
 
+  static double get scaleWidth => _scaleWidth;
+
   /// e.g. iPhone 16, 16 Pro
   static bool _isSmallScreen = false;
   /// e.g. iPhone 16 Pro Max

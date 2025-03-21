@@ -22,7 +22,7 @@ class _ListTileItemState extends State<ListTileItem> {
     return Container(
       decoration: BoxDecoration(
         color: GlobalStyles.btnBgTertiary,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
       ),
       child: GestureDetector(
         onTap: () async {
@@ -32,7 +32,7 @@ class _ListTileItemState extends State<ListTileItem> {
           dense: true,
           minVerticalPadding: 0,
           minTileHeight: 0,
-          contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing4, horizontal: GlobalStyles.spacingStates.spacing16),
+          contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
           leading: widget.icon,
           subtitle: (widget.subtitle != null)
           ? Text(

@@ -106,7 +106,7 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
       ),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -115,11 +115,11 @@ class _EmailReauthScreenState extends State<EmailReauthScreen> {
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     Text(widget.message, style: GlobalStyles.textStyles.textBody,),
                     // Password
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _passwordController,
                         keyboardType: TextInputType.visiblePassword,

@@ -87,11 +87,11 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       builder: (context, constraints) {
         ScreenUtil.init(context);
         MaterialSymbolsBase.setRoundedVariationDefaults(
-          size: 24,
+          size: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
           fill: 0.0,
           weight: 400,
           grade: 0.0,
-          opticalSize: 24,
+          opticalSize: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
           color: GlobalStyles.primaryText,
         );
         return MultiProvider(
@@ -105,9 +105,9 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(seedColor: GlobalStyles.primaryText),
               useMaterial3: true,
-              iconTheme: const IconThemeData(color: GlobalStyles.primaryText,
+              iconTheme: IconThemeData(color: GlobalStyles.primaryText,
                 weight: 400,
-                opticalSize: 24),
+                opticalSize: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
               scaffoldBackgroundColor: GlobalStyles.defaultBg,
             ),
             initialRoute: Routes.splash,

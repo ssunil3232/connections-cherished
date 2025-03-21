@@ -39,7 +39,7 @@ class FreqPicker extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('Set alert frequency', style: GlobalStyles.textStyles.textH2),
-          SizedBox(height: GlobalStyles.spacingStates.spacing20),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
         ],
       ),
       backgroundColor: GlobalStyles.defaultBg,
@@ -59,7 +59,7 @@ class FreqPicker extends StatelessWidget {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43)
                           ),
                         ),
@@ -75,7 +75,7 @@ class FreqPicker extends StatelessWidget {
                         children: [
                           for (int i = 0; i <= 12; i++)
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               )
@@ -94,7 +94,7 @@ class FreqPicker extends StatelessWidget {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43)
                           ),
                         ),
@@ -110,7 +110,7 @@ class FreqPicker extends StatelessWidget {
                         children: [
                           for (int i = 0; i <= 12; i++)
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               )
@@ -129,7 +129,7 @@ class FreqPicker extends StatelessWidget {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43)
                           ),
                         ),
@@ -145,7 +145,7 @@ class FreqPicker extends StatelessWidget {
                         children: [
                           for (int i = 0; i <= 30; i++)
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               )

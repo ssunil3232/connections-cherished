@@ -78,12 +78,12 @@ class InputFieldWidget extends StatelessWidget {
             ),
             if(isOptional==true) 
               Padding(
-                padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing4),
+                padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                 child: Text("(optional)", style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle)),
               )
           ],),
         if(labelText!= null)
-          SizedBox(height: GlobalStyles.spacingStates.spacing4,),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
           SizedBox(
             height: multilineHeight ?? null,
             child: TextField(
@@ -129,28 +129,28 @@ class InputFieldWidget extends StatelessWidget {
                 enabledBorder: errorState ?
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 1.0, color: GlobalStyles.globalErrorBorder),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ) :
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ),
                 focusedBorder: errorState ?
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalErrorBorder),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ) :
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ),
                   suffixIcon: suffixIcon,
                   prefixIcon: prefixIcon,
                   disabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: verticalPadding ?? 18),
+                  contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: verticalPadding ?? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                   isDense: verticalPadding !=null,
               ),
             )

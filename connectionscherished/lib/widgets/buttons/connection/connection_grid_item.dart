@@ -70,7 +70,7 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
     return GestureDetector(
       onTap: toggleExpansion,
       child: SizedBox(
-        height: 44,
+        height: GlobalStyles.spacingStates.imageThumbnails,
         child: Stack(
           children: [
             _gridActionsLayer(),
@@ -87,12 +87,12 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
 
   Widget _gridActionsLayer(){
     return Container(
-      height: 44,
+      height: GlobalStyles.spacingStates.imageThumbnails,
       decoration: BoxDecoration(
         color: Color(0xFF4E4C4C),
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.imageThumbnails),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -109,8 +109,8 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/edit_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ),//Icon(Icons.edit, color: Colors.white),
           ),
           IconButton(
@@ -140,8 +140,8 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/delete_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ), //VariedIcon.varied(Symbols.delete_outline_rounded, color: Colors.white),//Icon(Icons.delete, color: Colors.white),
           ),
           IconButton(
@@ -158,8 +158,8 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
             icon: SvgPicture.asset(
               'assets/icons/view_icon.svg', 
               color: Colors.white,
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ), //Icon(Icons.remove_red_eye, color: Colors.white),
           ),
         ],
@@ -169,23 +169,24 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
 
   Widget _gridContentLayer(){
     double fullWidth = MediaQuery.of(context).size.width;
-    double shrinkWidth = fullWidth * 0.55;
+    double shrinkWidth = fullWidth * 0.5;
     return ClipRect(
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         width: isCollapsed ? shrinkWidth : fullWidth,
-        height: 44,
+        height: GlobalStyles.spacingStates.imageThumbnails,
         decoration: BoxDecoration(
           color: widget.color,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.imageThumbnails),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CachedImageWidget(
-              height: 44, 
-              width: 44, 
+              height: GlobalStyles.spacingStates.imageThumbnails, 
+              width: GlobalStyles.spacingStates.imageThumbnails, 
               imageUrlProvided: widget.image
             ),
             Expanded(
@@ -194,7 +195,7 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                    padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 100),
                       child: Text(
@@ -210,7 +211,7 @@ class ConnectionGridItemState extends State<ConnectionGridItem> {
                     child: Visibility(
                       visible: showText,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16),
+                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                         child: Text('${widget.days} days ago',
                           style: GlobalStyles.textStyles.textButtonSecondary),
                       ),

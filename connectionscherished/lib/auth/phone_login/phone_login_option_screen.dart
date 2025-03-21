@@ -93,7 +93,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
       appBar: TopNavBarWidget(header: const Text(''), showBackButton: true, showBorder: false,),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
           child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: Column(
@@ -102,20 +102,20 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                 child: ListView(
                   physics: BouncingScrollPhysics(),
                   children: [
-                    SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                    SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     Text('Continue with phone', style: GlobalStyles.textStyles.textH1,),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Text("We'll send you a code to help us verify your account.", style: GlobalStyles.textStyles.textBody,)
                     ),
                     // Phone number field
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Phone number', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
-                          SizedBox(height: GlobalStyles.spacingStates.spacing4,),
+                          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
                           Row (
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -138,7 +138,7 @@ class _PhoneLoginScreenState extends State<PhoneLoginScreen> {
                                 initialValue: _selectedCountryCode,
                                 buttonWidth: 100,
                               ),
-                              SizedBox(width: GlobalStyles.spacingStates.spacing16,),
+                              SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                               Expanded(
                                 child: InputFieldWidget(
                                   controller: _phoneNumberController,

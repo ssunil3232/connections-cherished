@@ -71,22 +71,22 @@ class GlobalStyles {
     labelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
     hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
     errorStyle: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.globalErrorText),
-    contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
+    contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalErrorBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 1.0, color: GlobalStyles.globalErrorBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
   );
 
@@ -95,22 +95,22 @@ class GlobalStyles {
     labelStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
     hintStyle: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.inputPlaceholderText),
     errorStyle: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.globalErrorText),
-    contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing16, vertical: 18),
+    contentPadding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.globalErrorBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 1.0, color: GlobalStyles.globalErrorBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
-      borderRadius: BorderRadius.circular(20.0),
+      borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
     ),
   );
 }
@@ -324,24 +324,79 @@ class TextStyles {
   );
 }
 
-class SpacingStates {
-  SpacingStates();
+enum SpacingConstant {
+  spacing4,
+  spacing8,
+  spacing12,
+  spacing16,
+  spacing20,
+  spacing24,
+  spacing28,
+  spacing32,
+  spacing36,
+  spacing40,
+  spacing44,
+  spacing48,
+  spacing52,
+  spacing56,
+  spacing60,
+  spacing64,
+}
 
-  final double spacing4 = 4;
-  final double spacing8 = 8;
-  final double spacing12 = 12;
-  final double spacing16 = 16;
-  final double spacing20 = 20;
-  final double spacing24 = 24;
-  final double spacing28 = 28;
-  final double spacing32 = 32;
-  final double spacing36 = 36;
-  final double spacing40 = 40;
-  final double spacing44 = 44;
-  final double spacing48 = 48;
-  final double spacing52 = 52;
-  final double spacing56 = 56;
-  final double spacing60 = 60;
-  final double spacing64 = 64;
+class SpacingStates {
+  final screenUtil = ScreenUtil();
+  bool isSmallScreen = false;
+
+  SpacingStates() {
+    // isSmallScreen = screenUtil.isSmallScreen;
+  }
+
+  double getSpacing(SpacingConstant constant, {bool useWidth = false}) {
+    switch (constant) {
+      case SpacingConstant.spacing4:
+        return useWidth ? ScreenUtil.setWidth(4) : ScreenUtil.setHeight(4);
+      case SpacingConstant.spacing8:
+        return useWidth ? ScreenUtil.setWidth(8) : ScreenUtil.setHeight(8);
+      case SpacingConstant.spacing12:
+        return useWidth ? ScreenUtil.setWidth(12) : ScreenUtil.setHeight(12);
+      case SpacingConstant.spacing16:
+        return useWidth ? ScreenUtil.setWidth(16) : ScreenUtil.setHeight(16);
+      case SpacingConstant.spacing20:
+        return useWidth ? ScreenUtil.setWidth(20) : ScreenUtil.setHeight(20);
+      case SpacingConstant.spacing24:
+        return useWidth ? ScreenUtil.setWidth(24) : ScreenUtil.setHeight(24);
+      case SpacingConstant.spacing28:
+        return useWidth ? ScreenUtil.setWidth(28) : ScreenUtil.setHeight(28);
+      case SpacingConstant.spacing32:
+        return useWidth ? ScreenUtil.setWidth(32) : ScreenUtil.setHeight(32);
+      case SpacingConstant.spacing36:
+        return useWidth ? ScreenUtil.setWidth(36) : ScreenUtil.setHeight(36);
+      case SpacingConstant.spacing40:
+        return useWidth ? ScreenUtil.setWidth(40) : ScreenUtil.setHeight(40);
+      case SpacingConstant.spacing44:
+        return useWidth ? ScreenUtil.setWidth(44) : ScreenUtil.setHeight(44);
+      case SpacingConstant.spacing48:
+        return useWidth ? ScreenUtil.setWidth(48) : ScreenUtil.setHeight(48);
+      case SpacingConstant.spacing52:
+        return useWidth ? ScreenUtil.setWidth(52) : ScreenUtil.setHeight(52);
+      case SpacingConstant.spacing56:
+        return useWidth ? ScreenUtil.setWidth(56) : ScreenUtil.setHeight(56);
+      case SpacingConstant.spacing60:
+        return useWidth ? ScreenUtil.setWidth(60) : ScreenUtil.setHeight(60);
+      case SpacingConstant.spacing64:
+        return useWidth ? ScreenUtil.setWidth(64) : ScreenUtil.setHeight(64);
+    }
+  }
+
+  double get iconSize => ScreenUtil.setHeight(24);
+  double get emojiSize => ScreenUtil.setHeight(32);
+  double get logoHeight => ScreenUtil.setHeight(140); // Adjust height proportionally
+  double get logoWidth => ScreenUtil.setWidth(146);
+
+  double get imageMainSize => ScreenUtil.setHeight(80);
+  double get imageThumbnails => 40; //ScreenUtil.setHeight(40)
+  double get imageThumbnailEnlarged => ScreenUtil.setHeight(44);
+  double get imageEnlarged => ScreenUtil.setHeight(136);
+  double get imageOptions => ScreenUtil.setHeight(60);
 
 }

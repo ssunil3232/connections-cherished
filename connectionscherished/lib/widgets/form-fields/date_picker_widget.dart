@@ -63,7 +63,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         if(widget.labelText!= null)
           Text(widget.labelText!, style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
         if(widget.labelText!= null)
-          SizedBox(height: GlobalStyles.spacingStates.spacing4,),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
         GestureDetector(
           onTap: widget.disabled ? null : () {
             FocusScope.of(context).requestFocus(FocusNode());
@@ -80,11 +80,11 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                 enabledBorder: _isDatePickerVisible ?
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 2.0, color: GlobalStyles.defaultBorderEnabled),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
                   ) :
                   OutlineInputBorder(
                     borderSide: BorderSide(width: 1.0, color: GlobalStyles.defaultBorder),
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
                   ),
               ),
             ),
@@ -127,14 +127,14 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           ),
           Positioned(
           left: offset.dx,
-          top: offset.dy + size.height + GlobalStyles.spacingStates.spacing8,
+          top: offset.dy + size.height + GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
           width: size.width,
           child: Material(
             color: Colors.transparent,
             child: SmoothContainer(
               height: 213,
               color: const Color(0xffF3F4F5),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
               smoothness: 0.6,
               side: BorderSide(
                 color: GlobalStyles.defaultBorder

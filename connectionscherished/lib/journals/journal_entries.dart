@@ -71,11 +71,11 @@ class JournalEntriesState extends State<JournalEntries> {
         showBackButton: true,
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: journalEntries.isNotEmpty
             ? Column(
                 children: [
-                  SizedBox(height: GlobalStyles.spacingStates.spacing32),
+                  SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                   Row(
                     children: [
                       Text(
@@ -83,12 +83,12 @@ class JournalEntriesState extends State<JournalEntries> {
                         style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing12),
+                        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true)),
                         child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                          padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
                           decoration: BoxDecoration(
                             color: GlobalStyles.btnBgTertiary,
-                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.spacing16),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                           ),
                           child: Text(
                             '${journalEntries.length}',
@@ -104,7 +104,7 @@ class JournalEntriesState extends State<JournalEntries> {
                   ),
                   Expanded( // Ensure the parent Column has constraints
                     child: Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32, bottom: GlobalStyles.spacingStates.spacing64 + GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32), bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing64)+ GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: JournalGrid(
                         data: journalEntries,
                         onDelete: (item) => deleteJournalEntry(item),
@@ -118,11 +118,11 @@ class JournalEntriesState extends State<JournalEntries> {
                 child: Container(
                   decoration: BoxDecoration(
                     color: GlobalStyles.defaultTextBg,
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                   ),
                   padding: EdgeInsets.symmetric(
-                    vertical: GlobalStyles.spacingStates.spacing44,
-                    horizontal: GlobalStyles.spacingStates.spacing60,
+                    vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing44),
+                    horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing60, useWidth: true),
                   ),
                   child: Text(
                     "You have no journal entries\nwith this connection yet",

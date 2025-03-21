@@ -24,7 +24,6 @@ class _DigitalClockState extends State<DigitalClock> {
   }
 
   void _startClock() {
-    debugPrint('Starting clock for timezone: ${widget.timezone}');
     _timer?.cancel(); // Cancel existing timer if any
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       try {
@@ -60,15 +59,15 @@ class _DigitalClockState extends State<DigitalClock> {
       stream: _timeStreamController.stream,
       builder: (context, snapshot) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+          padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing40, useWidth: true)),
           decoration: BoxDecoration(
             color: GlobalStyles.btnBgTertiary,
-            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.spacing16),
+            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
           ),
           child: snapshot.data == null ?
             SizedBox(
-              height: 24,
-              width: 50,
+              height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
+              width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing48, useWidth: true),
               child: LoadingIndicator(
                 indicatorType: Indicator.ballPulse, 
                 colors: [GlobalStyles.primaryText],

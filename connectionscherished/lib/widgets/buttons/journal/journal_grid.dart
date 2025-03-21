@@ -58,7 +58,7 @@ class _JournalGridState extends State<JournalGrid> {
       child: ConstrainedBox(
         constraints: BoxConstraints(minHeight: 100),
         child: Column(
-          spacing: 8,
+          spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];
             return JournalGridItem(

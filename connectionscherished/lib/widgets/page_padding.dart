@@ -1,3 +1,4 @@
+import 'package:connectionscherished/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -12,8 +13,8 @@ class PagePadding extends StatelessWidget {
     return 
     SafeArea(
       minimum: EdgeInsets.only(
-        left: 16,
-        right: 16,
+        left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
+        right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
         bottom: bottomPadding
       ),
       top: false,

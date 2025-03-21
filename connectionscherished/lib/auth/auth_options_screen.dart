@@ -24,7 +24,7 @@ class AuthOptionsScreenState extends State<AuthOptionsScreen> {
     return Scaffold(
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,7 +81,7 @@ class AuthOptionsScreenState extends State<AuthOptionsScreen> {
             width: 205,
             height: 194,
           ),
-          SizedBox(height: GlobalStyles.spacingStates.spacing8),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
           Text(
             'Building relationships a \nconnection at a time',
             textAlign: TextAlign.center,

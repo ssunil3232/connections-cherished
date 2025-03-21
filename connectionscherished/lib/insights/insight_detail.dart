@@ -64,14 +64,14 @@ class InsightDetailState extends State<InsightDetail> {
               WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
                 child: Padding(
-                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-                  child: SvgPicture.asset('assets/icons/rocket_icon.svg', width: 24, height: 24),
+                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                  child: SvgPicture.asset('assets/icons/rocket_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                 ),
               )
             ],
           ),
         ),
-        SizedBox(height: GlobalStyles.spacingStates.spacing12),
+        SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
         Align(
           alignment: Alignment.centerRight,
           child: Row(
@@ -79,12 +79,12 @@ class InsightDetailState extends State<InsightDetail> {
             children: [
               if(friendId != "all")
               CachedImageWidget(
-                height: 44, 
-                width: 44, 
+                height: GlobalStyles.spacingStates.imageThumbnailEnlarged, 
+                width: GlobalStyles.spacingStates.imageThumbnailEnlarged, 
                 imageUrlProvided: widget.connections.firstWhere((element) => element.friendId == friendId).profileImage
               ), 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing8),
+                padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
                 child: CustomDropdownWidget(
                   disabled: false,
                   placeholderText: 'Select a friend',
@@ -110,15 +110,15 @@ class InsightDetailState extends State<InsightDetail> {
             ]
           )
         ),
-        SizedBox(height: GlobalStyles.spacingStates.spacing20),
+        SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
         Column(
           children: [
             SmoothContainer(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
               smoothness: 1,
               height: 200,
               width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing8),
+              margin: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
               color: const Color.fromARGB(255, 26, 26, 26),
               child: selectedChartType == ChartType.week ? 
                 WeeklyChart(
@@ -131,7 +131,7 @@ class InsightDetailState extends State<InsightDetail> {
                   friendData: friendId == "all" ? null : (data[friendId]?[selectedChartType == ChartType.month ? "month": "year"] ?? {}),
                 ),
             ),
-            SizedBox(height: GlobalStyles.spacingStates.spacing12),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
             ToggleButtonWidget(
               onToggle: (int value) {
                 setState(() {

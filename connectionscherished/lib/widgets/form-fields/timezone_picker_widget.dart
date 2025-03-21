@@ -5,6 +5,7 @@ import 'package:connectionscherished/widgets/timezone_drawer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 // ignore: must_be_immutable
 class TimezonePickerWidget extends StatefulWidget {
@@ -89,7 +90,7 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
         showModalBottomSheet(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-              top: Radius.circular(30.0),
+              top: Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
             ),
           ),
           constraints: BoxConstraints(
@@ -109,26 +110,25 @@ class _TimezonePickerWidgetState extends State<TimezonePickerWidget> {
           }
         );
       }, 
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing12, vertical: 10),
-        decoration: BoxDecoration(
-          color: widget.isDisabled ? GlobalStyles.defaultTextBg : GlobalStyles.defaultBg,
-          border: Border.all(color: widget.isDisabled ? Colors.transparent : GlobalStyles.defaultBorderEnabled),
-          borderRadius: BorderRadius.circular(widget.isDisabled ? 10.0 : 15),
-        ),
+      child: SmoothContainer(
+        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true), vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
+        smoothness: 1,
+        color: widget.isDisabled ? GlobalStyles.defaultTextBg : GlobalStyles.defaultBg,
+        side: BorderSide(color: widget.isDisabled ? Colors.transparent : GlobalStyles.defaultBorderEnabled),
+        borderRadius: BorderRadius.circular(widget.isDisabled ? GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12) : GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Text(
-                selectedTimezone ?? 'Select timezone',
+                selectedTimezone?.replaceAll('_', ' ') ?? 'Select timezone',
                 style: GlobalStyles.textStyles.textBody,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             if(!widget.isDisabled)
             Padding(
-              padding: EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true),),
               child: VariedIcon.varied(Symbols.keyboard_arrow_down_rounded, color: GlobalStyles.primaryText)
             )
           ],

@@ -38,13 +38,13 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         CachedImageWidget(
-          height: 80, 
-          width: 80, 
+          height: GlobalStyles.spacingStates.imageMainSize, 
+          width: GlobalStyles.spacingStates.imageMainSize, 
           imageUrlProvided: widget.avatar.img,
           imageFile: widget.avatar.imgFile,
         ),
         Padding(
-          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing20, right: GlobalStyles.spacingStates.spacing8),
+          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20, useWidth: true), right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -53,8 +53,8 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
               Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-                    child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: 32, height: 32),
+                    padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                    child: SvgPicture.asset('assets/icons/cheers_icon.svg', width: GlobalStyles.spacingStates.emojiSize, height: GlobalStyles.spacingStates.emojiSize),
                   ),
                   Text(
                     'Hello there,',
@@ -95,8 +95,8 @@ class ProfileImgNameUpdateState extends State<ProfileImgNameUpdate> {
                     },
                     icon: SvgPicture.asset(
                       'assets/icons/edit_icon.svg', 
-                      width: 24, 
-                      height: 24
+                      width: GlobalStyles.spacingStates.iconSize, 
+                      height: GlobalStyles.spacingStates.iconSize
                     ),
                   ),
                 ],

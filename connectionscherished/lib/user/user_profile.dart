@@ -135,11 +135,10 @@ class UserProfileScreenState extends State<UserProfileScreen> {
         ],
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
-        child: saving
-          ? Center(
-              child: const CircularProgressIndicator()
-            )
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24),
+        child: Center(
+          child: saving 
+          ? const CircularProgressIndicator()
           : GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Column(
@@ -149,13 +148,13 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     children: [
-                      SizedBox(height: GlobalStyles.spacingStates.spacing24),
+                      SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                       ProfileImgNameUpdate(
                         onUpdate: (value) => updateProfileData(value),
                         avatar: userProfile,
                         isEditEnabled: true,
                       ),
-                      SizedBox(height: GlobalStyles.spacingStates.spacing20),
+                      SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
                       Stack(
                         children: [
                           IntrinsicWidth(
@@ -175,24 +174,25 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: GlobalStyles.spacingStates.spacing16),
+                      SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       Column(
-                        spacing: GlobalStyles.spacingStates.spacing8,
+                        spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
                         children: [
                           _buildEmailTile(context, _passwordEmail),
                           _buildPasswordTile(context),
                           _notificationSwitch(),
                           _timezoneSetting(),
                           _schedulerSetting(),
-                          SizedBox(height: GlobalStyles.spacingStates.spacing4),
-                          _messageSetting()
+                          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
+                          _messageSetting(),
+                          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                         ],
                       )
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                  padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -222,6 +222,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
             )
           )
         )
+      )
     );
   }
 
@@ -231,16 +232,15 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-          child: SvgPicture.asset('assets/icons/notification_icon.svg', width: 24, height: 24),
+          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+          child: SvgPicture.asset('assets/icons/notification_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
         ),
         Text(
           'Notification alert',
           style: GlobalStyles.textStyles.textBody
         ),
-        SizedBox(width: GlobalStyles.spacingStates.spacing12),
         Container(
-          margin: EdgeInsets.only(left:GlobalStyles.spacingStates.spacing4),
+          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true)),
           child: SwitchWidget(
             isDisabled: false,
             initialState: widget.user?.enableNotifications ?? true,
@@ -254,22 +254,19 @@ class UserProfileScreenState extends State<UserProfileScreen> {
             },
           )
         ),
-        Padding(
-          padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
-          child: IconButton(
-            onPressed: (){
-              openBottomSheet(
-                context: context,
-                header:'Notification alerts',
-                heightFactor: 0.25,
-                body: Text(
-                  "Switch on/off all alerts reminding you of your connections and scheduled messages.",
-                  style: GlobalStyles.textStyles.textCaption1
-                ),
-              );
-            }, 
-            icon: VariedIcon.varied(Symbols.info_rounded, size: 28, weight: 300, color: GlobalStyles.defaultBorder),
-          )
+        IconButton(
+          onPressed: (){
+            openBottomSheet(
+              context: context,
+              header:'Notification alerts',
+              heightFactor: 0.25,
+              body: Text(
+                "Switch on/off all alerts reminding you of your connections and scheduled messages.",
+                style: GlobalStyles.textStyles.textCaption1
+              ),
+            );
+          }, 
+          icon: VariedIcon.varied(Symbols.info_rounded, size: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing28), weight: 300, color: GlobalStyles.defaultBorder),
         ),
       ],
     );
@@ -281,14 +278,14 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-          child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: 24, height: 24),
+          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+          child: SvgPicture.asset('assets/icons/timezone_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
         ),
         Text(
           'Timezone',
           style: GlobalStyles.textStyles.textBody
         ),
-        SizedBox(width: GlobalStyles.spacingStates.spacing12),
+        SizedBox(width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12, useWidth: true)),
         Expanded(
           child: TimezonePickerWidget(
             isDisabled: false,
@@ -313,13 +310,13 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-          child: SvgPicture.asset('assets/icons/scheduler_icon.svg', width: 24, height: 24),
+          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+          child: SvgPicture.asset('assets/icons/scheduler_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
         ),
         FilledButton(
           style: ButtonStyles.tertiaryButton.copyWith(
             backgroundColor: WidgetStatePropertyAll(GlobalStyles.topNavBg),
-            padding: WidgetStatePropertyAll(EdgeInsets.all(GlobalStyles.spacingStates.spacing8)),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12))),
           ),
           onPressed: (){
             // Navigate to scheduler screen
@@ -327,10 +324,10 @@ class UserProfileScreenState extends State<UserProfileScreen> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true),
             children: [
-              Text('Schedule', style: GlobalStyles.textStyles.textButtonSecondary), 
-              SizedBox(width: GlobalStyles.spacingStates.spacing20),
-              VariedIcon.varied(Symbols.arrow_forward_ios_rounded, size: 24, weight: 300, color: GlobalStyles.primaryText),
+              Text('Schedule', style: GlobalStyles.textStyles.textButtonSecondary),
+              VariedIcon.varied(Symbols.arrow_forward_ios_rounded, weight: 300),
             ],
           ),
         ),
@@ -344,8 +341,8 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing8),
-          child: SvgPicture.asset('assets/icons/message_icon.svg', width: 24, height: 24),
+          padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+          child: SvgPicture.asset('assets/icons/message_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,11 +352,11 @@ class UserProfileScreenState extends State<UserProfileScreen> {
               'Scheduler message',
               style: GlobalStyles.textStyles.textBody
             ),
-            SizedBox(height: GlobalStyles.spacingStates.spacing4),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
             Row(
               children: [
                 Container(
-                  margin: EdgeInsets.only(right:GlobalStyles.spacingStates.spacing8),
+                  margin: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
                   child: SwitchWidget(
                     isDisabled: false,
                     initialState: widget.user?.enableAi ?? false,
@@ -374,15 +371,15 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                   )
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing4),
-                  child: SvgPicture.asset('assets/icons/ai_icon.svg', width: 24, height: 24),
+                  padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
+                  child: SvgPicture.asset('assets/icons/ai_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                 ),
                 Text(
                   'Ai generated',
                   style: GlobalStyles.textStyles.textCaption1.copyWith(color: GlobalStyles.textSubtle),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.spacing8),
+                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
                   child: IconButton(
                     onPressed: (){
                       openBottomSheet(
@@ -398,13 +395,13 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       );
                     }, 
-                    icon: VariedIcon.varied(Symbols.info_rounded, size: 28, weight: 300, color: GlobalStyles.defaultBorder),
+                    icon: VariedIcon.varied(Symbols.info_rounded, size: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing28), weight: 300, color: GlobalStyles.defaultBorder),
                   )
                 ),
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing4),
+              padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
               child: SizedBox(
                 height: 80,
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -426,7 +423,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   Widget _buildEmailTile(BuildContext context, String? email) {
     if (email != null && email.isNotEmpty) {
       return ListTileItem(
-          icon: SvgPicture.asset('assets/icons/email_icon.svg', width: 24, height: 24),
+          icon: SvgPicture.asset('assets/icons/email_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
           subtitle: email,
           text: 'Email',
           showTrailingIcon: true,
@@ -444,7 +441,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   // ignore: unused_element
   Widget _buildPasswordTile(BuildContext context) {
     return ListTileItem(
-      icon: SvgPicture.asset('assets/icons/password_icon.svg', width: 24, height: 24),
+      icon: SvgPicture.asset('assets/icons/password_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
       subtitle: '***********',
       text: 'Password',
       showTrailingIcon: true,

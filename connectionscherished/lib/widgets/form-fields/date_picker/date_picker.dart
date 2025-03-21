@@ -62,7 +62,7 @@ class DatePickerState extends State<DatePicker> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(widget.header, style: GlobalStyles.textStyles.textH2),
-          SizedBox(height: GlobalStyles.spacingStates.spacing20),
+          SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
         ],
       ),
       backgroundColor: GlobalStyles.defaultBg,
@@ -82,7 +82,7 @@ class DatePickerState extends State<DatePicker> {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43),
                           ),
                         ),
@@ -97,7 +97,7 @@ class DatePickerState extends State<DatePicker> {
                         children: [
                           for (int i = 1; i <= (widget.year == currentYear && widget.month == currentMonth ? currentDate : maxDays); i++)
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               ),
@@ -116,7 +116,7 @@ class DatePickerState extends State<DatePicker> {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43),
                           ),
                         ),
@@ -135,7 +135,7 @@ class DatePickerState extends State<DatePicker> {
                         children: [
                           for (int i = 1; i <= (widget.year == currentYear ? currentMonth : 12); i++)
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               ),
@@ -155,7 +155,7 @@ class DatePickerState extends State<DatePicker> {
                       child: CupertinoPicker(
                         selectionOverlay: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                             color: const Color.fromARGB(97, 250, 205, 43),
                           ),
                         ),
@@ -174,7 +174,7 @@ class DatePickerState extends State<DatePicker> {
                         children: [
                           for (int i = (currentYear - 20); i <= currentYear; i++) // Only allow the current year
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
                               child: FreqField(
                                 field: i,
                               ),

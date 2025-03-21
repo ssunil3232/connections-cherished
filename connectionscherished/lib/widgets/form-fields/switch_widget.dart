@@ -1,4 +1,5 @@
 import 'package:connectionscherished/styles/styles.dart';
+import 'package:connectionscherished/util/screen_util.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -36,7 +37,8 @@ class _SwitchWidgetState extends State<SwitchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return 
+    Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -49,24 +51,27 @@ class _SwitchWidgetState extends State<SwitchWidget> {
           },
           child: AbsorbPointer(
             absorbing: widget.isDisabled,
-            child: Switch(
-              value: widget.initialState,
-              padding: EdgeInsets.all(0),
-              inactiveTrackColor: GlobalStyles.defaultTextBg,
-              inactiveThumbColor: GlobalStyles.btnBgPrimary,
-              activeTrackColor: GlobalStyles.btnBgPrimary,
-              activeColor:GlobalStyles.btnBorderPrimary,
-              trackOutlineColor: WidgetStatePropertyAll(GlobalStyles.defaultTextBg),
-              trackOutlineWidth: WidgetStatePropertyAll(0.5),
-              onChanged:(bool value) {
-                if(!widget.isDisabled){
-                setState(() {
-                  widget.initialState = value;
-                });
-                widget.onChange(value);
-                }
-              },
-            ),
+            child: Transform.scale(
+              scale: ScreenUtil.scaleWidth.clamp(0.8, 1),
+              child: Switch(
+                value: widget.initialState,
+                padding: EdgeInsets.all(0),
+                inactiveTrackColor: GlobalStyles.defaultTextBg,
+                inactiveThumbColor: GlobalStyles.btnBgPrimary,
+                activeTrackColor: GlobalStyles.btnBgPrimary,
+                activeColor:GlobalStyles.btnBorderPrimary,
+                trackOutlineColor: WidgetStatePropertyAll(GlobalStyles.defaultTextBg),
+                trackOutlineWidth: WidgetStatePropertyAll(0.5),
+                onChanged:(bool value) {
+                  if(!widget.isDisabled){
+                  setState(() {
+                    widget.initialState = value;
+                  });
+                  widget.onChange(value);
+                  }
+                },
+              ),
+            )
           )
         ),
         if(widget.labelText != null && widget.labelText != '')

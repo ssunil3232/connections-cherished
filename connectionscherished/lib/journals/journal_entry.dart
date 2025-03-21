@@ -145,14 +145,14 @@ class JournalEntryState extends State<JournalEntry> {
             },
             icon: SvgPicture.asset(
               'assets/icons/edit_icon.svg', 
-              width: 24, 
-              height: 24
+              width: GlobalStyles.spacingStates.iconSize, 
+              height: GlobalStyles.spacingStates.iconSize
             ),
           )
         ] : null,
       ),
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -162,7 +162,7 @@ class JournalEntryState extends State<JournalEntry> {
                   physics: BouncingScrollPhysics(),
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing32),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32)),
                       child: InputFieldWidget(
                         controller: _titleController,
                         keyboardType: TextInputType.text,
@@ -175,7 +175,7 @@ class JournalEntryState extends State<JournalEntry> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _contentController,
                         keyboardType: TextInputType.multiline,
@@ -186,7 +186,7 @@ class JournalEntryState extends State<JournalEntry> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                       child: InputFieldWidget(
                         controller: _notesController,
                         keyboardType: TextInputType.multiline,
@@ -197,13 +197,13 @@ class JournalEntryState extends State<JournalEntry> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing28),
+                      padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing28)),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.spacing16),
+                            padding: EdgeInsets.only(right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
                             child: Text('Mood:', style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle)),
                           ),
                           Expanded(
@@ -211,7 +211,7 @@ class JournalEntryState extends State<JournalEntry> {
                               children : [
                                 CustomDropdownWidget(
                                   disabled: saving || (widget.type == JournalEntryType.view && !isEditEnabled),
-                                  offset: Offset(0, (200+55+8)),
+                                  offset: Offset(0, (250)),
                                   placeholderText: 'Select a mood',
                                   onChanged:(value) {
                                     setState(() {
@@ -230,8 +230,8 @@ class JournalEntryState extends State<JournalEntry> {
                                           children: [
                                             Text(value),
                                             Padding(
-                                              padding: EdgeInsets.only(left: 8),
-                                              child: SvgPicture.asset('assets/icons/${moodEmojis[index]}', width: 24, height: 24),
+                                              padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                              child: SvgPicture.asset('assets/icons/${moodEmojis[index]}', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                             )
                                           ],
                                         ),
@@ -245,8 +245,8 @@ class JournalEntryState extends State<JournalEntry> {
                                 ),
                                 if(_selectedMood != null && moodOptions.contains(_selectedMood!)) 
                                 Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: SvgPicture.asset('assets/icons/${moodEmojis[moodOptions.indexOf(_selectedMood!)]}', width: 24, height: 24),
+                                  padding: EdgeInsets.only(left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
+                                  child: SvgPicture.asset('assets/icons/${moodEmojis[moodOptions.indexOf(_selectedMood!)]}', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
                                 )
                               ]
                             )

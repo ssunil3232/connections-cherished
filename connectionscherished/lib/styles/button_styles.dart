@@ -22,10 +22,10 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: primaryBtnStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),  
     shape: SmoothRectangleBorder(
         smoothness: 1, 
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: primaryBtnStyle.border)
       ),
     );
@@ -37,9 +37,10 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: secondaryBtnStyle.text,
     backgroundColor: secondaryBtnStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
-    shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
+    shape: SmoothRectangleBorder(
+        smoothness: 1, 
+        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: secondaryBtnStyle.border)
       ),
     );
@@ -51,9 +52,9 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: tertiaryBtnStyle.textDefault,
     backgroundColor: tertiaryBtnStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing24),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true)),
     shape: RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16))),
       // side: BorderSide(color: secondaryBtnStyle.border)
     ),
   );
@@ -65,9 +66,9 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: tertiaryBtnStyle.textDefault,
     backgroundColor: tertiaryBtnStyle.bgVariant,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing24),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true)),
     shape: RoundedRectangleBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(15)),
+      borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16))),
       // side: BorderSide(color: secondaryBtnStyle.border)
     ),
   );
@@ -81,7 +82,7 @@ class ButtonStyles {
        decorationColor: tertiaryAlertBtnStyle.textDefault
       ),
     overlayColor: Colors.transparent,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing8, horizontal: GlobalStyles.spacingStates.spacing8),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
     );
 
   static ButtonStyle primaryAlertButton = ElevatedButton.styleFrom(
@@ -91,9 +92,9 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryAlertButtonStyle.text,
     backgroundColor: primaryAlertButtonStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
     shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: primaryAlertButtonStyle.border)
       ),
     );
@@ -105,10 +106,10 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.defaultBg,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
     shape: SmoothRectangleBorder(
         smoothness: 1,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: GlobalStyles.textSubtle)
       ),
     );
@@ -120,10 +121,10 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.defaultBg,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16, horizontal: GlobalStyles.spacingStates.spacing32),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
     shape: SmoothRectangleBorder(
         smoothness: 1,
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: GlobalStyles.textSubtle)
       ),
     );

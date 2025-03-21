@@ -15,18 +15,18 @@ class Classification extends StatelessWidget {
       children: <Widget>[
         for (var item in colorClasses)
           Container(
-            padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.spacing4),
+            padding: EdgeInsets.only(bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
             child: Row(
+              spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true),
               children: [
                 Container(
-                  width: 22,
-                  height: 22,
+                  width: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20, useWidth: true),
+                  height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: item['color'] as Color
                   ),
                 ),
-                SizedBox(width: GlobalStyles.spacingStates.spacing8),
                 Text(item['text'] as String, style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.textSubtle))
               ]
             )

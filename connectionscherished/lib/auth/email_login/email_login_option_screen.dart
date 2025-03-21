@@ -100,7 +100,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       ),
       backgroundColor: GlobalStyles.defaultBg,
       body: PagePadding(
-        bottomPadding: GlobalStyles.spacingStates.spacing32,
+        bottomPadding: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: false),
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
@@ -112,7 +112,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     Text('Continue with email', style: GlobalStyles.textStyles.textH1),
                     // Email
                     Padding(
-                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing16),
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: false),),
                       child: InputFieldWidget(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,

@@ -12,10 +12,10 @@ class PremiumDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.spacing16),
+      insetPadding: EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
       shape: SmoothRectangleBorder(
         smoothness: 0.6,
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -24,7 +24,7 @@ class PremiumDialogWidget extends StatelessWidget {
             begin: Alignment.bottomLeft,
             end: Alignment.topRight,
           ),
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -39,23 +39,23 @@ class PremiumDialogWidget extends StatelessWidget {
                   },
                   icon: SvgPicture.asset(
                     'assets/icons/close_icon.svg', 
-                    width: 24, 
-                    height: 24
+                    width: GlobalStyles.spacingStates.iconSize, 
+                    height: GlobalStyles.spacingStates.iconSize
                   ),
                 ),
               ],
             ),
             Container(
               padding: EdgeInsets.only(
-                left: GlobalStyles.spacingStates.spacing24,
-                right: GlobalStyles.spacingStates.spacing24,
+                left: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true),
+                right: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24, useWidth: true),
                 top: 0,
-                bottom: GlobalStyles.spacingStates.spacing24
+                bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)
               ),
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing16),
+                    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -82,7 +82,7 @@ class PremiumDialogWidget extends StatelessWidget {
                     height: 200,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.spacing8, bottom: GlobalStyles.spacingStates.spacing24),
+                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), bottom: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing24)),
                     child: Text(
                       "Personalized insights, analytical tracking, recommendations, AI-driven messaging, and more!",
                       textAlign: TextAlign.center,
@@ -100,7 +100,7 @@ class PremiumDialogWidget extends StatelessWidget {
                     style: GlobalStyles.textStyles.textCaption1,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.spacing12),
+                    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                     child: CustomButtonWidget.primary(text: 'Try it now!', onPressed: () {
                       Navigator.of(context).pop();
                       onResponse(true);

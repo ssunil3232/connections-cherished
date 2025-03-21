@@ -128,24 +128,24 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
               labelText: 'Name',
               controller: _nameController,
             ),
-            SizedBox(height: GlobalStyles.spacingStates.spacing20),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20)),
             Center(
               child: CachedImageWidget(
-                height: 136, 
-                width: 136, 
+                height: GlobalStyles.spacingStates.imageEnlarged, 
+                width: GlobalStyles.spacingStates.imageEnlarged, 
                 imageUrlProvided: selectedAvatar,
                 imageFile: _imageFile,
               ),
             ),
-            SizedBox(height: GlobalStyles.spacingStates.spacing16),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
             Text(
               'Avatar options',
               textAlign: TextAlign.start,
               style: GlobalStyles.textStyles.textBody.copyWith(color: GlobalStyles.textSubtle),
             ),
-            SizedBox(height: GlobalStyles.spacingStates.spacing8),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
             _buildAvatarSection(),
-            SizedBox(height: GlobalStyles.spacingStates.spacing16),
+            SizedBox(height: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
             CustomButtonWidget.secondary(
               text: 'Save',
               onPressed: _allValid ? () {
@@ -169,8 +169,9 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
 
   Widget _buildAvatarSection (){
     Map<String,String> avatarOptions = Provider.of<ProfileImgProvider>(context).imageUrls;
-    return SizedBox(
-      height: 80,
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
+      height: GlobalStyles.spacingStates.imageOptions,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
@@ -185,10 +186,10 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
                 });
               },
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing4),
+                padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
                 child: CachedImageWidget(
-                  height: 60, 
-                  width: 60, 
+                  height: GlobalStyles.spacingStates.imageOptions, 
+                  width: GlobalStyles.spacingStates.imageOptions, 
                   imageUrlProvided: avatar.key,
                   shape: CircleBorder(
                     side: BorderSide(
@@ -212,14 +213,14 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
         onTapFn();
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.spacing4),
+        padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4, useWidth: true)),
         child: CircleAvatar(
-          radius: 30,
+          radius: GlobalStyles.spacingStates.imageOptions/2,
           backgroundColor: GlobalStyles.defaultTextBg,
           child: SvgPicture.asset(
             icon, 
-            width: 24, 
-            height: 24
+            width: GlobalStyles.spacingStates.iconSize, 
+            height: GlobalStyles.spacingStates.iconSize
           ),
         ),
       ),

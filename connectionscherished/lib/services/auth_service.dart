@@ -324,6 +324,14 @@ class AuthService {
         'isDeleted': true
       });
       await _utilService.deleteAssociatedImg(user.uid, 'userId');
+      final historyData = await _firestore.collection("contact_history").where('userId', isEqualTo: user.uid).get();
+      if (historyData.docs.isNotEmpty) {
+        final batch = _firestore.batch();
+        for (final doc in historyData.docs) {
+          batch.delete(doc.reference);
+        }
+        await batch.commit();
+      }
       await user.delete();
       await _authService.signOut();
       navigatorKey.currentState!.pushNamedAndRemoveUntil(

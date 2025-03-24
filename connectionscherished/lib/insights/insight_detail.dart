@@ -23,7 +23,7 @@ class InsightDetail extends StatefulWidget {
 
 class InsightDetailState extends State<InsightDetail> {
   ChartType selectedChartType = ChartType.week;
-  Map<String, Map<String,dynamic>> data = {};
+  Map<String,dynamic> data = {};
   final _utilService = GetIt.I.get<UtilService>();
   String friendId = "all";
   List<DropdownItems> dropdownItems = [
@@ -42,7 +42,7 @@ class InsightDetailState extends State<InsightDetail> {
   }
 
   void loadData() async {
-    data = await _utilService.getAnalytics();
+    data = await _utilService.getAnalytics(widget.connections[0].userId ?? '');
     setState(() {
     });
   }

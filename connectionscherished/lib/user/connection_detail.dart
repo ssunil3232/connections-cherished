@@ -70,22 +70,21 @@ class ConnectionViewState extends State<ConnectionView> {
     setState(() {
       saving = true;
     });
-    try {
-      // await _utilService.uploadImage(userProfile.imgFile, widget.friend.friendId!);
+    try {      
       if(widget.type == ConnectionType.add) {
         await _userService.addFriendToUser(widget.friend, userProfile);
       } else {
         await _utilService.uploadImage(userProfile, widget.friend.friendId!);
-        await _friendService.updateFriend(widget.friend.friendId!, widget.friend.toMap());
+        await _friendService.updateFriend(widget.friend.friendId!, widget.friend);
       }
     } catch(error){
       Exception("Failed to add connection");
     }
     
     if (!mounted) return;
-    setState(() {
-      saving = false;
-    });
+    // setState(() {
+    //   saving = false;
+    // });
     Navigator.pop(context);
   }
 

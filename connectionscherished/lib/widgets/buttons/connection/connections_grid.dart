@@ -47,8 +47,8 @@ class _ConnectionsGridState extends State<ConnectionsGrid> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 100),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
           children: List.generate(widget.data.length, (i) {
             final item = widget.data[i];

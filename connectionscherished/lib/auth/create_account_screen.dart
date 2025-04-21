@@ -29,11 +29,26 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   bool _showNameError = false;
   bool _isSaving = false;
   String selectedTimezone = '';
+  late UserModel user;
 
   @override
   void initState() {
     super.initState();
+    setUser();
     _nameController.addListener(_updateButtonState);
+  }
+
+  setUser() async {
+    UserModel? currUser = await _userService.getLoggedInUser();
+    if(currUser != null) {
+      setState(() {
+        user = currUser;
+      });
+    }
+    setState(() {
+      _nameController.text = user.userName;
+      selectedTimezone = user.timezone;
+    });
   }
 
   bool _isNameValid() {
@@ -56,26 +71,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   // save user info and navigate to dashboard
   void _saveUserInfoAndNavigate() async {
     // save user info
-    UserModel user = UserModel(
-      userName: _nameController.text,
-      timezone: selectedTimezone,
-    );
+    user.userName = _nameController.text.trim();
+    user.timezone = selectedTimezone;
     setState(() {
       _isSaving = true;
       FocusScope.of(context).unfocus();
     });
     try {
-      await _userService.addUserInfo(user);
+      await _userService.updateUser(user);
       await Future.delayed(const Duration(seconds: 5));
+      _navService.navigateTo(Routes.dashboard);
+    } catch (e) {
+      developer.log("failed");
       setState(() {
         _isSaving = false;
       });
-      // Navigate to home screen
-      Navigator.of(context).pop();
-      _navService.navigateTo(Routes.dashboard);
-      //To show pop up message
-    } catch (e) {
-      developer.log("failed");
     }
   }
 

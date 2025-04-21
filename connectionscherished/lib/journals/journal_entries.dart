@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/journals/journal_entry.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/models/journal_model.dart';
@@ -54,8 +53,8 @@ class JournalEntriesState extends State<JournalEntries> {
   Future<void> deleteJournalEntry(JournalModel item) async {
     try {
       await _friendsService.deleteJournalEntry(item);
-      journalEntries.remove(item);
-      setState(() {});
+      // journalEntries.remove(item);
+      loadData();
     } catch (e) {
       Exception('Error deleting journal entry: $e');
     }
@@ -140,7 +139,7 @@ class JournalEntriesState extends State<JournalEntries> {
               content: '',
               notes: '',
               mood: '',
-              entryTimestamp: Timestamp.now(),
+              entryTimestamp: DateTime.now(),
               friendId: widget.friend.friendId,
               journalId: '',
             );

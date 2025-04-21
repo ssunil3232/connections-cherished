@@ -138,11 +138,11 @@ class TimezoneListPageState extends State<TimezoneListPage> {
             minTileHeight: 0,
             contentPadding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: true)),
             title: Text(
-              timezone.location.replaceAll('_', ' '),
+              timezone.label,
               style: GlobalStyles.textStyles.textBody,
             ),
             subtitle: Text(
-              'UTC ${timezone.offset_hours}',
+              timezone.offset_hours,
               style: GlobalStyles.textStyles.textCaption2.copyWith(
                 color: GlobalStyles.textSubtle,
               ),

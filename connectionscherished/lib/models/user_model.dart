@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   String? userId;
   String userName;
   String profileImage = '';
   String email;
-  Timestamp? createdAt;
-  Timestamp? updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
   bool isDeleted = false;
   bool enableNotifications = true;
   bool enableAi = false;
@@ -29,15 +28,31 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'userId': userId,
-      'userName': userName,
+      'user_id': userId,
+      'user_name': userName,
       'email': email,
-      'createdAt': createdAt ?? FieldValue.serverTimestamp(),
-      'updatedAt': FieldValue.serverTimestamp(),
-      'profileImage': profileImage,
-      'isDeleted': isDeleted,
-      'enableNotifications': enableNotifications,
-      'enableAi': enableAi,
+      'created_at': createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+      'profile_image': profileImage,
+      'is_deleted': isDeleted,
+      'enable_notifications': enableNotifications,
+      'enable_ai': enableAi,
+      'message': message,
+      'timezone': timezone
+    };
+  }
+
+  Map<String, dynamic> insertMap() {
+    return {
+      'user_id': userId,
+      'user_name': userName,
+      'email': email,
+      'created_at': createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+      'profile_image': profileImage,
+      'is_deleted': isDeleted,
+      'enable_notifications': enableNotifications,
+      'enable_ai': enableAi,
       'message': message,
       'timezone': timezone
     };
@@ -45,15 +60,15 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userId: map['userId'] ?? '',
-      userName: map['userName'] ?? '',
+      userId: map['user_id'] ?? '',
+      userName: map['user_name'] ?? '',
       email: map['email'] ?? '',
-      createdAt : map['createdAt'],
-      updatedAt : map['updatedAt'],
-      isDeleted: map['isDeleted'] ?? false,
-      profileImage: map['profileImage']?? '',
-      enableNotifications: map['enableNotifications'] ?? true,
-      enableAi: map['enableAi'] ?? false,
+      createdAt: map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
+      updatedAt: map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
+      isDeleted: map['is_deleted'] ?? false,
+      profileImage: map['profile_image']?? '',
+      enableNotifications: map['enable_notifications'] ?? true,
+      enableAi: map['enable_ai'] ?? false,
       message: map['message'] ?? 'Free for a quick catch up?',
       timezone: map['timezone'] ?? ''
       );

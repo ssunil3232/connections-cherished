@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/journals/journal_entries.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/services/friend_service.dart';
@@ -39,7 +38,7 @@ class ConnectionViewState extends State<ConnectionView> {
   final _utilService = GetIt.I.get<UtilService>();
   AvatarImgSelection userProfile = AvatarImgSelection(
     name: 'John Doe', 
-    img: 'assets/images/avatars/avatar1.png', 
+    img: 'avatar1.png', 
   );
   bool isEditEnabled = false;
 
@@ -116,7 +115,7 @@ class ConnectionViewState extends State<ConnectionView> {
   }
 
   getDaysAgo() {
-    DateTime lastContact = DateTime.parse(widget.friend.lastContacted.toDate().toString());
+    DateTime lastContact = widget.friend.lastContacted;
     DateTime now = DateTime.now();
     widget.friend.lastContactedDays = now.difference(lastContact).inDays;
     // dataUpdate['color'] = calculateSeverity(dataUpdate['days']);
@@ -246,7 +245,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                     borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   ),
                                   child: Text(
-                                    DateFormat('d MMM yyyy').format(DateTime.parse(widget.friend.lastContacted.toDate().toString())),
+                                    DateFormat('d MMM yyyy').format(widget.friend.lastContacted),
                                     style: GlobalStyles.textStyles.textH3,
                                   ),
                                 ),
@@ -254,7 +253,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
-                                    DateTime lastContactedDate = widget.friend.lastContacted.toDate();
+                                    DateTime lastContactedDate = widget.friend.lastContacted;
                                     await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -265,7 +264,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                           year: lastContactedDate.year,
                                           onChanged: (DateTime pickedDate) {
                                             setState(() {
-                                              widget.friend.lastContacted = Timestamp.fromDate(pickedDate);
+                                              widget.friend.lastContacted = pickedDate;
                                             });
                                             getDaysAgo();
                                           }
@@ -363,7 +362,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                     borderRadius: BorderRadius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
                                   ),
                                   child: Text(
-                                    DateFormat('d MMM').format(DateTime.parse(((widget.friend.dob ?? Timestamp.fromDate(DateTime(2024, 1, 1)))).toDate().toString())),
+                                    DateFormat('d MMM').format(widget.friend.dob),
                                     style: GlobalStyles.textStyles.textH3,
                                   ),
                                 ),
@@ -371,7 +370,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                 if(widget.type != ConnectionType.view || isEditEnabled)
                                 IconButton(
                                   onPressed: () async {
-                                    DateTime birthdate = (widget.friend.dob ?? Timestamp.fromDate(DateTime(2024, 1, 1))).toDate();
+                                    DateTime birthdate = (widget.friend.dob);
                                     await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
@@ -383,7 +382,7 @@ class ConnectionViewState extends State<ConnectionView> {
                                           setBirthday: true,
                                           onChanged: (DateTime pickedDate) {
                                             setState(() {
-                                              widget.friend.dob = Timestamp.fromDate(pickedDate);
+                                              widget.friend.dob = pickedDate;
                                             });
                                             getDaysAgo();
                                           }

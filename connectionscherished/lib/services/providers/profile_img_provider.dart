@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileImgProvider extends ChangeNotifier {
+  final SupabaseClient _authService = Supabase.instance.client;
   Map<String, String> _imageUrls = {};
   String _avatarImgUrl = "";
 
@@ -10,34 +11,25 @@ class ProfileImgProvider extends ChangeNotifier {
   String get avatarImgUrl => _avatarImgUrl;
 
   Future<void> setAvatars (String userId) async {
-    firebase_storage.ListResult avatars = await firebase_storage
-        .FirebaseStorage.instance
-        .ref('assets/images/avatars')
-        .listAll();
-
-    for (firebase_storage.Reference ref in avatars.items) {
-      final String url = ref.fullPath;
-      String downloadUrl = await firebase_storage.FirebaseStorage.instance
-          .ref(url)
-          .getDownloadURL();
+    final avatars = await _authService.storage.from('avatars').list();
+    for (final file in avatars) {
+      final String url = file.name;
+      final String downloadUrl = _authService.storage.from('avatars').getPublicUrl(file.name);
       _imageUrls[url] = downloadUrl;
     }
 
-    firebase_storage.ListResult avatarUploads = await firebase_storage
-        .FirebaseStorage.instance
-        .ref('assets/images/uploads')
-        .listAll();
-
-    for (firebase_storage.Reference ref in avatarUploads.items) {
-      firebase_storage.FullMetadata metadata = await ref.getMetadata();
-      // Check if the userId in metadata matches the provided userId
-      if (metadata.customMetadata != null && metadata.customMetadata!['userId'] == userId) {
-        final String url = ref.fullPath;
-        String downloadUrl = await firebase_storage.FirebaseStorage.instance
-            .ref(url)
-            .getDownloadURL();
-        _imageUrls[url] = downloadUrl;
-      }
+    final response = await _authService.from('upload_image').select('image_url').eq('user_id', userId);
+    final List<String> avatarUploads = (response as List).map((e) => e['image_url'] as String).toList();
+    // .then((data) {
+    //   if (data.isEmpty) {
+    //     return data.map((e) => e['imageUrl'] as String).toList();
+    //   }
+    //   return [];
+    // });
+    for (final file in avatarUploads) {
+      final String url = file;
+      final String downloadUrl = _authService.storage.from('uploads').getPublicUrl(file);
+      _imageUrls[url] = downloadUrl;
     }
     notifyListeners();
   }

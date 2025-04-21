@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
@@ -6,341 +5,310 @@ import 'package:connectionscherished/services/providers/profile_img_provider.dar
 import 'package:connectionscherished/services/routing_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/util/callback.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer' as developer;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-enum SignInMethod { password, google, phone, apple, none }
+enum SignInMethod { email, google, phone, apple, none }
 
 class AuthService {
-  final FirebaseAuth _authService = FirebaseAuth.instance;
-  final _firestore = GetIt.I.get<FirebaseFirestore>();
+  final SupabaseClient _authService = Supabase.instance.client;
   final _navService = GetIt.I.get<NavigationService>();
   final _utilService = GetIt.I.get<UtilService>();
   final ProfileImgProvider _imgProvider = GetIt.instance<ProfileImgProvider>();
   final _userCollection = 'users';
-
-  Future<bool> checkEmailExists(String email) async {
-    await _imgProvider.resetProvider();
-    try {
-      QuerySnapshot emailQuery = await _firestore.collection(_userCollection)
-        .where("email", isEqualTo: email)
-        .where("isDeleted", isEqualTo: false)
-        .get();
-      if (emailQuery.docs.isNotEmpty) {
-        //Email in use
-        developer.log("Email in use");
-        return true;
-      }
-      else{
-        developer.log("Email not in use");
-        return false;
-      }
-    } catch (e) {
-      throw ('Internal Server Error');
-    }
-  }
-
-  Future<UserModel?> getUser(String userId) async {
-    final userDoc = _firestore.collection(_userCollection).doc(userId);
-    final docSnapshot = await userDoc.get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-
-      if (data == null) {
-        return null;
-      }
-      return UserModel.fromMap(data);
-    }
-    return null;
-  }
-
-  Future<UserModel?> getLoggedInUser() async {
-    User? user = _authService.currentUser;
-    if (user != null) {
-      return await getUser(user.uid);
-    } else {
-      throw Exception("User not logged in.");
-    }
-  }
-
-  Future<void> updateUser(UserModel user) async {
-    try {
-      User? currentUser = _authService.currentUser;
-      if (currentUser != null) {
-        final userDoc = _firestore.collection(_userCollection).doc(currentUser.uid);
-        final currentData = await userDoc.get();
-        if(user.profileImage.isEmpty){
-          user.profileImage = await _utilService.getUserAvatar();
-        }
-        await userDoc.update({
-          'userName': user.userName != currentData["userName"] ? user.userName : currentData["userName"],
-          'profileImage': user.profileImage != currentData["profileImage"] ? user.profileImage : currentData["profileImage"],
-          'email': user.email != currentData["email"] ? user.email : currentData["email"],
-          'isDeleted': user.isDeleted != currentData["isDeleted"] ? user.isDeleted : currentData["isDeleted"],
-          'enableNotifications': user.enableNotifications != currentData["enableNotifications"] ? user.enableNotifications : currentData["enableNotifications"],
-          'enableAi': user.enableAi != currentData["enableAi"] ? user.enableAi : currentData["enableAi"],
-          'message': user.message != currentData["message"] ? user.message : currentData["message"],
-          'timezone': user.timezone != currentData["timezone"] ? user.timezone : currentData["timezone"],
-          'updatedAt': FieldValue.serverTimestamp(),
-        });
-      }
-      else {
-        throw Exception("User not logged in.");
-      }
-    } catch (e) {
-      throw Exception("Failed to update user info.");
-    }
-  }
-
+  
   checkSplashState() async {
     await _imgProvider.resetProvider();
-    User? user = _authService.currentUser;
-    if (user == null) {
+    Session? session = _authService.auth.currentSession;
+    User? user = getSupabaseUser();
+    if (user == null || session == null) {
       developer.log("User is not logged in");
       _navService.navigateTo(Routes.authOptions);
     }
     else {
-      developer.log("User is logged in: ${user.uid}");
-      await checkIfDocExists(userId: user.uid, loginMethod: SignInMethod.none);
+      developer.log("User is logged in: ${user.id}");
+      await checkIfUserExists(userId: user.id, userCred: user, loginMethod: SignInMethod.none);
+    }
+  }
+  
+  Future<bool> checkEmailExists(String email) async {
+    await _imgProvider.resetProvider();
+    final res = await _authService.functions.invoke('check-email', body: {'email': email});
+    if(res.status == 200) {
+      if(res.data != null) {
+        debugPrint('Response data: ${res.data}');
+        return res.data['exists']; 
+      } else {
+        throw Exception('No data returned from the function');
+      }
+    } else {
+      throw Exception('Failed to verify email existence');
     }
   }
 
-  checkIfDocExists({UserCredential ? userCred, required String userId, userProvider, required SignInMethod loginMethod}) async {
-      await _imgProvider.setAvatars(userId);
-      //Fetch User Doc
-      final userDoc = _firestore.collection(_userCollection).doc(userId);
-      final docSnapshot = await userDoc.get();
-      // If the user document does not exist, create it
-      if (!docSnapshot.exists && userCred !=null) {
+  checkIfUserExists({required String userId, required User userCred, required SignInMethod loginMethod}) async {
+    await _imgProvider.setAvatars(userId);
+    //Fetch User Doc
+    try {
+      final data = await _authService.from(_userCollection).select('*').eq('user_id', userId).single().maybeSingle();
+      if (data == null) {
+        // No record exists for this user.
+        debugPrint('No record found for user with ID: $userId');
         String profileImg = await _utilService.getUserAvatar();
-        await userDoc.set({
-          'userId': userCred.user!.uid,
-          'userName': '',
-          'email': loginMethod == SignInMethod.password ? userCred.user!.email : '',
-          'profileImage': profileImg,
-          'createdAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-          'isDeleted': false,
-          'enableNotifications': true,
-          'timezone': '',
-          'enableAi': false,
-          'message': 'Free for a quick catch up?',
-        });
+        UserModel user = UserModel(
+          userId: userId,
+          email: (loginMethod == SignInMethod.email || loginMethod == SignInMethod.google) ? userCred.email ?? '' : '',
+          profileImage: profileImg
+        );
+         await _authService.from(_userCollection).insert(user.insertMap());
         _navService.navigateTo(Routes.createAccount);
-      }
-      else{
-        if(docSnapshot.exists){
-          Map<String, dynamic>? data = docSnapshot.data();
-          if(data!=null){
-            UserModel user = UserModel.fromMap(data);
-            if(user.userName.isNotEmpty){
-              _navService.navigateTo(Routes.dashboard);
-            }
-            else{
-              _navService.navigateTo(Routes.createAccount);
-            }
-          }
+      } else {
+        // The record exists. Process or display it as needed.
+        debugPrint('Record found: $data');
+        UserModel user = UserModel.fromMap(data);
+        if(user.userName.isNotEmpty){
+          _navService.navigateTo(Routes.dashboard);
+        }
+        else{
+          _navService.navigateTo(Routes.createAccount);
         }
       }
+    } catch (error) {
+        _navService.showPopup("Error retrieving account info. Please try again.",
+          color: getSnackbarColor(SnackbarType.alert));
+        _navService.navigateTo(Routes.authOptions);
+    }
   }
 
-  Future<void> signInWithPhoneNumber(String verificationId, String smsCode) async {
+  Future<void> signInWithGoogle() async {
+    await _imgProvider.resetProvider();
+    const webClientId = '815352262580-4kbfo69g1bk2fspkvcmugvkd0grc3car.apps.googleusercontent.com';
+    const iosClientId = '815352262580-ktdvco6j619lqu16h8vjjien7pafij5p.apps.googleusercontent.com';
     try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: verificationId, smsCode: smsCode);
-
-      UserCredential userCred =
-          await _authService.signInWithCredential(credential);
-      if (userCred.user != null) {
-        await checkIfDocExists(userCred: userCred, userId: userCred.user!.uid, userProvider: {"phone": userCred.user!.phoneNumber}, loginMethod: SignInMethod.phone);
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId: iosClientId,
+        serverClientId: webClientId,
+      );
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // The user canceled the sign-in
+        throw Exception('Google Sign-In was canceled.');
+      }
+      else {
+        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+        final accessToken = googleAuth.accessToken;
+        final idToken = googleAuth.idToken;
+        if (accessToken == null) {
+          throw 'No Access Token found.';
+        }
+        if (idToken == null) {
+          throw 'No ID Token found.';
+        }
+        debugPrint('Access Token: $accessToken'); 
+        AuthResponse userCred = await _authService.auth.signInWithIdToken(
+          provider: OAuthProvider.google,
+          idToken: idToken,
+          accessToken: accessToken,
+        );
+        if (userCred.user != null) {
+          await checkIfUserExists(userId: userCred.user!.id, userCred: userCred.user!, loginMethod:  SignInMethod.google);
+        }
       }
     } catch (e) {
-      developer.log(e.toString());
-    }
-  }
-
-  Future<void> signInWithEmail({required String email, required String password}) async {
-    try {
-      UserCredential userCred = await _authService.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // If sign-in succeeds, show a snackbar
-      developer.log("Login is successful!");
-      if (userCred.user != null) {
-        await checkIfDocExists(userCred: userCred, userId: userCred.user!.uid, userProvider: {"password": email}, loginMethod: SignInMethod.password);
-      }
-    } on FirebaseAuthException catch (e) {
-      developer.log(e.toString());
-      if (e.code == 'user-not-found') {
-        throw(Exception('User not found.'));
-      } else if (e.code == 'wrong-password') {
-        throw Exception('Wrong password.');
-      } else if (e.code == 'invalid-credential') {
-        throw Exception('Invalid email or password');
-      } else {
-        throw Exception('Internal Server Error');
-      }
-    }
-  }
-
-  Future<void> signUpWithEmail({required String email, required String password}) async {
-    try {
-      // Create user with email and password using Firebase Authentication
-      UserCredential userCred = await _authService.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      if (userCred.user != null) {
-        await checkIfDocExists(userCred: userCred, userId: userCred.user!.uid, userProvider: {"password": email}, loginMethod: SignInMethod.password);
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        developer.log('${e.message}');
-        throw Exception('Email already in use');
-      } else {
-        developer.log('${e.message}');
-        throw Exception('Internal Server Error');
-      }
+      developer.log('Google Sign-In failed: $e');
+      throw Exception('Google Sign-In failed.');
     }
   }
 
   ////////////// Methods for Updates ///////////////
   SignInMethod providerIdToSignInMethod(String method) {
+    debugPrint('Provider ID: $method');
     switch (method) {
-      case 'password':
-        return SignInMethod.password;
-      case 'google.com':
+      case 'email':
+        return SignInMethod.email;
+      case 'google.com' || 'google':
         return SignInMethod.google;
       case 'phone':
         return SignInMethod.phone;
-      case 'apple.com':
+      case 'apple.com' || 'apple':
         return SignInMethod.apple;
       default:
         return SignInMethod.none;
     }
   }
 
-  String signInMethodToProviderId(SignInMethod method) {
-    switch (method) {
-      case SignInMethod.password:
-        return 'password';
-      case SignInMethod.google:
-        return 'google.com';
-      case SignInMethod.phone:
-        return 'phone';
-      case SignInMethod.apple:
-        return 'apple.com';
-      default:
-        return '';
-    }
-  }
-
   List<SignInMethod> getUserSignInMethods() {
-    User ? user = _authService.currentUser;
+    User ? user = getSupabaseUser();
     if (user == null) {
+      _navService.showPopup("Error retrieving account info. Please login again.",
+          color: getSnackbarColor(SnackbarType.alert));
       return [];
     }
-
-    List<String> methods = user.providerData.map((userInfo) => userInfo.providerId).toList();
+    List<dynamic> methods = user.appMetadata['providers'];
     List<SignInMethod> signInMethods = methods.map((method) => providerIdToSignInMethod(method)).toList();
     return signInMethods;
   }
 
-  bool accountHasPassword() {
+  bool accountIsEmailLogin() {
     List<SignInMethod> methods = getUserSignInMethods();
-    return methods.contains(SignInMethod.password);
+    return methods.contains(SignInMethod.email);
   }
 
-  String getPasswordEmail() {
-    User? user = _authService.currentUser;
+  String getAccountEmail() {
+    User ? user = getSupabaseUser();
     if (user == null) {
       return '';
     }
-    if (!accountHasPassword()) {
+    if (!accountIsEmailLogin()) {
       return '';
     }
-    return user.providerData
-            .firstWhere((element) => element.providerId == 'password')
-            .email ??
-        '';
+    return user.email ?? '';
   }
 
-  Future<void> reauthenticateWithEmail({required String email, required String password, SignInCallback? onSignIn}) async {
+  bool accountIsGoogleLogin() {
+    List<SignInMethod> methods = getUserSignInMethods();
+    return methods.contains(SignInMethod.google);
+  }
+
+  String getGoogleEmail() {
+    User ? user = getSupabaseUser();
+    if (user == null) {
+      return '';
+    }
+    if (!accountIsGoogleLogin()) {
+      return '';
+    }
+    return user.email ?? '';
+  }
+
+  Future<void> reauthenticateAccount({required String email, required String otpResult, SignInCallback? onReauth, required OtpType otpType}) async {
     try {
-      User? user = _authService.currentUser;
-
+      User? user = getSupabaseUser();
       if (user == null) {
-        throw Exception('User not logged in.');
+        throw AuthException('No user is signed in.');
       }
-
-      UserCredential userCred = await _authService.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      if (userCred.user == null) {
-        throw Exception('User not found.');
+      // final AuthResponse res = await _authService.auth.verifyOTP(
+      //   type: otpType,
+      //   token: otpResult,
+      //   email: email,
+      // );
+      // if (onReauth != null) {
+      //   if(res.session !=null && res.user != null) {
+      //   onReauth(res.user);
+      //   }
+      //   else {
+      //     throw Exception('Error reauthenticating user.');
+      //   }
+      // }
+      // else{
+      //   throw Exception('Error reauthenticating user.');
+      // }
+      if (onReauth != null) {
+        onReauth(user);
       }
-
-      if (userCred.user!.uid != user.uid) {
-        throw Exception('User not found.');
+      else{
+        throw Exception('Error reauthenticating user.');
       }
-
-      if (onSignIn != null) {
-        AuthCredential authCredential = EmailAuthProvider.credential(
-          email: email,
-          password: password,
-        );
-        onSignIn(authCredential);
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        throw(Exception('User not found.'));
-      } else if (e.code == 'wrong-password') {
-        _navService.showPopup("Wrong password.",
+    } catch (e) {
+      if (e is AuthException) {
+        _navService.showPopup(e.message,
             color: getSnackbarColor(SnackbarType.error));
-        throw Exception('Wrong password.');
-      } else if (e.code == 'invalid-credential') {
-        throw Exception('Invalid email or password');
       } else {
-        throw Exception('Internal Server Error');
+        _navService.showPopup("Internal Server Error",
+            color: getSnackbarColor(SnackbarType.error));
       }
     }
+    // on firebase.FirebaseAuthException catch (e) {
+    //   if (e.code == 'user-not-found') {
+    //     throw(Exception('User not found.'));
+    //   } else if (e.code == 'wrong-password') {
+    //     _navService.showPopup("Wrong password.",
+    //         color: getSnackbarColor(SnackbarType.error));
+    //     throw Exception('Wrong password.');
+    //   } else if (e.code == 'invalid-credential') {
+    //     throw Exception('Invalid email or password');
+    //   } else {
+    //     throw Exception('Internal Server Error');
+    //   }
+    // }
   }
 
-  Future<void> deleteAccount(credential) async {
-    try {
-      // First delete the user model
-      User? user = _authService.currentUser;
-      if (user == null) {
-        return;
-      }
+  // Future<void> reauthenticateWithGoogle({SignInCallback? onSignIn, User? user}) async {
+  //   try {
+  //     if (user == null) {
+  //       throw Exception("User not logged in.");
+  //     }
 
-      await user.reauthenticateWithCredential(credential);
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      await _firestore.collection(_userCollection).doc(user.uid).update({
-        'isDeleted': true
-      });
-      await _utilService.deleteAssociatedImg(user.uid, 'userId');
-      final historyData = await _firestore.collection("contact_history").where('userId', isEqualTo: user.uid).get();
-      if (historyData.docs.isNotEmpty) {
-        final batch = _firestore.batch();
-        for (final doc in historyData.docs) {
-          batch.delete(doc.reference);
-        }
-        await batch.commit();
-      }
-      await user.delete();
-      await _authService.signOut();
+  //     if (googleUser == null) {
+  //       throw Exception("Google Sign In canceled.");
+  //     }
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  //     final authCredential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+
+  //     await user.reauthenticateWithCredential(authCredential);
+
+  //     if (onSignIn != null) {
+  //       onSignIn(authCredential);
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     if (e.code == 'user-mismatch') {
+  //       _navService.showPopup("User mismatch. Please reauthenticate with the provided email.",
+  //         color: getSnackbarColor(SnackbarType.error));
+  //     } else if (e.code == "user-not-found"){
+  //       _navService.showPopup("User not found. Please reauthenticate with the provided email.",
+  //         color: getSnackbarColor(SnackbarType.error));
+  //     }
+  //     else{
+  //       _navService.showPopup("Error while logging in using Google",
+  //         color: getSnackbarColor(SnackbarType.error));
+  //     }
+  //     developer.log('FirebaseAuthException during Google reauthentication: $e');
+  //   } catch (e) {
+  //     developer.log('Error during Google reauthentication: $e');
+  //     _navService.showPopup("Error while logging in using Google",
+  //         color: getSnackbarColor(SnackbarType.error));
+  //   }
+  // }
+
+  User? getSupabaseUser() {
+    return _authService.auth.currentUser;
+  }
+
+  ////////////////////////////////////////////////
+  Future<void> deleteAccount(User credentials) async {
+    final res = await _authService.functions.invoke('delete-user', body: {'user_id': credentials.id});
+    if(res.status == 200) {
+      await _authService.auth.signOut();
       navigatorKey.currentState!.pushNamedAndRemoveUntil(
         Routes.authOptions,
         (route) => false,
       );
-    } catch (e) {
-      Exception(e);
+    } else {
+      throw Exception('Failed to delete user');
     }
+
+      // await _firestore.collection(_userCollection).doc(user.uid).update({
+      //   'isDeleted': true
+      // });
+      // final historyData = await _firestore.collection("contact_history").where('userId', isEqualTo: user.uid).get();
+      // if (historyData.docs.isNotEmpty) {
+      //   final batch = _firestore.batch();
+      //   for (final doc in historyData.docs) {
+      //     batch.delete(doc.reference);
+      //   }
+      //   await batch.commit();
+      // }
+      // await user.delete();
+      // await _firebaseAuthService.signOut();
   }
 
 }

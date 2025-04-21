@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:connectionscherished/routes.dart';
+import 'package:connectionscherished/services/auth_service.dart';
 import 'package:connectionscherished/styles/styles.dart';
+import 'package:connectionscherished/widgets/bottom_drawer_widget.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:connectionscherished/widgets/page_padding.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class AuthOptionsScreen extends StatefulWidget {
@@ -13,6 +19,7 @@ class AuthOptionsScreen extends StatefulWidget {
 }
 
 class AuthOptionsScreenState extends State<AuthOptionsScreen> {
+  final _authService = GetIt.I.get<AuthService>();
 
   @override
   void initState() {
@@ -42,21 +49,61 @@ class AuthOptionsScreenState extends State<AuthOptionsScreen> {
                     },
                     icon: Symbols.email_rounded,
                   ),
-                  // SizedBox(
-                  //   height: GlobalStyles.spacingStates.spacing24,
-                  // ),
-                  // Continue with phone
-                  // CustomButtonWidget.secondary(
-                  //   text: 'Continue with Phone',
-                  //   onPressed: (){
-                  //     Navigator.pushNamed(context, Routes.phoneOption);
-                  //   },
-                  //   // height: 56,
-                  //   icon: Symbols.ad_units_rounded,
-                  // ),
-                  // SizedBox(
-                  //   height: GlobalStyles.spacingStates.spacing24,
-                  // ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: GlobalStyles.defaultBorder,
+                            thickness: 1,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8)),
+                          child: Text(
+                            'or',
+                            style: GlobalStyles.textStyles.textBody,
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: GlobalStyles.defaultBorder,
+                            thickness: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing28, useWidth: true),
+                    children: [
+                      Visibility(
+                        visible: Platform.isIOS,
+                        child: CustomButtonWidget.appleBtn(
+                          text: 'Continue with Apple',
+                          onPressed: (){
+                            // _authService.signInWithApple();
+                          },
+                          // height: 56,
+                        ),
+                      ),
+                      // Continue with Google
+                      CustomButtonWidget.googleBtn(
+                        text: 'Continue with Google',
+                        onPressed: () async{
+                          await _authService.signInWithGoogle();
+                        },
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16)),
+                    child: termsAndConditions()
+                  )
                 ],
               )
             ]
@@ -90,5 +137,46 @@ class AuthOptionsScreenState extends State<AuthOptionsScreen> {
         ]
       )
     );
+  }
+
+  Widget termsAndConditions(){
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: 'By continuing, you agree to our ',
+        style: GlobalStyles.textStyles.textCaption1,
+        children: [
+          _clickableText(text: 'Terms of Privacy Policy', title: 'Privacy Terms and Conditions', modalWidget: _privacyPolicy()),
+          TextSpan(
+            text: '.',
+            style: GlobalStyles.textStyles.textCaption1,
+          )
+        ]
+      )
+    );
+  }
+
+  TextSpan _clickableText({required String text, required String title, required Widget modalWidget}) {
+    return TextSpan(
+      text: text,
+      style: GlobalStyles.textStyles.textCaption1.copyWith(
+        color: GlobalStyles.btnBorderPrimary,
+        // decoration: TextDecoration.underline,
+        // decorationColor: GlobalStyles.btnBorderPrimary
+      ),
+      recognizer: TapGestureRecognizer()
+      ..onTap = () async {
+        openBottomSheet(
+          context: context,
+          header: title,
+          heightFactor: 0.8,
+          body: modalWidget
+        );
+      },
+    );
+  }
+
+  Widget _privacyPolicy(){
+    return Text('abc');
   }
 }

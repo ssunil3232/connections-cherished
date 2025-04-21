@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContactHistoryModel {
   String ? friendId = '';
   String ? userId = '';
   String ? contactHistoryId = '';
-  Timestamp lastContacted = Timestamp.now();
+  DateTime lastContacted = DateTime.now();
 
   ContactHistoryModel({
     this.friendId = '',
@@ -17,28 +16,29 @@ class ContactHistoryModel {
 
   factory ContactHistoryModel.fromMap(Map<String, dynamic> data) {
     return ContactHistoryModel(
-      friendId: data['friendId'] ?? '',
-      userId: data['userId'] ?? '',
-      contactHistoryId: data['contactHistoryId'] ?? '',
-      lastContacted: data['lastContacted'] ?? Timestamp.now(),
+      friendId: data['friend_id'] ?? '',
+      userId: data['user_id'] ?? '',
+      contactHistoryId: data['contact_history_id'] ?? '',
+      lastContacted: data['last_contacted'] !=null ? DateTime.parse(data['last_contacted']) : DateTime.now(),
       // lastContactedDays: data['lastContactedDays'] ?? 0
     );
   }
 
-  ContactHistoryModel.fromJson(Map<String, dynamic> json) {
-    friendId = json['friendId'] ?? '';
-    userId = json['userId'] ?? '';
-    contactHistoryId = json['contactHistoryId'] ?? '';
-    lastContacted = json['lastContacted'] ?? Timestamp.now();
-    // lastContactedDays = json['lastContactedDays'] ?? 0;
-  }
-
   Map<String, dynamic> toMap() {
     return {
-      'friendId': friendId,
-      'userId': userId,
-      'contactHistoryId': contactHistoryId,
-      'lastContacted': lastContacted,
+      'friend_id': friendId,
+      'user_id': userId,
+      'contact_history_id': contactHistoryId,
+      'last_contacted': lastContacted.toIso8601String(),
+      // 'lastContactedDays': lastContactedDays,
+    };
+  }
+
+  Map<String, dynamic> insertMap() {
+    return {
+      'friend_id': friendId,
+      'user_id': userId,
+      'last_contacted': lastContacted.toIso8601String(),
       // 'lastContactedDays': lastContactedDays,
     };
   }

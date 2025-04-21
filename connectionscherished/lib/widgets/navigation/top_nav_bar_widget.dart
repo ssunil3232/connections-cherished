@@ -1,8 +1,8 @@
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/styles/styles.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ignore: must_be_immutable
 class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -17,10 +17,10 @@ class TopNavBarWidget extends StatelessWidget implements PreferredSizeWidget {
   TopNavBarWidget(
       {super.key, required this.header, this.actions, this.leading, required this.showBackButton, this.showBorder = true, this.backAction, this.bgColor, this.height});
 
-  final _authService = FirebaseAuth.instance;
+  final SupabaseClient _authService = Supabase.instance.client;
 
   void logout() async {
-    await _authService.signOut();
+    await _authService.auth.signOut();
   }
 
   @override

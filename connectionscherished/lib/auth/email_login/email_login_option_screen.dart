@@ -1,22 +1,22 @@
-import 'package:connectionscherished/auth/email_login/sign_in_screen.dart';
-import 'package:connectionscherished/auth/email_login/sign_up_screen.dart';
-import 'package:connectionscherished/services/auth_service.dart';
+import 'package:connectionscherished/auth/email_login/verification_screen.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/custom_button_widget.dart';
 import 'package:connectionscherished/widgets/form-fields/input_field_widget.dart';
 import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart';
 import 'package:connectionscherished/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EmailLoginScreen extends StatefulWidget {
   const EmailLoginScreen({super.key});
 
   @override
-  _EmailLoginScreenState createState() => _EmailLoginScreenState();
+  EmailLoginScreenState createState() => EmailLoginScreenState();
 }
 
-class _EmailLoginScreenState extends State<EmailLoginScreen> {
-  final _authService = AuthService();
+class EmailLoginScreenState extends State<EmailLoginScreen> {
+  final SupabaseClient _supaAuthService = Supabase.instance.client;
   final _emailController = TextEditingController();
   bool _isSaving = false;
   bool _allValid = false;
@@ -35,14 +35,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       _showEmailError = false;
       return false;
     }
-    const String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-    final RegExp regExp = RegExp(emailPattern);
-    _showEmailError = !regExp.hasMatch(email);
-
+    _showEmailError = !EmailValidator.validate(email);
+    // const String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+    // final RegExp regExp = RegExp(emailPattern);
+    // _showEmailError = !regExp.hasMatch(email);
     return !_showEmailError;
   }
   
-
   // enable the button when all fields are filled and valid
   void _updateButtonState() {
     setState(() {
@@ -51,28 +50,44 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 
   Future<void> _checkAccountStatus() async {
-    final String email = _emailController.text;
+    final String email = _emailController.text.trim();
     setState(() {
       _isSaving = true;
     });
     try {
-      bool emailExists = await _authService.checkEmailExists(email);
-      if(emailExists){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignInScreen(email: email),
-          ),
-        );
-      }
-      else{
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignUpScreen(email: email),
-          ),
-        );
-      }
+      await Future.delayed(const Duration(seconds: 2));
+      await _supaAuthService.auth.signInWithOtp(email: email);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AccountVerificationScreen(email: email),
+        ),
+      );
+      // bool emailExists = await _authService.checkEmailExists(email);
+      // if(emailExists){
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => SignInScreen(email: email),
+      //     ),
+      //   );
+      // }
+      // else{
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => SignUpScreen(email: email),
+      //     ),
+      //     // MaterialPageRoute(
+      //     //   builder: (context) => AccountVerificationScreen(),
+      //     //   settings: RouteSettings(
+      //     //     arguments: {
+      //     //       'email': email,
+      //     //     },
+      //     //   ),
+      //     // ),
+      //   );
+      // }
     } catch (e) {
       Exception('Error checking email: $e');
     }
@@ -110,6 +125,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                   physics: BouncingScrollPhysics(),
                   children: [
                     Text('Continue with email', style: GlobalStyles.textStyles.textH1),
+                    Padding(
+                      padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12)),
+                      child: Text('Enter a valid email address to login/sign up and a verification code will be sent to you shortly.', style: GlobalStyles.textStyles.textBody,)
+                    ),
                     // Email
                     Padding(
                       padding: EdgeInsets.only(top: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16, useWidth: false),),

@@ -8,14 +8,12 @@ export 'auth/email_login/email_login_option_screen.dart';
 export 'auth/email_login/sign_in_screen.dart';
 export 'auth/email_login/sign_up_screen.dart';
 
-// phone sign in screens
-export 'auth/phone_login/phone_login_option_screen.dart';
-
 class Routes {
   static const String splash = '/';
   static const String home = '/home';
   static const String authOptions = '/auth_options';
   static const String emailOption = '/email_option';
+  static const String emailVerification = '/email_verification';
   static const String phoneOption = '/phone_option';
   static const String createAccount = '/create_account';
   static const String userProfile = '/userProfile';

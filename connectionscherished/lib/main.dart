@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/auth/create_account_screen.dart';
 import 'package:connectionscherished/dashboard.dart';
 import 'package:connectionscherished/home.dart';
@@ -14,19 +13,17 @@ import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/user/user_profile.dart';
 import 'package:connectionscherished/util/screen_util.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 //For Navigation without context;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-void setupLocator(FirebaseApp firebaseApp) {
-  GetIt.I.registerLazySingleton(() => FirebaseFirestore.instance);
+void setupLocator(Supabase supabaseApp) {
   GetIt.I.registerLazySingleton(() => AuthService());
   GetIt.I.registerLazySingleton(() => NavigationService());
   GetIt.I.registerLazySingleton(() => UserService());
@@ -38,10 +35,11 @@ void setupLocator(FirebaseApp firebaseApp) {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final firebaseApp = await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  final supabaseApp = await Supabase.initialize(
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR2c29kYW9qY3Bka2d2d2tibWNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2MjEyMjgsImV4cCI6MjA1OTE5NzIyOH0.zUS-Ij-nd6lMNDSA1KZAIJjc8r9K8RUABMsCWczQGOs",
+    url: "https://tvsodaojcpdkgvwkbmci.supabase.co"
   );
-  setupLocator(firebaseApp);
+  setupLocator(supabaseApp);
   tz.initializeTimeZones();
   runApp(
     ChangeNotifierProvider(
@@ -117,7 +115,6 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Routes.home: (context) => HomePage(),
               Routes.dashboard: (context) => const DashboardScreen(),
               Routes.emailOption: (context) => const EmailLoginScreen(),
-              Routes.phoneOption: (context) => const PhoneLoginScreen(),
               Routes.createAccount: (context) => const CreateAccountScreen(),
               Routes.userProfile: (context) =>  UserProfileScreen(),
               Routes.journalLanding: (context) => const JournalLanding(),

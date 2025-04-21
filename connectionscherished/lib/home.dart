@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/main.dart';
 import 'package:connectionscherished/models/friends_model.dart';
 import 'package:connectionscherished/models/user_model.dart';
@@ -103,11 +102,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver, RouteA
   addConnection() async {
     FriendModel newFriend = FriendModel(
       name: 'John Doe',
-      lastContacted: Timestamp.now(),
-      dob: null,
+      lastContacted: DateTime.now(),
+      dob: DateTime(2024, 1, 1),
       alertOnBirthday: true,
       alert: PeriodicAlert(days: 0, months: 0, weeks: 1),
-      profileImage: "assets/images/avatars/avatar1.png",
+      profileImage: "avatar1.png",
     );
     Navigator.push(
       context,

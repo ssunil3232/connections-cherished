@@ -69,12 +69,12 @@ class ProfileImgNameDialogState extends State<ProfileImgNameDialog> {
       if (croppedFile != null) {
         setState(() {
           _imageFile = File(croppedFile.path);
-          selectedAvatar = 'assets/images/uploads/${pickedFile.name}';
+          selectedAvatar = pickedFile.name;
         });
       } else{
         setState(() {
           _imageFile = File(pickedFile.path);
-          selectedAvatar = 'assets/images/uploads/${pickedFile.name}';
+          selectedAvatar = pickedFile.name;
         });
       }
     }

@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Date formatting function
 String dateFormatUtil(DateTime date) {
@@ -13,27 +12,6 @@ String monthDayYearFormatter(DateTime date) {
 String monthDayYearString(DateTime date) {
   return DateFormat('MM/dd/yy').format(date);
 }
-
-DateTime createDate(date) {
-  if (date is DateTime) {
-    return date;
-  } else if (date is String) {
-    return DateTime.parse(date);
-  } else if (date is Timestamp) {
-    return date.toDate();
-  }
-  return DateTime.now();
-}
-
-Timestamp createTimestamp(date) {
-  if (date is Timestamp) {
-    return date;
-  } else if (date is DateTime) {
-    return Timestamp.fromDate(date);
-  }
-  return Timestamp.now();
-}
-
 
 String createAgeString(DateTime date) {
   final now = DateTime.now();

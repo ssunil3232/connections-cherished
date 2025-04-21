@@ -1,7 +1,8 @@
-import 'package:connectionscherished/auth/reauth_screens/email_reauth_screen.dart';
+import 'package:connectionscherished/auth/reauth_screens/account_reauth_screen.dart';
 import 'package:connectionscherished/models/user_model.dart';
 import 'package:connectionscherished/routes.dart';
 import 'package:connectionscherished/services/auth_service.dart';
+import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/services/util_service.dart';
 import 'package:connectionscherished/styles/button_styles.dart';
 import 'package:connectionscherished/styles/styles.dart';
@@ -16,11 +17,11 @@ import 'package:connectionscherished/widgets/navigation/top_nav_bar_widget.dart'
 import 'package:connectionscherished/widgets/page_padding.dart';
 import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
 import 'package:connectionscherished/widgets/profile/profile_img_name_update.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // ignore: must_be_immutable
 class UserProfileScreen extends StatefulWidget {
@@ -35,13 +36,15 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   bool saving = false;
   bool showSaveBtn = false;
   final _accountService = GetIt.I.get<AuthService>();
+  final _userService = GetIt.I.get<UserService>();
   final _utilService = GetIt.I.get<UtilService>();
-  final _authService = FirebaseAuth.instance;
-  String? _passwordEmail;
+  final SupabaseClient _authService = Supabase.instance.client;
+  String _passwordEmail = '';
+  String _googleEmail = '';
   final _messageController = TextEditingController();
   AvatarImgSelection userProfile = AvatarImgSelection(
     name: 'John Doe', 
-    img: 'assets/images/avatars/avatar1.png', 
+    img: 'avatar1.png', 
   );
 
   @override
@@ -58,12 +61,13 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   Future<void> loadUserSettings() async {
     userProfile = AvatarImgSelection(
       name: widget.user?.userName ?? 'John Doe', 
-      img: widget.user?.profileImage ?? 'assets/images/avatars/avatar1.png', 
+      img: widget.user?.profileImage ?? 'avatar1.png', 
     );
-    debugPrint('User: ${widget.user?.timezone}');
+    
     if (mounted) {
       setState(() {
-        _passwordEmail = _accountService.getPasswordEmail();
+        _passwordEmail = _accountService.getAccountEmail();
+        _googleEmail = _accountService.getGoogleEmail();
         _messageController.text = widget.user?.message ?? 'Free for a quick catch up?';
       });
     }
@@ -89,7 +93,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
       });
       try {
         await _utilService.uploadImage(userProfile, widget.user?.userId ?? '');
-        await _accountService.updateUser(widget.user!);
+        await _userService.updateUser(widget.user!);
       } catch (e) {
         Exception('Error saving user settings: $e');
       }
@@ -101,7 +105,7 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   void logout() async {
-    await _authService.signOut();
+    await _authService.auth.signOut();
     Navigator.pushNamedAndRemoveUntil(context, Routes.authOptions, (route) => false);
   }
 
@@ -178,8 +182,12 @@ class UserProfileScreenState extends State<UserProfileScreen> {
                       Column(
                         spacing: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8),
                         children: [
+                          if(_passwordEmail.isNotEmpty)
                           _buildEmailTile(context, _passwordEmail),
-                          _buildPasswordTile(context),
+                          // if(_passwordEmail.isNotEmpty)
+                          // _buildPasswordTile(context),
+                          if(_googleEmail.isNotEmpty)
+                          _buildEmailTile(context, _googleEmail, isGoogle: true),
                           _notificationSwitch(),
                           _timezoneSetting(),
                           _schedulerSetting(),
@@ -420,12 +428,12 @@ class UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget _buildEmailTile(BuildContext context, String? email) {
+  Widget _buildEmailTile(BuildContext context, String? email, {bool isGoogle = false}) {
     if (email != null && email.isNotEmpty) {
       return ListTileItem(
-          icon: SvgPicture.asset('assets/icons/email_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
+          icon: SvgPicture.asset(isGoogle ? 'assets/icons/google_icon.svg' : 'assets/icons/email_icon.svg', width: GlobalStyles.spacingStates.iconSize, height: GlobalStyles.spacingStates.iconSize),
           subtitle: email,
-          text: 'Email',
+          text: isGoogle ? 'Google account' : 'Email',
           showTrailingIcon: true,
           function: () => {
                 // Navigator.pushNamed(context, Routes.editUserInfo,
@@ -470,22 +478,65 @@ class UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   void deleteAccount() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EmailReauthScreen(
-          email: _passwordEmail!,
-          header: 'Delete account',
-            message: 'Please enter your password to confirm account deletion.',
-            buttonText: 'Confirm delete',
-            onSignIn: (credential) async {
-              await _accountService.deleteAccount(credential);
-              if (mounted) {
-                Navigator.pushNamed(context, Routes.splash);
-              }
-            },
-          ),
-        ),
-      );
+    final currUser = _accountService.getSupabaseUser();
+    List<SignInMethod> signInMethods = _accountService.getUserSignInMethods();
+    if (currUser != null) {
+      for (SignInMethod method in signInMethods) {
+        switch (method) {
+          case SignInMethod.email:
+            //Email Login
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AccountReauthScreen(
+                  email: currUser.email!,
+                  header: 'Delete account',
+                    message: 'Please enter the verification code sent to your email to confirm account deletion.',
+                    buttonText: 'Confirm delete',
+                    onReauth: (credential) async {
+                      await _accountService.deleteAccount(credential);
+                      if (mounted) {
+                        Navigator.pushNamed(context, Routes.splash);
+                      }
+                    },
+                  ),
+                ),
+              );
+              return;
+          case SignInMethod.google:
+            //Google login
+            // await _accountService.reauthenticateWithGoogle(
+            //   user: currUser,
+            //   onSignIn: (credential) async {
+            //   await _accountService.deleteAccount(credential);
+            //   if (mounted) {
+            //     Navigator.pop(context);
+            //     Navigator.pushNamed(context, Routes.splash);
+            //   }
+            // });
+            return;
+          // case SignInMethod.phone:
+          //   //Phone login
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => PhoneReauthScreen(
+          //         phoneNumber: currUser.phoneNumber!,
+          //         onSignIn: (credential) async {
+          //           await _userService.deleteAccount(credential);
+          //         },
+          //       ),
+          //     ),
+          //   );
+          //   return;
+          // case SignInMethod.apple:
+          //   await _userService.deleteAccountWithApple();
+          //   return;
+          //Other
+          default:
+            break;
+        }
+      }
+    }
   }
 }

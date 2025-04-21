@@ -1,138 +1,69 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:connectionscherished/services/providers/profile_img_provider.dart';
 import 'package:connectionscherished/widgets/profile/profile_img_name_dialog.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/models/timezone_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:timezone/standalone.dart' as tz;
 
 class UtilService {
-  final _firestore = GetIt.I.get<FirebaseFirestore>();
-  final FirebaseAuth _authService = FirebaseAuth.instance;
+  final SupabaseClient _authService = Supabase.instance.client;
   final ProfileImgProvider _imgProvider = GetIt.instance<ProfileImgProvider>();
   final timezoneCollection = "timezones";
 
-  // to get list of timezones from firestore
+  formatOffset(int ? value){
+    if (value == null) {
+      return "UTC +00:00";
+    }
+    var offsetSeconds = value;
+    var hours = offsetSeconds ~/ 3600000;
+    var minutes = ((offsetSeconds.abs() % 3600000) ~/ 60);
+    var offsetFormatted = 'UTC ${offsetSeconds >= 0 ? '+' : '-'}${hours.abs().toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+    return offsetFormatted; 
+  }
+
+  // to get list of timezones
   Future<List<TimezoneModel>> fetchTimezones() async {
     List<TimezoneModel> timezones = [];
-    try {
-      QuerySnapshot snapshot = await _firestore.collection(timezoneCollection).get();
-      for (var doc in snapshot.docs) {
-        timezones.add(TimezoneModel.fromMap(doc.data() as Map<String, dynamic>));
-      }
-    } catch (e) {
-      print("Error fetching timezones: $e");
-    }
+    tz.timeZoneDatabase.locations.forEach((key, value) {
+      TimezoneModel timezone = TimezoneModel(
+        location: key,
+        label: value.name.replaceAll('_', ' '),
+        offset_hours: '${formatOffset(value.currentTimeZone.offset)}',
+      );
+      timezones.add(timezone);
+    });
     return timezones;
   }
 
-  // to get timezone by location from firestore
+  // to get timezone by location
   Future<TimezoneModel> getTimezone(String zoneName) async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-        .collection(timezoneCollection)
-        .where('location', isEqualTo: zoneName)
-        .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        var doc = querySnapshot.docs.first;
-        return TimezoneModel.fromMap(doc.data() as Map<String, dynamic>);
-      } else {
-        print('No document found with location: $zoneName');
-        return TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC(+00:00)");
-      }
-    } catch (e) {
-      print("Error fetching timezone: $e");
-      return TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC(+00:00)");
-    }
-  }
-
-  // to get local IP address
-  Future<String?> getPublicIP() async {
-    try {
-      final response = await http.get(Uri.parse('https://api64.ipify.org?format=json'));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return data['ip'];
-      } else {
-        print('Failed to get public IP: ${response.statusCode}');
-        return null;
-      }
-    } catch (e) {
-      print('Error getting IP: $e');
-      return null;
-    }
-  }
-
-  // to get list of timezones from timeapi.io
-  Future<dynamic> getTimeZones({String ? param}) async {
-    String url = param == null ? 'https://timeapi.io/api/timezone/availabletimezones' : 'https://timeapi.io/api/timezone/$param';
-    try {
-      // Make a GET request
-      http.Response response = await http.get(Uri.parse(url));
-      // Check if the request was successful
-      if (response.statusCode == 200) {
-        // Parse the response body
-        String responseBody = response.body;
-        var timeData = jsonDecode(responseBody);
-        return timeData;
-      } else {
-        // Handle errors
-        print('Failed to fetch time data: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Exception caught: $e');
-    }
-  }
-
-  // to get detail of timezone from timeapi.io
-  Future<dynamic> getTimeZoneDetail(String zoneName) async {
-    String encodedTimeZone = Uri.encodeComponent(zoneName);
-    String url = 'https://timeapi.io/api/timezone/zone?timeZone=$encodedTimeZone';
-    try {
-      // Make a GET request
-      http.Response response = await http.get(Uri.parse(url));
-      // Check if the request was successful
-      if (response.statusCode == 200) {
-        // Parse the response body
-        String responseBody = response.body;
-        var timeData = jsonDecode(responseBody);
-        return timeData;
-      } else {
-        // Handle errors
-        print('Failed to fetch time data: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Exception caught: $e');
-    }
+    List<TimezoneModel> timezones = await fetchTimezones();
+    TimezoneModel? selectedTimezone = timezones.firstWhere(
+      (timezone) => timezone.location == zoneName,
+      orElse: () => TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC +00:00"),
+    );
+    return selectedTimezone;
   }
 
   // to get local timezone
   Future<TimezoneModel> getLocalTimezone() async {
-    String? ip = await getPublicIP();
-    if (ip != null) {
-      var currentZone = await getTimeZones(param: "ip?ipAddress=$ip");
-      if (currentZone != null) {
-        TimezoneModel localTimezone = await getTimezone(currentZone['timeZone']);
-        return localTimezone;
-      }
+    var currentZone = await FlutterTimezone.getLocalTimezone();
+    if (currentZone.isNotEmpty) {
+      TimezoneModel localTimezone = await getTimezone(currentZone);
+      return localTimezone;
     }
-    return TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC(+00:00)");
+    return TimezoneModel(location: "Unknown", label: "Unknown", offset_hours: "UTC +00:00");
   }
 
   Future<String> getUserAvatar() async {
     final List<String> imageUrls = [];
-    firebase_storage.ListResult avatars = await firebase_storage
-        .FirebaseStorage.instance
-        .ref('assets/images/avatars')
-        .listAll();
-
-    for (firebase_storage.Reference ref in avatars.items) {
-      final String url = await ref.fullPath;
+    final avatars = await _authService.storage.from('avatars').list();
+    for (final file in avatars) {
+      final String url = file.name;//_authService.storage.from('avatars').getPublicUrl(file.name);
       imageUrls.add(url);
     }
     final random = Random();
@@ -144,79 +75,59 @@ class UtilService {
     if (avatar.imgFile == null) return;
     //String fileName = path.basename(avatar.imgFile!.path);
     String fileName = path.basename(avatar.img);
-    String userId = _authService.currentUser?.uid ?? '';
+    String userId = _authService.auth.currentUser?.id ?? '';
     try {
-      await deleteAssociatedImg(id, 'associatedId');
-      // Create a reference to the location you want to upload to in Firebase Storage
-      final ref = firebase_storage.FirebaseStorage.instance.ref().child('assets/images/uploads/$fileName');
-
-      final metadata = firebase_storage.SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {
-          'associatedId': id,
-          'userId': userId, //user?.userId ?? '',
-          'uploadedAt': DateTime.now().toIso8601String(),
-        },
-      );
-
-      // Upload the file to Firebase Storage
-      firebase_storage.TaskSnapshot snapshot = await ref.putFile(avatar.imgFile!, metadata);
-
+      // Check if the id has an image associated with it
+      final data = await _authService.from('upload_image').select('*').eq('associated_id', id).maybeSingle();
+      if (data != null) {
+        // If the id has an image associated, delete it from storage
+        await _authService.storage.from('uploads').remove(['${data['image_url']}']);
+        // Then upload the new image to Storage
+        await _authService.storage.from('uploads').upload(fileName, avatar.imgFile!);
+        // Update the record in the database
+        await _authService.from('upload_image').update({
+          ...data,
+          'image_url': fileName,
+        }).eq('associated_id', id);
+      }
+      else {
+        await _authService.storage.from('uploads').upload(fileName, avatar.imgFile!);
+        await _authService.from('upload_image').insert({
+          'associated_id': id,
+          'image_url': fileName,
+          'user_id': userId,
+        });
+      }
       // Retrieve the download URL after successful upload
-      String downloadUrl = await snapshot.ref.getDownloadURL();
+      String downloadUrl = _authService.storage.from('uploads').getPublicUrl(fileName);
       _imgProvider.updateAvatars(avatar.img, downloadUrl);
 
     } catch (e) {
-      print('Error uploading image: $e');
-    }
-  }
-
-  Future<void> deleteAssociatedImg(String id, String field) async {
-    try {
-      // List all files in the directory
-      firebase_storage.ListResult result = await firebase_storage.FirebaseStorage.instance
-          .ref('assets/images/uploads')
-          .listAll();
-
-      // Iterate through each file
-      for (firebase_storage.Reference ref in result.items) {
-        // Get the metadata of the file
-        firebase_storage.FullMetadata metadata = await ref.getMetadata();
-
-        // Check if the associatedID matches the friendId
-        if (metadata.customMetadata != null && metadata.customMetadata![field] == id) {
-          // Delete the file
-          await ref.delete();
-        }
-      }
-    } catch (e) {
-      print('Error deleting files: $e');
+      debugPrint('Error uploading image: $e');
     }
   }
 
   Future<Map<String,dynamic>> getAnalytics(String userId) async {
     try {
       // Make the HTTP GET request
-      final response = await http.get(
-        Uri.parse('https://fetchanalytics-cl3kkcgu5a-uc.a.run.app?userId=$userId'),
-      );
+      final response = await _authService.functions.invoke('fetch-analytics', body: {'user_id': userId});
       // Check if the response is successful
-      if (response.statusCode == 200) {
+      if (response.status == 200) {
         // Decode the JSON response
-        final data = jsonDecode(response.body);
+        final data = response.data;
         if (data['analytics'] is Map<String,dynamic>) {
           final contactHistory = Map<String,dynamic>.from(data['analytics']);
           return contactHistory;
         } else {
-          print('Invalid response format');
+          debugPrint('Invalid response format');
           return {};
         }
       } else {
-        throw Exception('Failed to fetch friends: ${response.statusCode}');
+        throw Exception('Failed to fetch friends: ${response.status}');
       }
     } catch (e) {
       // Handle errors
-      print('Error fetching friends: $e');
+      debugPrint('Error fetching friends: $e');
       return {};
     }
   }

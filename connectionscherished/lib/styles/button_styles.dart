@@ -22,7 +22,7 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryBtnStyle.text,
     backgroundColor: primaryBtnStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),  
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing14), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),  
     shape: SmoothRectangleBorder(
         smoothness: 1, 
         borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
@@ -37,7 +37,7 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: secondaryBtnStyle.text,
     backgroundColor: secondaryBtnStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing14), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
     shape: SmoothRectangleBorder(
         smoothness: 1, 
         borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
@@ -83,7 +83,7 @@ class ButtonStyles {
       ),
     overlayColor: Colors.transparent,
     padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing8, useWidth: true)),
-    );
+  );
 
   static ButtonStyle primaryAlertButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
@@ -92,42 +92,28 @@ class ButtonStyles {
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
     foregroundColor: primaryAlertButtonStyle.text,
     backgroundColor: primaryAlertButtonStyle.bgDefault,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
+    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing14), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
     shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
         side: BorderSide(color: primaryAlertButtonStyle.border)
       ),
-    );
+  );
 
   static ButtonStyle googleButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.textButtonPrimary,
-    disabledForegroundColor: GlobalStyles.textDisabled,
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
-    foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.defaultBg,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
-    shape: SmoothRectangleBorder(
-        smoothness: 1,
-        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
-        side: BorderSide(color: GlobalStyles.textSubtle)
-      ),
-    );
+    padding: EdgeInsets.all(0),
+    shape: CircleBorder()
+  );
 
-    static ButtonStyle appleButton = ElevatedButton.styleFrom(
+  static ButtonStyle appleButton = ElevatedButton.styleFrom(
     overlayColor: Colors.transparent,
-    textStyle: GlobalStyles.textStyles.textButtonPrimary,
-    disabledForegroundColor: GlobalStyles.textDisabled,
     disabledBackgroundColor: GlobalStyles.btnBgDisabled,
-    foregroundColor: primaryBtnStyle.text,
     backgroundColor: GlobalStyles.defaultBg,
-    padding: EdgeInsets.symmetric(vertical: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing16), horizontal: GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing32, useWidth: true)),
-    shape: SmoothRectangleBorder(
-        smoothness: 1,
-        borderRadius: BorderRadius.all(Radius.circular(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing20))),
-        side: BorderSide(color: GlobalStyles.textSubtle)
-      ),
-    );
+    padding: EdgeInsets.all(0),
+    shape: CircleBorder()
+  );
 
 }
 

@@ -2,10 +2,11 @@ import 'package:connectionscherished/styles/button_styles.dart';
 import 'package:connectionscherished/styles/styles.dart';
 import 'package:connectionscherished/widgets/elevated_border_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
-enum ButtonType {primary, secondary, teritary, tertiaryVariant, tertiaryAlert, primaryAlert}
+enum ButtonType {primary, secondary, teritary, tertiaryVariant, tertiaryAlert, primaryAlert, appleBtn, googleBtn}
 // ignore: must_be_immutable
 class CustomButtonWidget extends StatefulWidget {
   String? text; 
@@ -49,7 +50,7 @@ class CustomButtonWidget extends StatefulWidget {
         border = ButtonStyles.primaryBtnStyle.border,
         bgActive = ButtonStyles.primaryBtnStyle.bgActive;
 
-    // Secondary Button
+  // Secondary Button
   CustomButtonWidget.secondary({super.key, this.customIcon, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
       : btnType = ButtonType.secondary,
         style = ButtonStyles.secondaryButton,
@@ -58,7 +59,25 @@ class CustomButtonWidget extends StatefulWidget {
         border = ButtonStyles.secondaryBtnStyle.border,
         bgActive = ButtonStyles.secondaryBtnStyle.bgActive;
 
-      // Primary Alert Button
+  // Apple Button
+  CustomButtonWidget.appleBtn({super.key, this.customIcon, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
+      : btnType = ButtonType.appleBtn,
+        style = ButtonStyles.appleButton,
+        textDefault = ButtonStyles.secondaryBtnStyle.text,
+        bgDefault = GlobalStyles.defaultBg,
+        border = GlobalStyles.textSubtle,
+        bgActive = ButtonStyles.secondaryBtnStyle.bgDefault;
+
+  // Google Button
+  CustomButtonWidget.googleBtn({super.key, this.customIcon, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
+      : btnType = ButtonType.googleBtn,
+        style = ButtonStyles.googleButton,
+        textDefault = ButtonStyles.secondaryBtnStyle.text,
+        bgDefault = GlobalStyles.defaultBg,
+        border = GlobalStyles.textSubtle,
+        bgActive = ButtonStyles.secondaryBtnStyle.bgDefault;
+
+  // Primary Alert Button
   CustomButtonWidget.primaryAlert({super.key, required this.onPressed, this.text, this.icon, this.width, this.height, this.iconAlignment, this.isEnabled, this.showIsSaving})
       : btnType = ButtonType.primaryAlert,
         style = ButtonStyles.primaryAlertButton,
@@ -67,21 +86,21 @@ class CustomButtonWidget extends StatefulWidget {
         border = ButtonStyles.primaryAlertButtonStyle.border,
         bgActive = ButtonStyles.primaryAlertButtonStyle.bgActive;
 
-    // Tertiary Button
+  // Tertiary Button
   CustomButtonWidget.tertiary({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.teritary,
         style = ButtonStyles.tertiaryButton,
         bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
         bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
 
-    // Tertiary Variant Button
+  // Tertiary Variant Button
   CustomButtonWidget.tertiaryVariant({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.teritary,
         style = ButtonStyles.tertiaryVariantButton,
         bgDefault = ButtonStyles.tertiaryBtnStyle.textDefault,
         bgActive = ButtonStyles.tertiaryBtnStyle.textActive;
   
-    // Tertiary Alert Button
+  // Tertiary Alert Button
   CustomButtonWidget.tertiaryAlert({super.key, required this.onPressed, required this.text, this.isEnabled, this.showUnderline = true})
       : btnType = ButtonType.tertiaryAlert,
         style = ButtonStyles.tertiaryAlertButton,
@@ -135,6 +154,56 @@ class _CustomButtonWidgetState extends State<CustomButtonWidget> {
           ),
         ),
         child: Text(widget.text ?? ''),
+      )
+      :
+      (widget.btnType == ButtonType.appleBtn || widget.btnType == ButtonType.googleBtn)
+      ?
+      Container(
+        padding: EdgeInsets.all(0),
+        decoration: ShapeDecoration(
+          color: widget.bgDefault,
+          shape: CircleBorder(
+            side: BorderSide(
+              color: widget.border,
+              width: 1,
+            ),
+          ),
+          shadows: [
+            BoxShadow(
+              color: widget.border,
+              offset: Offset(0, GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing4)),
+              blurRadius: 0,
+            ),
+          ],
+        ),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: widget.style.copyWith(
+            elevation: const WidgetStatePropertyAll(0),
+            backgroundColor: WidgetStateProperty.resolveWith<Color>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return widget.bgActive;
+                }
+                if (states.contains(WidgetState.disabled)) {
+                  return GlobalStyles.btnBgDisabled;
+                }
+                return widget.bgDefault;
+              },
+            ),
+            padding: WidgetStatePropertyAll(EdgeInsets.all(GlobalStyles.spacingStates.getSpacing(SpacingConstant.spacing12))),
+            minimumSize: WidgetStatePropertyAll(Size.zero),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            overlayColor: WidgetStatePropertyAll(Colors.transparent),
+            surfaceTintColor: WidgetStatePropertyAll(Colors.transparent),
+            splashFactory: NoSplash.splashFactory,
+          ),
+          child: SvgPicture.asset(
+            widget.btnType == ButtonType.appleBtn ? 'assets/icons/apple_icon.svg' : 'assets/icons/google_icon.svg',
+            // width: GlobalStyles.spacingStates.iconSize,
+            // height: GlobalStyles.spacingStates.iconSize,
+          ),
+        )
       )
       :
       ElevatedBorderWidget(

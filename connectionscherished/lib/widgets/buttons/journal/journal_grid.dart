@@ -66,7 +66,7 @@ class _JournalGridState extends State<JournalGrid> {
             return JournalGridItem(
               key: _itemKeys[i],
               title: item.title,
-              subtitle: DateFormat('d MMM yyyy HH:mm').format(item.entryTimestamp.toDate()).toString(),
+              subtitle: DateFormat('d MMM yyyy HH:mm').format(item.entryTimestamp).toString(),
               color: GlobalStyles.topNavBg,
               data: item,
               onCollapse: () => _handleCollapse(index: i),

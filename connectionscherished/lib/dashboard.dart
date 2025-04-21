@@ -2,7 +2,7 @@ import 'package:connectionscherished/home.dart';
 import 'package:connectionscherished/insights/insight_landing.dart';
 import 'package:connectionscherished/journals/journal_landing.dart';
 import 'package:connectionscherished/models/user_model.dart';
-import 'package:connectionscherished/services/auth_service.dart';
+import 'package:connectionscherished/services/user_service.dart';
 import 'package:connectionscherished/user/user_profile.dart';
 import 'package:connectionscherished/widgets/navigation/bottom_nav_bar_widget.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
   int _selectedIndex = 0;
-  final _accountService = GetIt.I.get<AuthService>();
+  final _userService = GetIt.I.get<UserService>();
   UserModel ? user;
   
   @override
@@ -35,7 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
   }
 
   loadUser() async {
-    user = await _accountService.getLoggedInUser();
+    user = await _userService.getLoggedInUser();
     setState(() {});
   }
 

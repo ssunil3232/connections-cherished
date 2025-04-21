@@ -58,9 +58,14 @@ class GlobalStyles {
   static Color globalErrorTextActive = error.error800;
 
   //=================Success State Colors=====================//
-  static Color globalSuccessBg = success.success100;
+  static Color globalSuccessBg = success.success200;
   static Color globalSuccessBorder = success.success600;
   static Color globalSuccessText = success.success600;
+
+  //=================Success State Colors=====================//
+  static Color globalWarningBg = warning.warning200;
+  static Color globalWarningBorder = warning.warning500;
+  static Color globalWarningText = warning.warning500;
 
   static TextStyles textStyles = TextStyles();
   static SpacingStates spacingStates = SpacingStates();
@@ -328,6 +333,7 @@ enum SpacingConstant {
   spacing4,
   spacing8,
   spacing12,
+  spacing14,
   spacing16,
   spacing20,
   spacing24,
@@ -359,6 +365,8 @@ class SpacingStates {
         return useWidth ? ScreenUtil.setWidth(8) : ScreenUtil.setHeight(8);
       case SpacingConstant.spacing12:
         return useWidth ? ScreenUtil.setWidth(12) : ScreenUtil.setHeight(12);
+      case SpacingConstant.spacing14:
+        return useWidth ? ScreenUtil.setWidth(14) : ScreenUtil.setHeight(14);
       case SpacingConstant.spacing16:
         return useWidth ? ScreenUtil.setWidth(16) : ScreenUtil.setHeight(16);
       case SpacingConstant.spacing20:

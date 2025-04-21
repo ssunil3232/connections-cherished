@@ -56,21 +56,21 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       _isSaving = true;
     });
-    try {
-      await _authService.signInWithEmail(
-          email: widget.email,
-          password: _passwordController.text);
-    // ignore: unused_catch_clause
-    } on Exception catch (e) {
-      setState(() {
-        _passwordValidateFailed = true;
-      });
-      _navService.showPopup("Wrong email or password.",
-            color: getSnackbarColor(SnackbarType.error));
-    } catch (e) {
-      _navService.showPopup("Internal Server Error!",
-          color: getSnackbarColor(SnackbarType.alert));
-    }
+    // try {
+    //   await _authService.signInWithEmail(
+    //       email: widget.email,
+    //       password: _passwordController.text);
+    // // ignore: unused_catch_clause
+    // } on Exception catch (e) {
+    //   setState(() {
+    //     _passwordValidateFailed = true;
+    //   });
+    //   _navService.showPopup("Wrong email or password.",
+    //         color: getSnackbarColor(SnackbarType.error));
+    // } catch (e) {
+    //   _navService.showPopup("Internal Server Error!",
+    //       color: getSnackbarColor(SnackbarType.alert));
+    // }
     setState(() {
       _isSaving = false;
     });

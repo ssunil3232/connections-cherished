@@ -10,6 +10,11 @@ class NavigationService {
         .pushNamedAndRemoveUntil(routeName, (route) => false, arguments: arguments);
   }
 
+  Future<dynamic> navigateScreen(String routeName, {arguments}) {
+    return navigatorKey.currentState!
+        .pushNamed(routeName, arguments: arguments);
+  }
+
   void showPopup(String message, {required Color color}) {
     final context = navigatorKey.currentContext;
     if (context != null) {
@@ -17,7 +22,7 @@ class NavigationService {
         SnackBar(
           content: Text(
             message,
-            style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.defaultBg),
+            style: GlobalStyles.textStyles.textCaption2.copyWith(color: GlobalStyles.primaryText),
           ),
           backgroundColor: color,
           behavior: SnackBarBehavior.floating,
@@ -36,10 +41,10 @@ enum SnackbarType { success, alert, error }
 Color getSnackbarColor(SnackbarType type) {
   switch (type) {
     case SnackbarType.success:
-      return GlobalStyles.globalSuccessText;
+      return GlobalStyles.globalSuccessBg;
     case SnackbarType.alert:
-      return GlobalStyles.warning.warning500;
+      return GlobalStyles.globalWarningBg;
     case SnackbarType.error:
-      return GlobalStyles.globalErrorText;
+      return GlobalStyles.globalErrorBg;
     }
 }

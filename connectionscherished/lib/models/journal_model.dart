@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class JournalModel {
   String ? friendId = '';
@@ -8,7 +7,7 @@ class JournalModel {
   String ? content;
   String ? notes;
   String ? mood;
-  Timestamp entryTimestamp = Timestamp.now();
+  DateTime entryTimestamp = DateTime.now();
 
   JournalModel({
     this.friendId = '',
@@ -22,36 +21,38 @@ class JournalModel {
 
   factory JournalModel.fromMap(Map<String, dynamic> data) {
     return JournalModel(
-      friendId: data['friendId'] ?? '',
-      journalId: data['journalId'] ?? '',
+      friendId: data['friend_id'] ?? '',
+      journalId: data['journal_id'] ?? '',
       title: data['title'] ?? "Journal entry",
       content: data['content'] ?? '',
       notes: data['notes'] ?? '',
       mood: data['mood'] ?? '',
-      entryTimestamp: data['entryTimestamp'] ?? Timestamp.now(),
+      entryTimestamp: data['entry_timestamp'] != null ? DateTime.parse(data['entry_timestamp']) : DateTime.now(),
     );
-  }
-
-  JournalModel.fromJson(Map<String, dynamic> json) {
-    friendId = json['friendId'] ?? '';
-    journalId = json['journalId'] ?? '';
-    title = json['title'] ?? "Journal entry";
-    content = json['content'] ?? '';
-    notes = json['notes'] ?? '';
-    mood = json['mood'] ?? '';
-    entryTimestamp = json['entryTimestamp'] ?? Timestamp.now();
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'friendId': friendId,
-      'journalId': journalId,
+      'friend_id': friendId,
+      'journal_id': journalId,
       'title': title,
       'content': content,
       'notes': notes,
       // ignore: collection_methods_unrelated_type
       'mood': mood,
-      'entryTimestamp': entryTimestamp
+      'entry_timestamp': entryTimestamp.toIso8601String()
+    };
+  }
+
+  Map<String, dynamic> insertMap() {
+    return {
+      'friend_id': friendId,
+      'title': title,
+      'content': content,
+      'notes': notes,
+      // ignore: collection_methods_unrelated_type
+      'mood': mood,
+      'entry_timestamp': entryTimestamp.toIso8601String()
     };
   }
 

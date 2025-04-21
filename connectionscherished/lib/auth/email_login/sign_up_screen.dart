@@ -115,16 +115,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _isSaving = true;
     });
-    try {
-      await _authService.signUpWithEmail(email: email, password: password);
-    // ignore: unused_catch_clause
-    } on Exception catch (e) {
-      _navService.showPopup("User with credentials, already exist.",
-            color: getSnackbarColor(SnackbarType.error));
-    } catch (e) {
-      _navService.showPopup("Internal Server Error!",
-            color: getSnackbarColor(SnackbarType.alert));
-    }
+    // try {
+    //   await _authService.signUpWithEmail(email: email, password: password);
+    // // ignore: unused_catch_clause
+    // } on Exception catch (e) {
+    //   _navService.showPopup("User with credentials, already exist.",
+    //         color: getSnackbarColor(SnackbarType.error));
+    // } catch (e) {
+    //   _navService.showPopup("Internal Server Error!",
+    //         color: getSnackbarColor(SnackbarType.alert));
+    // }
     setState(() {
       _isSaving = false;
     });

@@ -19,15 +19,25 @@ class TimezoneModel extends ISuspensionBean {
 
   TimezoneModel.fromJson(Map<String, dynamic> data)
       : location = data['location'] ?? 'Unknown',
-        label = data['label'] ?? 'Unknown, (UTC+00:00)',
-        offset_hours = data['offset_hours'] ?? '+00:00',
+        label = data['label'] ?? 'Unknown',
+        offset_hours = data['offset_hours'] ?? 'UTC +00:00',
         tag = '';
+
+  @override
+  String toString() {
+    return 'TimezoneModel(\n'
+      '   location: $location,\n'
+      '   label: $label,\n'
+      '   offset_hours: $offset_hours,\n'
+      '   tag: $tag,\n'
+      ')';
+  }
 
   factory TimezoneModel.fromMap(Map<String, dynamic> data) {
     return TimezoneModel(
       location: data['location'] ?? 'Unknown',
-      label: data['label'] ?? 'Unknown, (UTC+00:00)',
-      offset_hours: data['offset_hours'] ?? '+00:00',
+      label: data['label'] ?? 'Unknown',
+      offset_hours: data['offset_hours'] ?? 'UTC +00:00',
     );
   }
 

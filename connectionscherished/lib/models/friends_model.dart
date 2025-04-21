@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectionscherished/styles/styles.dart';
 
 class PeriodicAlert {
@@ -44,68 +43,91 @@ class FriendModel {
   String? friendId = '';
   String? userId = '';
   String? name = '';
-  Timestamp? dob = Timestamp.now();
-  Timestamp lastContacted = Timestamp.now();
+  DateTime dob = DateTime(2024, 1, 1);
+  DateTime lastContacted = DateTime.now();
   int lastContactedDays = 0;
   bool alertOnBirthday = true;
   String profileImage = "";
   PeriodicAlert alert = PeriodicAlert.empty();
   String timezone = '';
-  
+  DateTime ? createdAt = DateTime.now();
+  DateTime ? updatedAt = DateTime.now();
 
   FriendModel({
     this.friendId = '',
     this.userId = '',
     this.name = '',
-    this.dob,
+    required this.dob,
     required this.lastContacted,
     this.lastContactedDays = 0,
     this.alertOnBirthday = true,
     this.profileImage = '',
     required this.alert,
-    this.timezone = ''
+    this.timezone = '',
+    this.createdAt,
+    this.updatedAt,
   });
 
   factory FriendModel.fromMap(Map<String, dynamic> data) {
     return FriendModel(
-      friendId: data['friendId'] ?? '',
-      userId: data['userId'] ?? '',
+      friendId: data['friend_id'] ?? '',
+      userId: data['user_id'] ?? '',
       name: data['name'] ?? '',
-      dob: data['dob'] ?? Timestamp.now(),
-      lastContacted: data['lastContacted'] ?? Timestamp.now(),
-      lastContactedDays: data['lastContactedDays'] ?? 0,
-      alertOnBirthday: data['alertOnBirthday'] ?? true,
-      profileImage: data['profileImage'] ?? '',
+      dob: data['dob'] !=null ? DateTime.parse(data['dob']) : DateTime(2024, 1, 1),
+      lastContacted: data['last_contacted'] !=null ? DateTime.parse(data['last_contacted']) : DateTime.now(),
+      lastContactedDays: data['last_contacted_days'] ?? 0,
+      alertOnBirthday: data['alert_on_birthday'] ?? true,
+      profileImage: data['profile_image'] ?? '',
       alert: data['alert'] != null ? PeriodicAlert.fromJson(data['alert']) : PeriodicAlert.empty(),
-      timezone: data['timezone'] ?? ''
+      timezone: data['timezone'] ?? '',
+      createdAt: data['created_at'] != null ? DateTime.parse(data['created_at']) : null,
+      updatedAt: data['updated_at'] != null ? DateTime.parse(data['updated_at']) : null,
     );
   }
 
-  FriendModel.fromJson(Map<String, dynamic> json) {
-    friendId = json['friendId'] ?? '';
-    userId = json['userId'] ?? '';
-    name = json['name'] ?? '';
-    dob = json['dob'] ?? Timestamp.now();
-    lastContacted = json['lastContacted'] ?? Timestamp.now();
-    lastContactedDays = json['lastContactedDays'] ?? 0;
-    alertOnBirthday = json['alertOnBirthday'] ?? true;
-    profileImage = json['profileImage'] ?? '';
-    alert = json['alert'] ?? PeriodicAlert.empty();
-    timezone = json['timezone'] ?? '';
-  }
+  // FriendModel.fromJson(Map<String, dynamic> json) {
+  //   friendId = json['friendId'] ?? '';
+  //   userId = json['userId'] ?? '';
+  //   name = json['name'] ?? '';
+  //   dob = json['dob'] ?? Timestamp.now();
+  //   lastContacted = json['lastContacted'] ?? Timestamp.now();
+  //   lastContactedDays = json['lastContactedDays'] ?? 0;
+  //   alertOnBirthday = json['alertOnBirthday'] ?? true;
+  //   profileImage = json['profileImage'] ?? '';
+  //   alert = json['alert'] ?? PeriodicAlert.empty();
+  //   timezone = json['timezone'] ?? '';
+  // }
 
   Map<String, dynamic> toMap() {
     return {
-      'friendId': friendId,
-      'userId': userId,
+      'friend_id': friendId,
+      'user_id': userId,
       'name': name,
-      'dob': dob,
-      'lastContacted': lastContacted,
-      'lastContactedDays': lastContactedDays,
-      'alertOnBirthday': alertOnBirthday,
-      'profileImage': profileImage,
+      'dob': dob.toIso8601String(),
+      'last_contacted': lastContacted.toIso8601String(),
+      'last_contacted_days': lastContactedDays,
+      'alert_on_birthday': alertOnBirthday,
+      'profile_image': profileImage,
       'alert': alert.toMap(),
-      'timezone': timezone
+      'timezone': timezone,
+      'created_at': createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
+    };
+  }
+
+  Map<String, dynamic> insertMap() {
+    return {
+      'user_id': userId,
+      'name': name,
+      'dob': dob.toIso8601String(),
+      'last_contacted': lastContacted.toIso8601String(),
+      'last_contacted_days': lastContactedDays,
+      'alert_on_birthday': alertOnBirthday,
+      'profile_image': profileImage,
+      'alert': alert.toMap(),
+      'timezone': timezone,
+      'created_at': createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
+      'updated_at': DateTime.now().toIso8601String(),
     };
   }
 
